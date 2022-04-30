@@ -39,12 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'user',
-    'project',
+    'users',
+    'projects',
     'authentication'
 ]
 
-AUTH_USER_MODEL = 'user.User'
+AUTH_USER_MODEL = 'users.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -138,7 +138,7 @@ LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
 
 LOGIN_URL = 'login'
-LOGOUT_REDIRECT_URL = 'signup'
+LOGOUT_REDIRECT_URL = 'login'
 
 
 # Default primary key field type

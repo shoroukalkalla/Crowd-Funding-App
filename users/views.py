@@ -29,7 +29,7 @@ from .models import User
 # class SignUpView(CreateView):
 #     form_class = CustomRegistration
 #     success_url = reverse_lazy("login")
-#     template_name = "user/register.html"
+#     template_name = "users/register.html"
 
 def signup(request):
     if request.method == 'POST':
@@ -42,7 +42,7 @@ def signup(request):
             # to get the domain of the current site
             current_site = get_current_site(request)
             mail_subject = 'Activation link has been sent to your email id'
-            htmly = get_template('user/acc_active_email.html')
+            htmly = get_template('users/acc_active_email.html')
             data = {
                 'user': user,
                 'domain': current_site.domain,
@@ -63,7 +63,7 @@ def signup(request):
             return HttpResponse('Please confirm your email address to complete the registration.')
     else:
         form = CustomRegistration()
-    return render(request, 'user/register.html', {'form': form})
+    return render(request, 'users/register.html', {'form': form})
 
 # def signup(request):
 #     if request.method == 'POST':
@@ -76,7 +76,7 @@ def signup(request):
 #             # to get the domain of the current site
 #             current_site = get_current_site(request)
 #             mail_subject = 'Activation link has been sent to your email id'
-#             message = render_to_string('user/acc_active_email.html', {
+#             message = render_to_string('users/acc_active_email.html', {
 #                 'user': user,
 #                 'domain': current_site.domain,
 #                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
@@ -90,13 +90,13 @@ def signup(request):
 #             return HttpResponse('Please confirm your email address to complete the registration')
 #     else:
 #         form = CustomRegistration()
-#     return render(request, 'user/register.html', {'form': form})
+#     return render(request, 'users/register.html', {'form': form})
 
 
 class SignIn(CreateView):
     form_class = CustomLogin
     # success_url = reverse_lazy("login")
-    template_name = "user/login.html"
+    template_name = "users/login.html"
 
 
 @login_required
@@ -106,7 +106,7 @@ def home(request):
     print(request.user)
     print("##############################")
 
-    return render(request, 'user/home.html')
+    return render(request, 'users/home.html')
 
 
 def activate(request, uidb64, token):

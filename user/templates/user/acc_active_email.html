@@ -2,9 +2,11 @@
 your registration, http://{{ domain }}{% url 'activate' uidb64=uid token=token
 %}
 
+<h1>http://{{ domain }}{% url 'activate' uidb64=uid token=token %}</h1>
 <a href="{% url 'activate' uidb64=uid token=token  %}">Link</a>
 <a href="{% url 'activate' uid token  %}">Link</a>
 {% endautoescape %} {% autoescape on %}
+<h1>http://{{ domain }}{% url 'activate' uid token %}</h1>
 <h1>
     <a href="{% url 'activate' uidb64=uid token=token  %}">Link</a>
     <a href="{% url 'activate' uid token  %}">Link</a>

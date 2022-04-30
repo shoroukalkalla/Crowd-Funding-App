@@ -15,6 +15,7 @@ class Project(models.Model):
     start_time = models.DateTimeField(auto_now=False, auto_now_add=False)
     end_time = models.DateTimeField(auto_now=False, auto_now_add=False)
     is_opened = models.BooleanField()
+    is_verified = models.fieldName = models.BooleanField(default=False)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
@@ -27,6 +28,7 @@ class ProjectImage(models.Model):
 class ProjectTag(models.Model):
     project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
     tag_name = models.CharField(max_length=150)
+    is_verified = models.fieldName = models.BooleanField(default=False)
 
 
 class Dontation(models.Model):

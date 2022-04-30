@@ -7,7 +7,8 @@ python -m venv venv
 source venv/Scripts/activate
 pip install -r requirements.txt
 touch .env
-	DB_PASSWORD = ''
+	DB_NAME = 'crowd_funding'
+	DB_PASSWORD = 'password'
 	DB_HOST = 'localhost'
 	DB_USER = 'root'
 ```

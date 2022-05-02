@@ -5,3 +5,7 @@ from django.shortcuts import render
 
 def get_projects(request):
     return render(request, 'projects/projects.html')
+
+
+def get_project(request, project_id):
+    return render(request, 'projects/project.html')

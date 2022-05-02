@@ -22,6 +22,8 @@ from django.core.mail import EmailMultiAlternatives
 
 from django.template.loader import get_template
 
+from django.contrib.auth import views as auth_views
+
 
 from .models import User
 
@@ -93,10 +95,9 @@ def signup(request):
 #     return render(request, 'users/register.html', {'form': form})
 
 
-class SignIn(CreateView):
+class SignIn(auth_views.LoginView):
     form_class = CustomLogin
-    # success_url = reverse_lazy("login")
-    template_name = "users/login.html"
+    template_name = "registration/login.html"
 
 
 @login_required

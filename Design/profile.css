@@ -1,0 +1,22 @@
+.profile .profile_avatar {
+    text-align: center;
+}
+.profile .profile_avatar .avatar_box {
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    margin: auto;
+}
+
+.profile .profile_avatar .avatar_box img {
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+body {
+    background: red;
+}

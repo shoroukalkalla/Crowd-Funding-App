@@ -1,0 +1,87 @@
+{% extends 'layouts/base.html' %}
+<!-- prettier-ignore-->
+{% load static %}
+{% load crispy_forms_tags %}
+{% block styles %}
+<link rel="stylesheet" href="{% static 'users/css/styles.css' %}" />
+{% endblock %} {% block content %}
+<div class="profile d-flex justify-content-center mt-4">
+    <div class="profile_box">
+        <div class="profile_avatar">
+            <div>
+                <label role="button" for="id_avatar" class="avatar_box">
+                    <img
+                        src="https://images.unsplash.com/photo-1574108233269-86d1199d28de?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"
+                        alt="Jean"
+                    />
+                </label>
+            </div>
+            <div class="d-none">{{form.avatar|as_crispy_field}}</div>
+            <button class="btn btn-secondary my-3 bg-transparent text-dark">
+                Change Photo
+            </button>
+        </div>
+
+        <div class="user_data">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="mb-3 col-6">
+                        {{form.first_name|as_crispy_field}}
+                    </div>
+                    <div class="mb-3 col-6">
+                        {{form.last_name|as_crispy_field}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="mb-3 col">{{form.email|as_crispy_field}}</div>
+                </div>
+                <div class="row">
+                    <div class="mb-3 col">
+                        <!-- <label for="InputEmail" class="form-label"
+                            >Country</label
+                        >
+                        <select
+                            class="form-select"
+                            aria-label="Default select countries"
+                        >
+                            <option selected>Select Your Country</option>
+                            <option value="1">One</option>
+                        </select> -->
+                        {{form.country|as_crispy_field}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="mb-3 col">
+                        <!-- <label for="InputBirthDate" class="form-label"
+                            >BirthDate</label
+                        >
+                        <input
+                            type="date"
+                            class="form-control"
+                            id="InputBirthDate"
+                        /> -->
+
+                        {{form.date_of_birth|as_crispy_field}}
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <button class="btn btn-outline-secondary">
+                        <em class="fa-solid fa-lock"></em>
+                        Change Password
+                    </button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="delete_account mt-4">
+            <div class="mb-2">
+                <p class="mb-2">Do you wanna delete your account?</p>
+                <div class="btn btn-danger">Delate Account</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

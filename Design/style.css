@@ -10,6 +10,16 @@ body {
     height: 1000vh;
 }
 
+.user_avatar_nav {
+    cursor: pointer;
+    padding: 2px;
+    transition: 0.2s ease-in-out;
+    user-select: none;
+}
+.user_avatar_nav:hover {
+    background: rgb(234, 234, 234);
+}
+
 .projects {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
@@ -62,7 +72,7 @@ body {
     background-size: cover;
 }
 
-.project_desc .user .avatar {
+.user .avatar {
     width: 80px;
     height: 80px;
     border-radius: 50%;
@@ -71,6 +81,10 @@ body {
     padding: 2px;
     border: 1px solid #ccc;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+}
+nav .user .avatar {
+    width: 40px;
+    height: 40px;
 }
 .project_desc .custom_campaign .set_money {
     width: 80px !important;

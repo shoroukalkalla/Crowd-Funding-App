@@ -1,10 +1,11 @@
+from dataclasses import field
 from django.shortcuts import render
 
 # Create your views here.
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
 
-from .forms import CustomLogin, CustomRegistration
+from .forms import CustomLogin, CustomRegistration, Profile
 
 from django.contrib.auth.decorators import login_required
 
@@ -123,3 +124,20 @@ def activate(request, uidb64, token):
         return HttpResponse('Thank you for your email confirmation. Now you can login your account.  <a href="/login"> Login</a>')
     else:
         return HttpResponse('Activation link is invalid!')
+
+
+def profile(request):
+    return render(request, 'users/profile.html')
+
+
+# class EditProfile(CreateView):
+
+#     model = User
+#     template_name = "users/profile.html"
+#     fields = ("avatar", "first_name", "last_name", "email",
+#               "mobile_phone", "country", "date_of_birth")
+
+class EditProfile(CreateView):
+    form_class = Profile
+    success_url = reverse_lazy("login")
+    template_name = "users/profile.html"

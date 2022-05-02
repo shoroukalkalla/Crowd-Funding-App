@@ -42,11 +42,17 @@ INSTALLED_APPS = [
 
     'users',
     'projects',
-    'authentication'
+    'authentication',
+
+    "crispy_forms",
+    "crispy_bootstrap5",
 ]
 
 AUTH_USER_MODEL = 'users.User'
-AUTHENTICATION_BACKENDS = ['users.backends.EmailBackend']  # new
+AUTHENTICATION_BACKENDS = ['users.backends.EmailBackend']
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -140,8 +146,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 # Redirect
-LOGIN_REDIRECT_URL = "home"
-LOGOUT_REDIRECT_URL = "home"
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
 
 LOGIN_URL = 'login'
 LOGOUT_REDIRECT_URL = 'login'

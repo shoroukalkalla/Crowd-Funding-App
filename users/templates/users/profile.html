@@ -37,31 +37,10 @@
                     <div class="mb-3 col">{{form.email|as_crispy_field}}</div>
                 </div>
                 <div class="row">
-                    <div class="mb-3 col">
-                        <!-- <label for="InputEmail" class="form-label"
-                            >Country</label
-                        >
-                        <select
-                            class="form-select"
-                            aria-label="Default select countries"
-                        >
-                            <option selected>Select Your Country</option>
-                            <option value="1">One</option>
-                        </select> -->
-                        {{form.country|as_crispy_field}}
-                    </div>
+                    <div class="mb-3 col">{{form.country|as_crispy_field}}</div>
                 </div>
                 <div class="row">
                     <div class="mb-3 col">
-                        <!-- <label for="InputBirthDate" class="form-label"
-                            >BirthDate</label
-                        >
-                        <input
-                            type="date"
-                            class="form-control"
-                            id="InputBirthDate"
-                        /> -->
-
                         {{form.date_of_birth|as_crispy_field}}
                     </div>
                 </div>

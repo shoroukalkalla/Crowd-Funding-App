@@ -3,7 +3,8 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.urls import reverse_lazy
-from django.views.generic.edit import CreateView
+from django.views.generic import CreateView, UpdateView, ListView
+
 
 from .forms import CustomLogin, CustomRegistration, Profile
 
@@ -25,6 +26,7 @@ from django.template.loader import get_template
 
 from django.contrib.auth import views as auth_views
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import User
 
@@ -137,7 +139,9 @@ def profile(request):
 #     fields = ("avatar", "first_name", "last_name", "email",
 #               "mobile_phone", "country", "date_of_birth")
 
-class EditProfile(CreateView):
+class EditProfile(LoginRequiredMixin, UpdateView):
     form_class = Profile
     success_url = reverse_lazy("login")
     template_name = "users/profile.html"
+
+    queryset = User.objects.all()

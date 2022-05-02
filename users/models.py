@@ -4,6 +4,7 @@ from django.db import models
 from django.forms import ImageField
 from django.utils.translation import gettext_lazy as _
 from django_countries.fields import CountryField
+from django.urls import reverse
 
 
 # Create your models here.
@@ -27,3 +28,7 @@ class User(AbstractUser):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+
+    def get_absolute_url(self):
+        return reverse('profile', kwargs={'pk': self.pk})
+        # return reverse('profile', args=[self.id])

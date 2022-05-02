@@ -141,7 +141,7 @@ def profile(request):
 
 class EditProfile(LoginRequiredMixin, UpdateView):
     form_class = Profile
-    success_url = reverse_lazy("login")
+    # success_url = reverse_lazy("login")
     template_name = "users/profile.html"
 
     queryset = User.objects.all()

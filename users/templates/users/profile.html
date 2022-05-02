@@ -10,20 +10,17 @@
         <div class="profile_avatar">
             <div>
                 <label role="button" for="id_avatar" class="avatar_box">
-                    <img
-                        src="https://images.unsplash.com/photo-1574108233269-86d1199d28de?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"
-                        alt="Jean"
-                    />
+                    <img src="{{MEDIA_URL}}{{user.avatar}}" alt="Jean" />
                 </label>
             </div>
             <div class="d-none">{{form.avatar|as_crispy_field}}</div>
-            <button class="btn btn-secondary my-3 bg-transparent text-dark">
+            <!-- <button class="btn btn-secondary my-3 bg-transparent text-dark">
                 Change Photo
-            </button>
+            </button> -->
         </div>
 
         <div class="user_data">
-            <form method="POST">
+            <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="row">
                     <div class="mb-3 col-6">
@@ -35,6 +32,11 @@
                 </div>
                 <div class="row">
                     <div class="mb-3 col">{{form.email|as_crispy_field}}</div>
+                </div>
+                <div class="row">
+                    <div class="mb-3 col">
+                        {{form.mobile_phone|as_crispy_field}}
+                    </div>
                 </div>
                 <div class="row">
                     <div class="mb-3 col">{{form.country|as_crispy_field}}</div>
@@ -63,4 +65,6 @@
     </div>
 </div>
 
+{% endblock %} {% block script %}
+<script src="{% static 'users/js/previewImage.js' %}"></script>
 {% endblock %}

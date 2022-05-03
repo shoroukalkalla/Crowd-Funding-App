@@ -11,13 +11,14 @@ class CustomRegistration(UserCreationForm):
             "first_name",
             "last_name",
             "email",
+            "username",
             "mobile_phone"
         )
 
     def __init__(self, *args, **kwargs):
         super(CustomRegistration, self).__init__(*args, **kwargs)
 
-        for fieldname in ['password1', 'password2']:
+        for fieldname in ['username', 'password1', 'password2']:
             self.fields[fieldname].help_text = None
 
 
@@ -30,7 +31,7 @@ class CustomRegistration(UserCreationForm):
 #         fields = ("email", )
 
 class CustomLogin(AuthenticationForm):
-    username = forms.CharField(label='Email')
+    username = forms.CharField(label='Email / Username')
 
 
 class Profile(forms.ModelForm):

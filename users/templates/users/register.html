@@ -1,7 +1,35 @@
-{% extends "users/base.html" %} {% block content %}
-<h2>Sign Up</h2>
-<form method="post">
-    {% csrf_token %} {{ form.as_p }}
-    <button type="submit">Sign Up</button>
-</form>
+{% extends 'layouts/base.html' %}
+<!-- prettier-ignore-->
+{% load crispy_forms_tags %}
+{% block styles %}
+<style>
+    ul.errorlist {
+        display: none;
+    }
+</style>
+{% endblock %} {% block content %}
+<div class="register m-auto d-flex flex-column align-items-center mt-5">
+    <h2>Sign Up</h2>
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="row">
+            <div class="mb-3 col-6">{{form.first_name|as_crispy_field}}</div>
+            <div class="mb-3 col-6">{{form.last_name|as_crispy_field}}</div>
+        </div>
+        <div class="row">
+            <div class="mb-3 col">{{form.email|as_crispy_field}}</div>
+        </div>
+        <div class="row">
+            <div class="mb-3 col">{{form.password1|as_crispy_field}}</div>
+        </div>
+        <div class="row">
+            <div class="mb-3 col">{{form.password2|as_crispy_field}}</div>
+        </div>
+        <div class="row">
+            <div class="mb-3 col">{{form.mobile_phone|as_crispy_field}}</div>
+        </div>
+        <button type="submit " class="btn btn-primary">Sign Up</button>
+    </form>
+</div>
 {% endblock %}

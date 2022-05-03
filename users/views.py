@@ -68,6 +68,7 @@ def signup(request):
             return HttpResponse('Please confirm your email address to complete the registration.')
     else:
         form = CustomRegistration()
+
     return render(request, 'users/register.html', {'form': form})
 
 # def signup(request):

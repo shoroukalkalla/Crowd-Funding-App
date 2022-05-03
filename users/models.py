@@ -14,12 +14,8 @@ class User(AbstractUser):
 
     email = models.EmailField(_('email address'), unique=True)
 
-    # first_name = models.CharField(max_length=250)
-    # last_name = models.CharField(max_length=250)
-    # password = models.CharField(max_length=350)
     mobile_phone = models.CharField(max_length=150)
-    avatar = models.ImageField(
-        upload_to="users/", default="users/default.png")
+    avatar = models.ImageField(upload_to="users", default="users/default.png")
     date_of_birth = models.DateField(
         auto_now=False, auto_now_add=False, null=True)
     facebook_profile = models.CharField(max_length=150)

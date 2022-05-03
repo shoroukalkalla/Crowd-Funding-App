@@ -7,6 +7,8 @@
 {% endblock %} {% block content %}
 <div class="profile d-flex justify-content-center mt-4">
     <div class="profile_box">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
         <div class="profile_avatar">
             <div>
                 <label role="button" for="id_avatar" class="avatar_box">
@@ -14,14 +16,10 @@
                 </label>
             </div>
             <div class="d-none">{{form.avatar|as_crispy_field}}</div>
-            <!-- <button class="btn btn-secondary my-3 bg-transparent text-dark">
-                Change Photo
-            </button> -->
         </div>
-
+        
         <div class="user_data">
-            <form method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
+
                 <div class="row">
                     <div class="mb-3 col-6">
                         {{form.first_name|as_crispy_field}}

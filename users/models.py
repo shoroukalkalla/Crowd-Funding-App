@@ -19,7 +19,7 @@ class User(AbstractUser):
     # password = models.CharField(max_length=350)
     mobile_phone = models.CharField(max_length=150)
     avatar = models.ImageField(
-        upload_to="users/", default="users/default.png", blank=True)
+        upload_to="users/", default="users/default.png")
     date_of_birth = models.DateField(
         auto_now=False, auto_now_add=False, null=True)
     facebook_profile = models.CharField(max_length=150)
@@ -29,4 +29,5 @@ class User(AbstractUser):
         return f"{self.first_name} {self.last_name}"
 
     def get_absolute_url(self):
+
         return reverse('profile', args=[self.id])

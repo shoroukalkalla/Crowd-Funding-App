@@ -1,7 +1,11 @@
-const input = document.querySelector(".profile_avatar div input");
+const input = document.querySelector(".profile_avatar input");
 const preview = document.querySelector(".profile_avatar .avatar_box img");
 
+console.log(input);
+console.log(preview);
+
 input.addEventListener("change", (e) => {
+    console.log("render script");
     let reader = new FileReader();
     reader.onload = function () {
         if (reader.readyState == 2) {

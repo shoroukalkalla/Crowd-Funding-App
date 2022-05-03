@@ -6,6 +6,9 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 # Create your models here.
 
+class Category(models.Model):
+    name = models.CharField(max_length=150)
+
 
 class Project(models.Model):
     title = models.CharField(max_length=150)
@@ -17,6 +20,7 @@ class Project(models.Model):
     is_opened = models.BooleanField()
     is_verified = models.fieldName = models.BooleanField(default=False)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
 
 
 class ProjectImage(models.Model):

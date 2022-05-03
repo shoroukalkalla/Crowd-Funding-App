@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'users',
     'projects',
     'authentication',
+    'superuser',
 
     "crispy_forms",
     "crispy_bootstrap5",

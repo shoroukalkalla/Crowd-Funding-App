@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from unicodedata import category
 from django.contrib import admin
 from django.urls import path, include
 from projects import views
@@ -26,4 +27,5 @@ urlpatterns = [
     path('', include('users.urls')),
     path('', include("django.contrib.auth.urls")),
     path('', include('projects.urls')),
+    path('', include('superuser.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

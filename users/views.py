@@ -30,6 +30,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import User
 
+from django.core.exceptions import PermissionDenied
+
 
 # class SignUpView(CreateView):
 #     form_class = CustomRegistration
@@ -146,3 +148,9 @@ class EditProfile(LoginRequiredMixin, UpdateView):
     template_name = "users/profile.html"
 
     queryset = User.objects.all()
+
+    def get_queryset(self):
+        print(self.request.user.id)
+        if self.kwargs['pk'] != str(self.request.user.id):
+            raise PermissionDenied()
+        return User.objects.filter(id=self.request.user.id)

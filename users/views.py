@@ -4,7 +4,7 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, UpdateView, ListView
+from django.views.generic import CreateView, UpdateView, DeleteView
 
 
 from .forms import CustomLogin, CustomRegistration, Profile
@@ -155,3 +155,11 @@ class EditProfile(LoginRequiredMixin, UpdateView):
         if self.kwargs['pk'] != str(self.request.user.id):
             raise PermissionDenied()
         return User.objects.filter(id=self.request.user.id)
+
+
+class DeleteUser(DeleteView):
+    model = User
+    pk_ur_kwarg = "student_id"
+    success_url = reverse_lazy("login")
+
+    print("----------------------------")

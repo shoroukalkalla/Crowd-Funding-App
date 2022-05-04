@@ -35,9 +35,9 @@
     <div>
       {% if user.is_superuser %}
       <h1>Super User</h1>
-      <a href="/category" class="btn btn-success">Add Category</a>
-      <a href="/category" class="btn btn-secondary">List Category</a>
-      <a href="/category" class="btn btn-info">Edit Category</a>
+      <a href={% url 'create_category' %} class="btn btn-success">Add Category</a>
+      <a href={% url 'list_category' %} class="btn btn-secondary">List Category</a>
+      <a href={% url 'list_project' %} class="btn btn-info">List Projects</a>
       {% endif %}
     </div>
 

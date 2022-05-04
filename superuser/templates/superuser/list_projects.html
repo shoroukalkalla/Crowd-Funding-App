@@ -9,12 +9,13 @@
         <th scope="col">ID</th>
         <th scope="col">Title</th>
         <th scope="col">Category Name</th>
+        <th scope="col">User Name</th>
         <th scope="col">Total Target</th>
         <th scope="col">Start Time</th>
         <th scope="col">End Time</th>
         <th scope="col">Is Opened</th>
         <th scope="col">Is Verified</th>
-        <th scope="col">User Name</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -22,6 +23,7 @@
         <th scope="row">{{project.id}}</th>
         <td>{{project.title}}</td>
         <td>{{project.category.name}}</td>
+        <td>{{project.user.first_name}}</td>
         <td>{{project.total_target}}</td>
         <td>{{project.start_time}}</td>
         <td>{{project.end_time}}</td>
@@ -35,7 +37,9 @@
           <a class="btn btn-info" href={% url 'verify_project' project.id %}>Verify</a>
         </td>
         {% endif %}
-        <td>{{project.user.first_name}}</td>
+        <td>
+          <a class="btn btn-danger" href={% url 'delete_project' project.id %}>Delete</a>
+        </td>
       </tr>
     </tbody>
   </table>

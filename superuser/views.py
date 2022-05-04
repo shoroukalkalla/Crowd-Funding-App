@@ -57,3 +57,10 @@ class ListTag(ListView):
 def verify_tag(req, id):
     ProjectTag.objects.filter(id=id).update(is_verified=True)
     return redirect(reverse('list_tags'))
+
+
+class DeleteProject(DeleteView):
+    model = Project
+    pk_ur_kwargs = 'project.id'
+    template_name = 'superuser/delete_category.html'
+    success_url = reverse_lazy('list_project')

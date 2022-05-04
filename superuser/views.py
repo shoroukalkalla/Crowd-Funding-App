@@ -4,6 +4,8 @@ from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from projects.models import Category, Project, ProjectTag
 from re import template
 
+from users.models import User
+
 # Create your views here.
 
 
@@ -64,3 +66,14 @@ class DeleteProject(DeleteView):
     pk_ur_kwargs = 'project.id'
     template_name = 'superuser/delete_category.html'
     success_url = reverse_lazy('list_project')
+
+class ListUser(ListView):
+    model = User
+    context_object_name = 'users'
+    template_name = 'superuser/list_users.html'
+
+class DeleteUser(DeleteView):
+    model = User
+    pk_ur_kwargs = 'user.id'
+    template_name = 'superuser/delete_category.html'
+    success_url = reverse_lazy('list_users')        

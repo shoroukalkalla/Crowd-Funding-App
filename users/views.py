@@ -1,6 +1,6 @@
 from dataclasses import field
 from pyexpat import model
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 # Create your views here.
 from django.urls import reverse_lazy
@@ -35,6 +35,7 @@ from django.core.exceptions import PermissionDenied
 
 from django.contrib.auth.views import PasswordChangeView, PasswordResetView, PasswordResetConfirmView
 from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.messages import add_message, INFO
 
 
 # class SignUpView(CreateView):
@@ -71,7 +72,8 @@ def signup(request):
             #     mail_subject, message, to=[to_email]
             # )
             message.send()
-            return HttpResponse('Please confirm your email address to complete the registration.')
+            add_message(request, INFO, 'Please confirm your email address to complete the registration')
+            return redirect('/');
     else:
         form = CustomRegistration()
 

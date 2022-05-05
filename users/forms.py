@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
 from .models import User
 from django import forms
-from django.forms.widgets import DateInput
+from django.forms.widgets import DateInput, DateTimeInput
 
 
 class CustomRegistration(UserCreationForm):
@@ -54,5 +54,5 @@ class Profile(forms.ModelForm):
             'date_of_birth': ('D.O.B'),
         }
         widgets = {
-            'date_of_birth': DateInput(attrs={'type': 'date'})
+            'date_of_birth': DateTimeInput(attrs={'type': 'datetime-local'})
         }

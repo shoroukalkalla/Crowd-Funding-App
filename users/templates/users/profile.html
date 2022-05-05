@@ -57,11 +57,14 @@
         <div class="delete_account mt-4">
             <div class="mb-2">
                 <p class="mb-2">Do you wanna delete your account?</p>
-                <a href="delete/{{user.id}}" class="btn btn-danger">Delete Account</a>
+                <a data-bs-toggle="modal"
+                data-bs-target="#deleteModal" href="delete/{{user.id}}" class="btn btn-danger">Delete Account</a>
             </div>
         </div>
     </div>
 </div>
+
+{% include 'users/user_confirm_delete.html' %}
 
 {% endblock %} {% block script %}
 <script src="{% static 'users/js/previewImage.js' %}"></script>

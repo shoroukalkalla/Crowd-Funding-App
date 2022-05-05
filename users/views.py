@@ -159,7 +159,8 @@ class EditProfile(LoginRequiredMixin, UpdateView):
 
 class DeleteUser(DeleteView):
     model = User
-    pk_ur_kwarg = "student_id"
+    # pk_ur_kwarg = "student_id"
+    # template_name = "users/profile.html"
     success_url = reverse_lazy("login")
 
     print("----------------------------")

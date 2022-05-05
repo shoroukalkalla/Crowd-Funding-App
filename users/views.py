@@ -138,7 +138,7 @@ def activate(request, uidb64, token):
 def profile(request):
     return render(request, 'users/profile.html')
 
-class EditProfile(LoginRequiredMixin, UpdateView):
+class EditProfile(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     form_class = Profile
     template_name = "users/profile.html"
 
@@ -149,6 +149,9 @@ class EditProfile(LoginRequiredMixin, UpdateView):
         if self.kwargs['pk'] != str(self.request.user.id):
             raise PermissionDenied()
         return User.objects.filter(id=self.request.user.id)
+
+    def get_success_message(self, cleaned_data):
+        return "Account was updated"
 
 
 class DeleteUser(DeleteView):

@@ -34,7 +34,7 @@ from .models import User
 from django.core.exceptions import PermissionDenied
 
 from django.contrib.auth.views import PasswordChangeView, PasswordResetView, PasswordResetConfirmView
-
+from django.contrib.messages.views import SuccessMessageMixin
 
 
 # class SignUpView(CreateView):
@@ -159,14 +159,24 @@ class DeleteUser(DeleteView):
 
     print("----------------------------")
 
-class PasswordChange(PasswordChangeView):
+class PasswordChange(SuccessMessageMixin, PasswordChangeView):
     template_name = 'users/change_password.html'
     success_url = '/'
 
-class PasswordReset(PasswordResetView):
+    def get_success_message(self, cleaned_data):
+        return "Your password was changed"
+
+class PasswordReset(SuccessMessageMixin, PasswordResetView):
     template_name = 'users/reset_password.html'
     success_url = '/'
 
-class PasswordResetSet(PasswordResetConfirmView):
+    def get_success_message(self, cleaned_data):
+        return "Password reset sent"
+
+
+class PasswordResetSet(SuccessMessageMixin, PasswordResetConfirmView):
     template_name = 'users/set_password.html'
     success_url = '/'
+
+    def get_success_message(self, cleaned_data):
+        return "Your password has been set. You may go ahead and log in now."

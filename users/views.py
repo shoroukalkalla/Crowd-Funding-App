@@ -154,13 +154,14 @@ class EditProfile(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         return "Account was updated"
 
 
-class DeleteUser(DeleteView):
+class DeleteUser(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     model = User
     # pk_ur_kwarg = "student_id"
     # template_name = "users/profile.html"
     success_url = reverse_lazy("login")
 
-    print("----------------------------")
+    def get_success_message(self, cleaned_data):
+        return "Account was deleted"
 
 class PasswordChange(SuccessMessageMixin, PasswordChangeView):
     template_name = 'users/change_password.html'

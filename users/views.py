@@ -33,7 +33,7 @@ from .models import User
 
 from django.core.exceptions import PermissionDenied
 
-from django.contrib.auth.views import PasswordChangeView, PasswordResetView
+from django.contrib.auth.views import PasswordChangeView, PasswordResetView, PasswordResetConfirmView
 
 
 
@@ -165,4 +165,8 @@ class PasswordChange(PasswordChangeView):
 
 class PasswordReset(PasswordResetView):
     template_name = 'users/reset_password.html'
+    success_url = '/'
+
+class PasswordResetSet(PasswordResetConfirmView):
+    template_name = 'users/set_password.html'
     success_url = '/'

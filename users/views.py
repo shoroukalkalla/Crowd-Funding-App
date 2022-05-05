@@ -35,7 +35,7 @@ from django.core.exceptions import PermissionDenied
 
 from django.contrib.auth.views import PasswordChangeView, PasswordResetView, PasswordResetConfirmView
 from django.contrib.messages.views import SuccessMessageMixin
-from django.contrib.messages import add_message, INFO
+from django.contrib.messages import add_message, INFO, ERROR
 
 
 # class SignUpView(CreateView):
@@ -135,7 +135,9 @@ def activate(request, uidb64, token):
         add_message(request, INFO, 'Thank you for your email confirmation. Now you can login your account')
         return redirect('/login');
     else:
-        return HttpResponse('Activation link is invalid!')
+        add_message(request, ERROR, 'Activation link is invalid!')
+        return redirect('/login');
+        # return HttpResponse('Activation link is invalid!')
 
 
 def profile(request):

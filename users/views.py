@@ -33,6 +33,9 @@ from .models import User
 
 from django.core.exceptions import PermissionDenied
 
+from django.contrib.auth.views import PasswordChangeView
+
+
 
 # class SignUpView(CreateView):
 #     form_class = CustomRegistration
@@ -135,17 +138,8 @@ def activate(request, uidb64, token):
 def profile(request):
     return render(request, 'users/profile.html')
 
-
-# class EditProfile(CreateView):
-
-#     model = User
-#     template_name = "users/profile.html"
-#     fields = ("avatar", "first_name", "last_name", "email",
-#               "mobile_phone", "country", "date_of_birth")
-
 class EditProfile(LoginRequiredMixin, UpdateView):
     form_class = Profile
-    # success_url = reverse_lazy("login")
     template_name = "users/profile.html"
 
     queryset = User.objects.all()
@@ -164,3 +158,7 @@ class DeleteUser(DeleteView):
     success_url = reverse_lazy("login")
 
     print("----------------------------")
+
+class PasswordResetByUser(PasswordChangeView):
+    template_name = 'users/change_password.html'
+    success_url = '/'

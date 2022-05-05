@@ -137,7 +137,6 @@ def activate(request, uidb64, token):
     else:
         add_message(request, ERROR, 'Activation link is invalid!')
         return redirect('/login');
-        # return HttpResponse('Activation link is invalid!')
 
 
 def profile(request):

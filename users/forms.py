@@ -44,5 +44,5 @@ class Profile(forms.ModelForm):
             'date_of_birth': ('D.O.B'),
         }
         widgets = {
-            'date_of_birth': DateInput(attrs={'type': 'date'})
+            'date_of_birth': DateInput(attrs={'type': 'datetime-local'})
         }

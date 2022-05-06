@@ -8,11 +8,7 @@ from users.models import User
 # Create your views here.
 
 
-def get_projects(request):
-    return render(request, 'projects/projects.html')
-
-
-def get_project(request, project_id):
+def get_project_data(project_id):
     project = Project.objects.get(id=project_id)
     user = User.objects.get(id=project.user.id)
     images = ProjectImage.objects.filter(project_id=project.id)
@@ -22,8 +18,20 @@ def get_project(request, project_id):
     donators = Donation.objects.filter(
         project_id=project.id).values('donator').distinct().count()
    
+    data = {'project': project, 'user': user, 'images': images, "num_of_Projects": num_of_Projects, 'donation_amount': amount['donation_amount__sum'], 'donators':donators}
+    return data
+
+
+
+def get_projects(request):
+    return render(request, 'projects/projects.html')
+
+
+def get_project(request, project_id):
+    context = get_project_data(project_id)
+   
   
-    return render(request, 'projects/project.html', {'project': project, 'user': user, 'images': images, "num_of_Projects": num_of_Projects, 'donation_amount': amount['donation_amount__sum'], 'donators':donators})
+    return render(request, 'projects/project.html', context)
 
 
 def create_project(request):

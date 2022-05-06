@@ -46,8 +46,8 @@ class ProjectImage(models.Model):
 
 class Dontation(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    total_target = models.IntegerField()
+    donator = models.ForeignKey(User, on_delete=models.CASCADE)
+    donation_amount = models.IntegerField()
 
 
 class Comment(models.Model):

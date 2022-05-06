@@ -1,4 +1,7 @@
-{% extends 'layouts/base.html' %} {% block content %}
+{% extends 'layouts/base.html' %}
+{% load my_filters %}
+
+{% block content %}
 
 <div class="project_desc mt-5">
     <div class="row d-flex align-items-center">
@@ -69,8 +72,8 @@
                         </div>
                         <div class="col-4">
                             <p class="mb-0 text-center">
-                                <span class="fw-bold">100</span>
-                                <span class="d-block">Days Remain</span>
+                                <span class="fw-bold">{{project.end_time|timeuntil}}</span>
+                                <span class="d-block">Remaining</span>
                             </p>
                         </div>
                     </div>
@@ -97,7 +100,11 @@
                     </div>
                     <div class="goal mt-1">
                         <span class="fw-bold">Goal: </span>
-                        <span>{{project.total_target}}</span>
+                       
+                        <span>{{project.total_target|currency }}</span>
+
+                     
+
                     </div>
                 </div>
             </div>

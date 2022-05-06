@@ -1,6 +1,6 @@
 from dataclasses import field
 from pyexpat import model
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 # Create your views here.
 from django.urls import reverse_lazy
@@ -32,6 +32,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import User
 
 from django.core.exceptions import PermissionDenied
+
+from django.contrib.auth.views import PasswordChangeView, PasswordResetView, PasswordResetConfirmView
+from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.messages import add_message, INFO, ERROR
 
 
 # class SignUpView(CreateView):
@@ -68,7 +72,8 @@ def signup(request):
             #     mail_subject, message, to=[to_email]
             # )
             message.send()
-            return HttpResponse('Please confirm your email address to complete the registration.')
+            add_message(request, INFO, 'Please confirm your email address to complete the registration')
+            return redirect('/');
     else:
         form = CustomRegistration()
 
@@ -127,25 +132,18 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
-        return HttpResponse('Thank you for your email confirmation. Now you can login your account.  <a href="/login"> Login</a>')
+        add_message(request, INFO, 'Thank you for your email confirmation. Now you can login your account')
+        return redirect('/login');
     else:
-        return HttpResponse('Activation link is invalid!')
+        add_message(request, ERROR, 'Activation link is invalid!')
+        return redirect('/login');
 
 
 def profile(request):
     return render(request, 'users/profile.html')
 
-
-# class EditProfile(CreateView):
-
-#     model = User
-#     template_name = "users/profile.html"
-#     fields = ("avatar", "first_name", "last_name", "email",
-#               "mobile_phone", "country", "date_of_birth")
-
-class EditProfile(LoginRequiredMixin, UpdateView):
+class EditProfile(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     form_class = Profile
-    # success_url = reverse_lazy("login")
     template_name = "users/profile.html"
 
     queryset = User.objects.all()
@@ -156,10 +154,37 @@ class EditProfile(LoginRequiredMixin, UpdateView):
             raise PermissionDenied()
         return User.objects.filter(id=self.request.user.id)
 
+    def get_success_message(self, cleaned_data):
+        return "Account was updated"
 
-class DeleteUser(DeleteView):
+
+class DeleteUser(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     model = User
-    pk_ur_kwarg = "student_id"
+    # pk_ur_kwarg = "student_id"
+    # template_name = "users/profile.html"
     success_url = reverse_lazy("login")
 
-    print("----------------------------")
+    def get_success_message(self, cleaned_data):
+        return "Account was deleted"
+
+class PasswordChange(SuccessMessageMixin, PasswordChangeView):
+    template_name = 'users/change_password.html'
+    success_url = '/'
+
+    def get_success_message(self, cleaned_data):
+        return "Your password was changed"
+
+class PasswordReset(SuccessMessageMixin, PasswordResetView):
+    template_name = 'users/reset_password.html'
+    success_url = '/'
+
+    def get_success_message(self, cleaned_data):
+        return "Password reset sent"
+
+
+class PasswordResetSet(SuccessMessageMixin, PasswordResetConfirmView):
+    template_name = 'users/set_password.html'
+    success_url = '/'
+
+    def get_success_message(self, cleaned_data):
+        return "Your password has been set. You may go ahead and log in now."

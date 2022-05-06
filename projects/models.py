@@ -51,25 +51,25 @@ class Dontation(models.Model):
 
 
 class Comment(models.Model):
-    project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     comment = models.CharField(max_length=150)
 
 
 class ProjectReport(models.Model):
-    project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     report = models.CharField(max_length=150)
 
 
 class CommentReport(models.Model):
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     report = models.CharField(max_length=150)
 
 
 class ProjectRate(models.Model):
-    project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     value = models.PositiveIntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(5)])

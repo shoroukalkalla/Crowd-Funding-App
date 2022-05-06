@@ -86,14 +86,14 @@
                         class="progress_info mb-1 d-flex justify-content-between"
                     >
                         <span>Raised: </span>
-                        <span>50%</span>
+                        <span>{% widthratio donation_amount project.total_target 100 %}%</span>
                     </div>
                     <div class="progress">
                         <div
                             class="progress-bar bg-info"
                             role="progressbar"
-                            style="width: 50%"
-                            aria-valuenow="50"
+                            style="width: {% widthratio donation_amount project.total_target 100 %}%"
+                            aria-valuenow="{% widthratio donation_amount project.total_target 100 %}"
                             aria-valuemin="0"
                             aria-valuemax="100"
                         ></div>

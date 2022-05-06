@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 
-from .forms import ProjectForm, ProjectImageForm, TagForm
+from .forms import ProjectForm
 from .models import ProjectImage,Tag
 
 # Create your views here.
@@ -18,6 +18,8 @@ def get_project(request, project_id):
 def create_project(request):
     if request.method == 'POST':
         project_form = ProjectForm(request.POST)
+        #fetching Images
+        images = request.FILES.getlist('images')
         # Adding New Tags 
         retags = request.POST.getlist('tags[]')
         for tag in retags:
@@ -27,10 +29,15 @@ def create_project(request):
         if project_form.is_valid():
             project = project_form.save(commit=False)
             project.user = request.user
-            project.save() 
+            project.save()
+            #saving tages 
             for tag in retags:
                 project.tags.add(Tag.objects.get(name=tag))
             project.save()
+            #saving images
+            for img in images:
+                ProjectImage.objects.create(image=img, project=project)
+
             
        
           

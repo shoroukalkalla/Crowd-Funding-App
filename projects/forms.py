@@ -3,8 +3,6 @@ from tracemalloc import start
 from .models import Project, Category, Tag, ProjectImage
 from django import forms
 from django.forms.widgets import DateTimeInput, DateInput
-from .widgets import XDSoftDateTimePickerInput
-
 
 
 class ProjectForm(forms.ModelForm):

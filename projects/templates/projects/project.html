@@ -3,17 +3,35 @@
 <div class="project_desc mt-5">
     <div class="row d-flex align-items-center">
         <div class="col-6">
-            <div class="img_box">
-                <img
-                    class="mw-100"
-                    src="https://images.unsplash.com/photo-1541976844346-f18aeac57b06?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=435&q=80"
-                    alt=""
-                />
-            </div>
+           
+                <div id="carouselExampleIndicators" class="carousel slide img_box" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        {% for img in images %}
+                      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{forloop.counter0}}" {% if forloop.counter0 == 0 %} class="active" aria-current="true" {% endif %} aria-label="Slide{{forloop.counter0}}"></button>
+                      {% endfor %}
+            
+                    </div>
+                    <div class="carousel-inner img_box">
+                        {% for img in images %}
+                      <div class="carousel-item {% if forloop.counter0 == 0 %} active {% endif %} data-interval="100"">
+                        <img src="{{img.image.url}}" class="d-block mw-100" alt="...">
+                      </div>
+                      {% endfor %}
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                      <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                      <span class="visually-hidden">Next</span>
+                    </button>
+                  </div>
+           
         </div>
         <div class="col-6">
             <h4 class="text-muted fs-6 fw-normal">Category</h4>
-            <h3 class="title p-1">Let's Move Mountains For This.</h3>
+            <h3 class="title p-1">{{project.category}}.</h3>
             <div class="rates my-3">
                 <em class="fa-solid fa-star text-warning"></em>
                 <em class="fa-solid fa-star text-warning"></em>
@@ -24,14 +42,14 @@
             <div class="user d-flex align-items-center">
                 <div class="user_avatar">
                     <img
-                        src="https://images.unsplash.com/photo-1574108233269-86d1199d28de?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"
+                        src="{{user.avatar.url}}"
                         class="avatar"
-                        alt="Jean"
+                        alt="{{user.name}}"
                     />
                 </div>
                 <div class="user_info ms-3">
-                    <span class="fs-4">Jean</span>
-                    <span class="d-block">5 Campaigns</span>
+                    <span class="fs-4">{{user}}</span>
+                    <span class="d-block">{{num_of_Projects}} Campaigns</span>
                 </div>
             </div>
             <div class="project_info mt-5">
@@ -79,7 +97,7 @@
                     </div>
                     <div class="goal mt-1">
                         <span class="fw-bold">Goal: </span>
-                        <span>20,000</span>
+                        <span>{{project.total_target}}</span>
                     </div>
                 </div>
             </div>
@@ -128,18 +146,7 @@
     <div class="desc my-4">
         <h3>Description</h3>
         <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores
-            esse sit ea debitis, nesciunt corrupti exercitationem itaque.
-            Blanditiis maiores tempore iusto necessitatibus, beatae libero
-            numquam cum corrupti voluptatem dolores voluptatibus perspiciatis.
-            Incidunt id, fuga corporis necessitatibus ipsa distinctio similique
-            ea officiis sunt porro ratione atque deleniti numquam voluptas
-            minima consequatur repudiandae laudantium? Sequi ipsam ducimus odio
-            autem cum vero quae rerum, excepturi quod atque possimus, corporis,
-            a eum adipisci iure qui quaerat earum aliquid quas ipsa odit omnis
-            veritatis impedit ad? Dolores nostrum odio natus quod, beatae
-            consequatur tenetur soluta, maiores ex nobis saepe voluptatibus
-            atque consectetur, non assumenda praesentium.
+           {{project.details}}
         </p>
     </div>
     <div class="comments my-4">

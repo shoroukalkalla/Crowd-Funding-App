@@ -40,12 +40,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+
     'users',
     'projects',
     'authentication',
 
     "crispy_forms",
     "crispy_bootstrap5",
+    'tempus_dominus'
 ]
 
 AUTH_USER_MODEL = 'users.User'

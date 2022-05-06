@@ -4,36 +4,49 @@ from users.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 
+
 # Create your models here.
+
+class Category(models.Model):
+    name = models.CharField(max_length=150, primary_key=True)
+
+    def __str__(self):
+        return self.name
+
+
+class Tag(models.Model):
+    name = models.CharField(max_length=150, primary_key=True)
+    is_verified = models.fieldName = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name
 
 
 class Project(models.Model):
     title = models.CharField(max_length=150)
     details = models.CharField(max_length=150)
-    category = models.CharField(max_length=150)
     total_target = models.IntegerField()
     start_time = models.DateTimeField(auto_now=False, auto_now_add=False)
     end_time = models.DateTimeField(auto_now=False, auto_now_add=False)
-    is_opened = models.BooleanField()
-    is_verified = models.fieldName = models.BooleanField(default=False)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    is_opened = models.BooleanField(default=True)
+    is_verified = models.BooleanField(default=False)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, blank=True, null=True)
+    tags = models.ManyToManyField(Tag)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+
+    def __str__(self):
+        return self.title
 
 
 class ProjectImage(models.Model):
-    project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to="projects",
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to="projects/images",
                               height_field=None, width_field=None, max_length=100)
 
 
-class ProjectTag(models.Model):
-    project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
-    tag_name = models.CharField(max_length=150)
-    is_verified = models.fieldName = models.BooleanField(default=False)
-
-
 class Dontation(models.Model):
-    project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     total_target = models.IntegerField()
 
 

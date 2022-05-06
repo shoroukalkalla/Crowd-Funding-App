@@ -4,7 +4,6 @@ from users.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 
-
 # Create your models here.
 
 class Category(models.Model):
@@ -30,7 +29,8 @@ class Project(models.Model):
     end_time = models.DateTimeField(auto_now=False, auto_now_add=False)
     is_opened = models.BooleanField(default=True)
     is_verified = models.BooleanField(default=False)
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, blank=True, null=True)
+    category = models.ForeignKey(
+        Category, on_delete=models.SET_NULL, blank=True, null=True)
     tags = models.ManyToManyField(Tag)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
@@ -44,7 +44,7 @@ class ProjectImage(models.Model):
                               height_field=None, width_field=None, max_length=100)
 
 
-class Dontation(models.Model):
+class Donation(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     donator = models.ForeignKey(User, on_delete=models.CASCADE)
     donation_amount = models.IntegerField()

@@ -1,8 +1,8 @@
 from django.shortcuts import render
-
+from django.db.models import Count, Sum
 
 from .forms import ProjectForm
-from .models import ProjectImage, Tag, Project
+from .models import ProjectImage, Tag, Project, Donation
 from users.models import User
 
 # Create your views here.
@@ -17,12 +17,13 @@ def get_project(request, project_id):
     user = User.objects.get(id=project.user.id)
     images = ProjectImage.objects.filter(project_id=project.id)
     num_of_Projects = user.project_set.count()
-
-    print(project)
-    print(user)
-    for img in images:
-        print(img)
-    return render(request, 'projects/project.html', {'project': project, 'user': user, 'images': images, "num_of_Projects": num_of_Projects})
+    amount = Donation.objects.filter(
+        project_id=project.id).aggregate(Sum('donation_amount'))
+    donators = Donation.objects.filter(
+        project_id=project.id).values('donator').distinct().count()
+   
+  
+    return render(request, 'projects/project.html', {'project': project, 'user': user, 'images': images, "num_of_Projects": num_of_Projects, 'donation_amount': amount['donation_amount__sum'], 'donators':donators})
 
 
 def create_project(request):

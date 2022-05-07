@@ -181,10 +181,12 @@
                 </div>
                 <div class="user_info ms-3 w-100 d-flex justify-content-between">
                     <p>{{comment.comment}}</p>
-                    <div>
-                        <a class="text-warning border-0 "  href="{% url   'comment'  comment.id %}"><i class="fa-solid fa-pen-to-square"></i></a>
-                        <a class="text-danger border-0 mx-2" href="{% url   'delete_comment'  comment.id %}"><i class="fa-solid fa-trash-can"></i></a>
-                    </div>
+                    {% if user.id == comment.user_id %}
+                        <div>
+                            <a class="text-warning border-0 "  href="{% url   'comment'  comment.id %}"><i class="fa-solid fa-pen-to-square"></i></a>
+                            <a class="text-danger border-0 mx-2" href="{% url   'delete_comment'  comment.id %}"><i class="fa-solid fa-trash-can"></i></a>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

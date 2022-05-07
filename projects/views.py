@@ -85,6 +85,7 @@ class CreateComment(CreateView):
     model = Comment
     template_name = 'projects/create_comment.html'
     fields = ["comment","project"]
+    
     success_url = reverse_lazy('projects')
 
     def form_valid(self, form):
@@ -96,9 +97,6 @@ class EditComment(UpdateView):
     template_name = 'projects/create_comment.html'
     fields = ["comment","project"]
     pk_ur_kwargs = 'comment.id'
-    print("############")
-    print(pk_ur_kwargs)
-    print("############")
     success_url = reverse_lazy('projects')
 
     def form_valid(self,form):

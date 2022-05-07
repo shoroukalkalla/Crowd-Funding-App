@@ -25,8 +25,9 @@ def get_project_data(project_id):
         project_id=project.id).aggregate(Sum('donation_amount'))
     donators = Donation.objects.filter(
         project_id=project.id).values('donator').distinct().count()
+    comments = Comment.objects.filter(project_id=project_id)
     data = {'project': project, 'user': user, 'images': images, "num_of_Projects": num_of_Projects,
-            'donation_amount': amount['donation_amount__sum'], 'donators': donators}
+            'donation_amount': amount['donation_amount__sum'], 'donators': donators, 'comments': comments}
     return data
 
 
@@ -37,10 +38,6 @@ def get_projects(request):
     for project in projects:
         data = get_project_data(project['id'])
         project_array.append(data)
-
-    for p in project_array:
-        print(p)
-        print("\n================================")
 
     return render(request, 'projects/projects.html', {'projects': project_array})
 

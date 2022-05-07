@@ -9,7 +9,11 @@
         <div class="img_box">
             <img
                 class="mw-100"
+                {% if project.images %}
                 src="{{project.images.0.image.url}}"
+                {% else %}
+                src="{{MEDIA_URL}}/projects/images/default.jpg"
+                {% endif %}
                 alt=""
             />
         </div>
@@ -18,7 +22,7 @@
             <h3 class="title p-1">{{project.project.title}}</h3>
             <div class="project_details">
                 <p class="raised_info">
-                    <span class="fw-bold">{{project.project.amount|currency}} Raised</span> from
+                    <span class="fw-bold">{{project.donation_amount|currency}} Raised</span> from
                     <span class="fw-bold">{{project.project.total_target |currency}} Goal</span>
                 </p>
                 <div class="progress">

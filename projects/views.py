@@ -7,6 +7,10 @@ from .forms import ProjectForm
 from .models import ProjectImage, Tag, Project, Donation
 from users.models import User
 
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.core.files.storage import FileSystemStorage
+
 # Create your views here.
 
 
@@ -19,9 +23,9 @@ def get_project_data(project_id):
         project_id=project.id).aggregate(Sum('donation_amount'))
     donators = Donation.objects.filter(
         project_id=project.id).values('donator').distinct().count()
-    data = {'project': project, 'user': user, 'images': images, "num_of_Projects": num_of_Projects, 'donation_amount': amount['donation_amount__sum'], 'donators':donators}
+    data = {'project': project, 'user': user, 'images': images, "num_of_Projects": num_of_Projects,
+            'donation_amount': amount['donation_amount__sum'], 'donators': donators}
     return data
-
 
 
 def get_projects(request):
@@ -32,12 +36,11 @@ def get_projects(request):
         data = get_project_data(project['id'])
         project_array.append(data)
 
-
-    return render(request, 'projects/projects.html', {'projects':project_array})
+    return render(request, 'projects/projects.html', {'projects': project_array})
 
 
 def get_project(request, project_id):
-    context = get_project_data(project_id)     
+    context = get_project_data(project_id)
     return render(request, 'projects/project.html', context)
 
 
@@ -45,7 +48,8 @@ def create_project(request):
     if request.method == 'POST':
         project_form = ProjectForm(request.POST)
         # fetching Images
-        images = request.FILES.getlist('images')
+        # images = request.FILES.getlist('images')
+        images = request.POST['images'].split()
         # Adding New Tags
         retags = request.POST.getlist('tags[]')
         for tag in retags:
@@ -62,7 +66,8 @@ def create_project(request):
             project.save()
             # saving images
             for img in images:
-                ProjectImage.objects.create(image=img, project=project)
+                ProjectImage.objects.create(
+                    image=f"projects/images/{img}", project=project)
 
         return redirect('project', project_id=project.id)
 
@@ -71,3 +76,26 @@ def create_project(request):
     context = {'project_form': project_form, 'tags': verifiedTags}
 
     return render(request, "projects/project_create.html", context)
+
+
+@csrf_exempt
+def upload_project_images(request):
+
+    try:
+        for file in request.FILES.getlist('images'):
+            my_file = file
+            fs = FileSystemStorage("media/projects/images/")
+            fs.save(my_file.name, my_file)
+
+            print(f"projects/{my_file.name}")
+
+        return JsonResponse({
+            "message": "The images have been updated Successfully",
+            "success": True
+        })
+    except BaseException as e:
+        return JsonResponse({
+            "message": "There is an error",
+            "success": False
+        })
+        raise e

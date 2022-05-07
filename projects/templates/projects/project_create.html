@@ -1,198 +1,229 @@
-{% extends 'layouts/base.html' %} {% load crispy_forms_tags %} 
-{% block content%}
+{% extends 'layouts/base.html' %}
+<!-- prettier-ignore -->
+{% load static %}
+{% load crispy_forms_tags %} 
+
+{% block styles %}
+<style>
+    .images_container img {
+        width: 200px;
+        height: 200px;
+        border-radius: 20px;
+    }
+</style>
+{% endblock %} {% block content%}
 
 <div class="card-body">
-  <div class="row">
-    <div class="col-md-6 offset-3">
-      <form
-        class="projects"
-        action=""
-        method="POST"
-        enctype="multipart/form-data"
-      >
-        {% csrf_token %}
+    <div class="row">
+        <div class="col-md-6 offset-3">
+            <form
+                class="projects"
+                action=""
+                method="POST"
+                enctype="multipart/form-data"
+            >
+                {% csrf_token %}
 
-        <div class="row">
-          <div class="form-group">{{project_form.title | as_crispy_field}}</div>
-        </div>
-        <div class="row">
-          <div class="form-group">
-            {{project_form.details| as_crispy_field}}
-          </div>
-        </div>
-        <div class="row">
-          <div class="form-group">
-            {{project_form.category| as_crispy_field}}
-          </div>
-        </div>
-        <div class="row">
-          <div class="form-group">
-            {{project_form.total_target| as_crispy_field}}
-          </div>
-        </div>
-        <div class="row">
-          <div class="form-group">
-            {{project_form.start_time| as_crispy_field}}
-          </div>
-        </div>
-        <div class="row">
-          <div class="form-group">
-            {{project_form.end_time| as_crispy_field}}
-          </div>
-        </div>
-        <div class="row justify-content-center">
-          <label>Tags </label>
-          <select class="tags">
-            <option>Choose...</option>
-            {% for tag in tags %}
-            <option value="{{tag.name}}">{{ tag.name }}</option>
-            {% endfor %}
-          </select>
-          <div class="selected_tags my-3 d-flex flex-wrap"></div>
-          <input type="text" id="add_tag" />
-          <div id="errDiv" class="text-danger d-none">Tag already exists</div>
-        </div>
-        <div class="row">
-          <div class="form-group">
-            <label for="images"> Project Images </label>
-           <input type="file" name="images" multiple />
-          </div>
-        </div>
+                <div class="row">
+                    <div class="form-group">
+                        {{project_form.title | as_crispy_field}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        {{project_form.details| as_crispy_field}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        {{project_form.category| as_crispy_field}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        {{project_form.total_target| as_crispy_field}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        {{project_form.start_time| as_crispy_field}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        {{project_form.end_time| as_crispy_field}}
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <label>Tags </label>
+                    <select class="tags">
+                        <option>Choose...</option>
+                        {% for tag in tags %}
+                        <option value="{{tag.name}}">{{ tag.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="selected_tags my-3 d-flex flex-wrap"></div>
+                    <input type="text" id="add_tag" />
+                    <div id="errDiv" class="text-danger d-none">
+                        Tag already exists
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <!-- <label for="images"> Project Images </label>
+                        <input type="file" name="images" multiple /> -->
+                        <input
+                            type="file"
+                            id="project_images"
+                            class="project_images d-none"
+                            accept="image/*"
+                            multiple
+                        />
+                        <label
+                            for="project_images"
+                            class="btn btn-secondary rounded-pill mb-3"
+                        >
+                            Choose a Photo
+                        </label>
+                    </div>
+                </div>
 
-        <div class="row mt-4 justify-content-center">
-          <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-block btn-sm">
-              Create New Project
-            </button>
-          </div>
+                <div class="images_container d-flex flex-wrap"></div>
+
+                <div class="row mt-4 justify-content-center">
+                    <div class="form-group">
+                        <button
+                            type="submit"
+                            class="btn btn-primary btn-block btn-sm"
+                        >
+                            Create New Project
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
-      </form>
     </div>
-  </div>
 </div>
 
-{% endblock %} 
-
-{% block script%}
-
+{% endblock %} {% block script%}
+<script src="{% static 'projects/js/projectImages.js' %}"></script>
 <script>
-  //New Tags
-  window.addEventListener("keydown", function (event) {
-    if (event.keyCode == 13) {
-      event.preventDefault();
-      return false;
-    }
-  });
-
-  document.querySelector("#add_tag").addEventListener("keyup", (e) => {
-    e.preventDefault();
-
-    let errDiv = document.querySelector("#errDiv");
-    let addedTags = [];
-    if (e.key == "Enter") {
-      let options = document.querySelectorAll(".tags option");
-      for (let option of options) {
-        if (e.target.value == option.value) {
-          errDiv.classList.remove("d-none");
-          e.target.value = "";
-          return;
-        } else if (e.target.value == "") {
-          return;
+    //New Tags
+    window.addEventListener("keydown", function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            return false;
         }
-      }
-
-      errDiv.classList.add("d-none");
-      let newOption = document.createElement("option");
-      newOption.value = e.target.value;
-      newOption.text = e.target.value;
-      newOption.classList.add("d-none");
-      document.querySelector(".tags").append(newOption);
-      tags(e, ".selected_tags", true);
-      e.target.value = "";
-    }
-  });
-
-  // Gyms Tags
-  document
-    .querySelector(".tags")
-    .addEventListener("input", (e) => tags(e, ".selected_tags"));
-
-  function tags(e, tagsContainer, isInput = false) {
-    let option;
-
-    if (isInput) {
-      option = e.target;
-    } else {
-      option = e.target.options[e.target.selectedIndex];
-    }
-    let parentSpan = document.createElement("span");
-    let spanTag = document.createElement("span");
-    let textTag = document.createTextNode(option.value + " ");
-    let deleteTag = document.createElement("span");
-    let deleteText = document.createTextNode(" X");
-    deleteTag.classList.add();
-    deleteTag.addEventListener("click", function () {
-      let val = this.previousElementSibling.textContent;
-      this.parentElement.remove();
-      let op = document.querySelector(`option[value=${val}]`);
-      op.classList.remove("d-none");
     });
-    parentSpan.setAttribute("data-tag", option.value);
-    parentSpan.classList.add(
-      "tag",
-      "bg-light",
-      "text-dark",
-      "px-3",
-      "py-2",
-      "rounded-pill",
-      "mt-2",
-      "mr-2"
-    );
-    deleteTag.classList.add("text-danger");
-    deleteTag.setAttribute("role", "button");
-    spanTag.append(textTag);
-    deleteTag.append(deleteText);
 
-    parentSpan.append(spanTag);
-    parentSpan.append(deleteTag);
-    document.querySelector(tagsContainer).append(parentSpan);
+    document.querySelector("#add_tag").addEventListener("keyup", (e) => {
+        e.preventDefault();
 
-    if (!isInput) {
-      option.classList.add("d-none");
-      e.target.options[0].selected = true;
-    }
-  }
+        let errDiv = document.querySelector("#errDiv");
+        let addedTags = [];
+        if (e.key == "Enter") {
+            let options = document.querySelectorAll(".tags option");
+            for (let option of options) {
+                if (e.target.value == option.value) {
+                    errDiv.classList.remove("d-none");
+                    e.target.value = "";
+                    return;
+                } else if (e.target.value == "") {
+                    return;
+                }
+            }
 
-  /* ================================================== */
-  // Submit the Data with Data of tags
-  document.querySelector(".projects").addEventListener("submit", (e) => {
-    e.preventDefault();
-    generateInputSaveTagsID(e, ".selected_tags", "tags");
-    e.currentTarget.submit();
-  });
-
-  // Get Selected Gyms
-  function getSelectedGyms(selected_tags) {
-    let selectedGyms = [];
-    let tags = document.querySelectorAll(selected_tags);
-    for (let tag of tags) {
-      selectedGyms.push(tag.dataset.tag);
-    }
-    return selectedGyms;
-  }
-
-  // Generate Input Hidden for Tags Id
-  function generateInputSaveTagsID(event, selected_tags, inputName) {
-    let selectedGyms = getSelectedGyms(`${selected_tags} .tag`);
-    selectedGyms.forEach((gym) => {
-      let inputGymId = document.createElement("input");
-      inputGymId.setAttribute("type", "hidden");
-      inputGymId.setAttribute("name", `${inputName}[]`);
-      inputGymId.setAttribute("value", gym);
-      event.target.append(inputGymId);
+            errDiv.classList.add("d-none");
+            let newOption = document.createElement("option");
+            newOption.value = e.target.value;
+            newOption.text = e.target.value;
+            newOption.classList.add("d-none");
+            document.querySelector(".tags").append(newOption);
+            tags(e, ".selected_tags", true);
+            e.target.value = "";
+        }
     });
-    console.log(event.target);
-  }
+
+    // Gyms Tags
+    document
+        .querySelector(".tags")
+        .addEventListener("input", (e) => tags(e, ".selected_tags"));
+
+    function tags(e, tagsContainer, isInput = false) {
+        let option;
+
+        if (isInput) {
+            option = e.target;
+        } else {
+            option = e.target.options[e.target.selectedIndex];
+        }
+        let parentSpan = document.createElement("span");
+        let spanTag = document.createElement("span");
+        let textTag = document.createTextNode(option.value + " ");
+        let deleteTag = document.createElement("span");
+        let deleteText = document.createTextNode(" X");
+        deleteTag.classList.add();
+        deleteTag.addEventListener("click", function () {
+            let val = this.previousElementSibling.textContent;
+            this.parentElement.remove();
+            let op = document.querySelector(`option[value=${val}]`);
+            op.classList.remove("d-none");
+        });
+        parentSpan.setAttribute("data-tag", option.value);
+        parentSpan.classList.add(
+            "tag",
+            "bg-light",
+            "text-dark",
+            "px-3",
+            "py-2",
+            "rounded-pill",
+            "mt-2",
+            "mr-2"
+        );
+        deleteTag.classList.add("text-danger");
+        deleteTag.setAttribute("role", "button");
+        spanTag.append(textTag);
+        deleteTag.append(deleteText);
+
+        parentSpan.append(spanTag);
+        parentSpan.append(deleteTag);
+        document.querySelector(tagsContainer).append(parentSpan);
+
+        if (!isInput) {
+            option.classList.add("d-none");
+            e.target.options[0].selected = true;
+        }
+    }
+
+    /* ================================================== */
+    // Submit the Data with Data of tags
+    document.querySelector(".projects").addEventListener("submit", (e) => {
+        e.preventDefault();
+        generateInputSaveTagsID(e, ".selected_tags", "tags");
+        e.currentTarget.submit();
+    });
+
+    // Get Selected Gyms
+    function getSelectedGyms(selected_tags) {
+        let selectedGyms = [];
+        let tags = document.querySelectorAll(selected_tags);
+        for (let tag of tags) {
+            selectedGyms.push(tag.dataset.tag);
+        }
+        return selectedGyms;
+    }
+
+    // Generate Input Hidden for Tags Id
+    function generateInputSaveTagsID(event, selected_tags, inputName) {
+        let selectedGyms = getSelectedGyms(`${selected_tags} .tag`);
+        selectedGyms.forEach((gym) => {
+            let inputGymId = document.createElement("input");
+            inputGymId.setAttribute("type", "hidden");
+            inputGymId.setAttribute("name", `${inputName}[]`);
+            inputGymId.setAttribute("value", gym);
+            event.target.append(inputGymId);
+        });
+        console.log(event.target);
+    }
 </script>
-
 {% endblock %}

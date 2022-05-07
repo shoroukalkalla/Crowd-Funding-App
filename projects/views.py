@@ -3,6 +3,7 @@ from django.db.models import Sum
 from django.shortcuts import redirect
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django.shortcuts import render ,redirect,get_object_or_404
 
 from .forms import ProjectForm
 from .models import Comment, ProjectImage, Tag, Project, Donation
@@ -97,23 +98,38 @@ class CreateComment(CreateView):
     fields = "__all__"
     success_url = reverse_lazy('project')
 
-class EditComment(UpdateView):
-    model = Comment
-    template_name = 'projects/create_comment.html'
-    queryset = Comment.objects.all()
-    fields = ["comment", "user_id" ,"project_id"]
-    # success_url = reverse_lazy('projects')
-    success_url = "/"
+# class EditComment(UpdateView):
+#     model = Comment
+#     template_name = 'projects/create_comment.html'
+#     queryset = Comment.objects.all()
+#     fields = ["user" , "project" , "comment"]
+#     # success_url = reverse_lazy('projects')
+#     success_url = "/"
 
-    def get_queryset(self):
-        print("##########Query##########################")
-        return super().get_queryset()
-    print("#####################")
-    def form_valid(self, form ):
-        print("#####################")
-        print(self.request)
-        print("#####################")
-        return super().form_valid(form)
+#     def get_form_kwargs(self):
+#         kwargs = super(EditComment,self).get_form_kwargs()
+#         print(kwargs)
+#         print("###########################################")
+#         kwargs['user'] = self.request.user
+#         print("###########################################")
+#         return kwargs
+
+#     def form_valid(self,form):
+#         self.object = form.save(commit=False)
+#         self.object.user = self.request.user
+#         self.object.save
+#         return super().form_valid(form)
+
+def Edit_comment(request,comment_id):
+    comment= get_object_or_404(Comment,id=comment_id)
+    if request.method =="POST":
+        form=Comment(request.POST , request.FILES , instance=comment)
+        if form.is_valid():
+            comment = form.save()
+            return redirect("porjects" , comment_id=comment.id)
+    else:
+        form = Comment(instance=comment)
+    return render(request, "projects/create_comment.html",context={"form": form})
 
 
 class DeleteComment(DeleteView):
@@ -121,3 +137,5 @@ class DeleteComment(DeleteView):
     pk_ur_kwargs = 'comment.id'
     template_name = 'projects/delete_comment.html'
     success_url = reverse_lazy('projects')    
+
+

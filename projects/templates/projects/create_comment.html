@@ -4,8 +4,6 @@
 {% block content %}
 <form method="post">
     {% csrf_token %} {{form.comment|as_crispy_field}}  
-    <input type="hidden" name="user_id"value="1">  
-    <input type="hidden" name="project_id"value="1">  
     <div class="text-end mt-2">
         <input type="submit" value="save" class="btn btn-secondary rounded-3"/>
     </div>

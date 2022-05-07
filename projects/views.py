@@ -34,6 +34,9 @@ def get_projects(request):
         data = get_project_data(project['id'])
         project_array.append(data)
 
+    for p in project_array:
+        print(p)
+        print("\n================================")
 
     return render(request, 'projects/projects.html', {'projects':project_array})
 
@@ -77,6 +80,17 @@ def create_project(request):
 
 # -------------------------------------------------------------#
 
+# def add_comment(request):
+#     if request.method =="POST":
+#         form=Comment(request.POST , request.FILES)
+#         if form.is_valid():
+#             comment = form.save()
+#             return redirect("project" , project_id=comment.project_id)
+#     else:
+#         form = Comment()
+#     return render(request , "pro/form.html" , context={"form": form})    
+
+
 class CreateComment(CreateView):
     model = Comment
     template_name = 'projects/create_comment.html'
@@ -87,12 +101,23 @@ class EditComment(UpdateView):
     model = Comment
     template_name = 'projects/create_comment.html'
     queryset = Comment.objects.all()
-    fields = "__all__"
-    success_url = reverse_lazy('project')
+    fields = ["comment", "user_id" ,"project_id"]
+    # success_url = reverse_lazy('projects')
+    success_url = "/"
+
+    def get_queryset(self):
+        print("##########Query##########################")
+        return super().get_queryset()
+    print("#####################")
+    def form_valid(self, form ):
+        print("#####################")
+        print(self.request)
+        print("#####################")
+        return super().form_valid(form)
 
 
 class DeleteComment(DeleteView):
     model = Comment
-    pk_ur_kwargs = 'category.id'
+    pk_ur_kwargs = 'comment.id'
     template_name = 'projects/delete_comment.html'
-    success_url = reverse_lazy('project')    
+    success_url = reverse_lazy('projects')    

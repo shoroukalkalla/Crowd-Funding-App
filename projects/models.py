@@ -41,7 +41,7 @@ class Project(models.Model):
 class ProjectImage(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     image = models.ImageField(upload_to="projects/images",
-                              height_field=None, width_field=None, max_length=100)
+                                height_field=None, width_field=None, max_length=100)
 
 
 class Donation(models.Model):
@@ -54,6 +54,8 @@ class Comment(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     comment = models.CharField(max_length=150)
+    def __str__(self):
+        return self.comment
 
 
 class ProjectReport(models.Model):

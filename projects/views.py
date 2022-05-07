@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from django.db.models import Sum
 from django.shortcuts import redirect
-
+from django.views.generic import CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
 
 from .forms import ProjectForm
-from .models import ProjectImage, Tag, Project, Donation
+from .models import Comment, ProjectImage, Tag, Project, Donation
 from users.models import User
 
 # Create your views here.
@@ -19,7 +20,8 @@ def get_project_data(project_id):
         project_id=project.id).aggregate(Sum('donation_amount'))
     donators = Donation.objects.filter(
         project_id=project.id).values('donator').distinct().count()
-    data = {'project': project, 'user': user, 'images': images, "num_of_Projects": num_of_Projects, 'donation_amount': amount['donation_amount__sum'], 'donators':donators}
+    comments=Comment.objects.filter(project_id=project_id)    
+    data = {'project': project, 'user': user, 'images': images, "num_of_Projects": num_of_Projects, 'donation_amount': amount['donation_amount__sum'], 'donators':donators ,'comments':comments}
     return data
 
 
@@ -74,3 +76,26 @@ def create_project(request):
     context = {'project_form': project_form, 'tags': verifiedTags}
 
     return render(request, "projects/project_create.html", context)
+
+
+# -------------------------------------------------------------#
+
+class CreateComment(CreateView):
+    model = Comment
+    template_name = 'projects/create_comment.html'
+    fields = "__all__"
+    success_url = reverse_lazy('project')
+
+class EditComment(UpdateView):
+    model = Comment
+    template_name = 'projects/create_comment.html'
+    queryset = Comment.objects.all()
+    fields = "__all__"
+    success_url = reverse_lazy('project')
+
+
+class DeleteComment(DeleteView):
+    model = Comment
+    pk_ur_kwargs = 'category.id'
+    template_name = 'projects/delete_comment.html'
+    success_url = reverse_lazy('project')    

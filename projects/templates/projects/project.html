@@ -1,36 +1,37 @@
 {% extends 'layouts/base.html' %}
 {% load my_filters %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 
 <div class="project_desc mt-5">
     <div class="row d-flex align-items-center">
         <div class="col-6">
-           
-                <div id="carouselExampleIndicators" class="carousel slide img_box" data-bs-ride="carousel">
-                    <div class="carousel-indicators">
-                        {% for img in images %}
-                      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{forloop.counter0}}" {% if forloop.counter0 == 0 %} class="active" aria-current="true" {% endif %} aria-label="Slide{{forloop.counter0}}"></button>
-                      {% endfor %}
             
+                    <div id="carouselExampleIndicators" class="carousel slide img_box" data-bs-ride="carousel">
+                        <div class="carousel-indicators">
+                            {% for img in images %}
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{forloop.counter0}}" {% if forloop.counter0 == 0 %} class="active" aria-current="true" {% endif %} aria-label="Slide{{forloop.counter0}}"></button>
+                        {% endfor %}
+                
+                        </div>
+                        <div class="carousel-inner img_box">
+                            {% for img in images %}
+                        <div class="carousel-item {% if forloop.counter0 == 0 %} active {% endif %} data-interval="100"">
+                            <img src="{{img.image.url}}" class="d-block mw-100" alt="...">
+                        </div>
+                        {% endfor %}
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                        </button>
                     </div>
-                    <div class="carousel-inner img_box">
-                        {% for img in images %}
-                      <div class="carousel-item {% if forloop.counter0 == 0 %} active {% endif %} data-interval="100"">
-                        <img src="{{img.image.url}}" class="d-block mw-100" alt="...">
-                      </div>
-                      {% endfor %}
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                      <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                      <span class="visually-hidden">Next</span>
-                    </button>
-                  </div>
-           
+            
         </div>
         <div class="col-6">
             <h4 class="text-muted fs-6 fw-normal">{{project.category}}</h4>
@@ -100,10 +101,10 @@
                     </div>
                     <div class="goal mt-1">
                         <span class="fw-bold">Goal: </span>
-                       
+                        
                         <span>{{project.total_target|currency }}</span>
 
-                     
+                        
 
                     </div>
                 </div>
@@ -153,76 +154,41 @@
     <div class="desc my-4">
         <h3>Description</h3>
         <p>
-           {{project.details}}
+            {{project.details}}
         </p>
     </div>
     <div class="comments my-4">
         <h3>Comments</h3>
         <div class="user d-flex mt-3">
-            <div class="user_avatar">
-                <img
-                    src="https://images.unsplash.com/photo-1574108233269-86d1199d28de?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"
-                    class="avatar"
-                    alt="Jean"
-                />
-            </div>
-            <div class="user_info ms-3 w-100">
-                <form>
-                    <input type="text" class="form-control" />
-                    <div class="text-end mt-2">
-                        <input
-                            type="submit"
-                            value="Add Comment"
-                            class="btn btn-secondary rounded-3"
-                        />
-                    </div>
-                </form>
-            </div>
+                <a  href="{% url   'comment' %}"class="btn btn-secondary rounded-3">
+                    Add Comment
+                </a>
         </div>
-
         <hr class="opacity-25" />
 
-        <div class="users_comments mt-4">
+        <!-- ------Comments -------- -->
+        {% for comment in comments %}
+        <div class="users_comments mt-4 bg-light rounded shadow-sm py-2 px-3">
             <div class="user d-flex mt-3">
                 <div class="user_avatar">
-                    <img
-                        src="https://cdn.pixabay.com/photo/2017/04/01/21/06/portrait-2194457_960_720.jpg"
-                        class="avatar"
-                        alt="Jean"
-                    />
+                    <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="userName">
+                        <img
+                            src="https://cdn.pixabay.com/photo/2017/04/01/21/06/portrait-2194457_960_720.jpg"
+                            class="avatar"
+                            alt="Jean"
+                        />
+                    </span>
                 </div>
-                <div class="user_info ms-3 w-100">
-                    <p>
-                        Lorem ipsum dolor sit, amet consectetur adipisicing
-                        elit. Excepturi quis vel ullam asperiores, distinctio
-                        incidunt, non et error officiis quisquam praesentium
-                        pariatur. Quis, beatae nesciunt fugit asperiores rerum
-                        recusandae qui odit maiores atque ad cupiditate,
-                        temporibus dignissimos. Quasi, maxime eum! Sapiente
-                        mollitia commodi id quia iste aliquid non minima
-                        aspernatur.
-                    </p>
+                <div class="user_info ms-3 w-100 ">
+                    <p>{{comment.comment}}</p>
+                    <a class="btn btn-outline-info"  href="{% url   'comment'  comment.id %}"><i class="fa-solid fa-pen-to-square"></i></a>
+                    <a class="btn btn-outline-danger" href="{% url   'delete_comment'  comment.id %}"><i class="fa-solid fa-trash-can"></i></a>
                 </div>
             </div>
         </div>
-        <div class="users_comments mt-4">
-            <div class="user d-flex mt-3">
-                <div class="user_avatar">
-                    <img
-                        src="https://images.unsplash.com/photo-1582233479366-6d38bc390a08?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1183&q=80"
-                        class="avatar"
-                        alt="Jean"
-                    />
-                </div>
-                <div class="user_info ms-3 w-100">
-                    <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Dolores laboriosam nostrum deleniti corporis magni
-                        eveniet sunt sed dolore eaque iusto?
-                    </p>
-                </div>
-            </div>
-        </div>
+        {% empty %}
+            <h4 class="text-center w-100"> No comments </h4>
+        {% endfor %}
     </div>
 </div>
 

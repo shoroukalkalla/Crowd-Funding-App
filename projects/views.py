@@ -1,5 +1,7 @@
 from django.shortcuts import render
-from django.db.models import Count, Sum
+from django.db.models import Sum
+from django.shortcuts import redirect
+
 
 from .forms import ProjectForm
 from .models import ProjectImage, Tag, Project, Donation
@@ -26,9 +28,15 @@ def get_projects(request):
     project_array = []
 
     projects = Project.objects.all().values('id')
-    print(projects)
+    for project in projects:
+        data = get_project_data(project['id'])
+        project_array.append(data)
 
-    return render(request, 'projects/projects.html')
+    for p in project_array:
+        print(p)
+        print("\n================================")
+
+    return render(request, 'projects/projects.html', {'projects':project_array})
 
 
 def get_project(request, project_id):
@@ -58,6 +66,8 @@ def create_project(request):
             # saving images
             for img in images:
                 ProjectImage.objects.create(image=img, project=project)
+
+        return redirect('project', project_id=project.id)
 
     project_form = ProjectForm()
     verifiedTags = Tag.objects.filter(is_verified=True)

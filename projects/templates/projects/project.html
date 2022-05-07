@@ -33,8 +33,8 @@
            
         </div>
         <div class="col-6">
-            <h4 class="text-muted fs-6 fw-normal">Category</h4>
-            <h3 class="title p-1">{{project.category}}.</h3>
+            <h4 class="text-muted fs-6 fw-normal">{{project.category}}</h4>
+            <h3 class="title p-1">{{project.title}}</h3>
             <div class="rates my-3">
                 <em class="fa-solid fa-star text-warning"></em>
                 <em class="fa-solid fa-star text-warning"></em>
@@ -92,8 +92,8 @@
                         <div
                             class="progress-bar bg-info"
                             role="progressbar"
-                            style="width: {% widthratio donation_amount project.total_target 100 %}%"
-                            aria-valuenow="{% widthratio donation_amount project.total_target 100 %}"
+                            style="width: {{ donation_amount | as_percentage_of:project.total_target }}%"
+                            aria-valuenow="{{ donation_amount | as_percentage_of:project.total_target }}"
                             aria-valuemin="0"
                             aria-valuemax="100"
                         ></div>

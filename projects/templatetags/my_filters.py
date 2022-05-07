@@ -1,5 +1,6 @@
 from django import template
 from django.contrib.humanize.templatetags.humanize import intcomma
+import datetime
 
 register = template.Library()
 
@@ -13,6 +14,20 @@ def currency(dollars):
         return '$0'
         
 
+@register.filter
+def remaining_days(given_date):
+    remaining = (given_date.date() - datetime.datetime.now().date() ).days
+    return remaining
 
 
+@register.filter
+def as_percentage_of(part, whole):
+    if part :
+        try:
+            result = (float(part) / whole * 100)
+            return int(result)
+        except (ValueError, ZeroDivisionError):
+            return ""
+    else:
+        return "0"
 

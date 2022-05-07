@@ -86,7 +86,7 @@
                         class="progress_info mb-1 d-flex justify-content-between"
                     >
                         <span>Raised: </span>
-                        <span>{% widthratio donation_amount project.total_target 100 %}%</span>
+                        <span>{{ donation_amount | as_percentage_of:project.total_target }}%</span>
                     </div>
                     <div class="progress">
                         <div

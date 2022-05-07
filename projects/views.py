@@ -32,9 +32,6 @@ def get_projects(request):
         data = get_project_data(project['id'])
         project_array.append(data)
 
-    for p in project_array:
-        print(p)
-        print("\n================================")
 
     return render(request, 'projects/projects.html', {'projects':project_array})
 

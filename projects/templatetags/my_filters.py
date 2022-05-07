@@ -25,7 +25,7 @@ def as_percentage_of(part, whole):
     if part :
         try:
             result = (float(part) / whole * 100)
-            return int(result)
+            return 100 if result > 100 else int(result)
         except (ValueError, ZeroDivisionError):
             return ""
     else:

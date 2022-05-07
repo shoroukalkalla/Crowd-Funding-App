@@ -1,4 +1,5 @@
 {% extends 'layouts/base.html' %}
+{% load static %}
 {% load my_filters %}
 {% load crispy_forms_tags %}
 
@@ -159,13 +160,32 @@
             {{project.details}}
         </p>
     </div>
-    <div class="comments my-4">
-        <h3>Comments</h3>
-        <div class="user d-flex mt-3">
-                <a  href="{% url   'comment' %}"class="btn btn-secondary rounded-3">
-                    Add Comment
-                </a>
-        </div>
+        <div id="comments" class="comments my-4">
+            <h3>Comments</h3>
+            <div class="user d-flex mt-3">
+                <div class="user_avatar">
+                    <img
+                        src="{{MEDIA_URL}}{{user.avatar}}"
+                        class="avatar"
+                        alt="Jean"
+                    />
+                </div>
+                <div class="user_info ms-3 w-100">
+                    <form method="POST" action="/projects/{{project.id}}/comment_create">
+                        {% csrf_token %}
+                        <input type="text" class="form-control" name="comment"/>
+                        <input type="hidden" name="project" value="{{project.id}}" />
+                        <div class="text-end mt-2">
+                            <input
+                                type="submit"
+                                value="Add Comment"
+                                class="btn btn-secondary rounded-3"
+                            />
+                        </div>
+                    </form>
+                </div>
+            </div>
+
         <hr class="opacity-25" />
 
         <!-- ------Comments -------- -->
@@ -185,8 +205,8 @@
                     <p>{{comment.comment}}</p>
                     {% if user.id == comment.user_id %}
                         <div>
-                            <a class="text-warning border-0 "  href="{% url   'comment'  comment.id %}"><i class="fa-solid fa-pen-to-square"></i></a>
-                            <a class="text-danger border-0 mx-2" href="{% url   'delete_comment'  comment.id %}"><i class="fa-solid fa-trash-can"></i></a>
+                            <a class="text-warning border-0 "  href="{% url   'comment'  comment.id %}"><em class="fa-solid fa-pen-to-square"></em></a>
+                            <a class="text-danger border-0 mx-2" href="{% url   'delete_comment'  comment.id %}"><em class="fa-solid fa-trash-can"></em></a>
                         </div>
                     {% endif %}
                 </div>

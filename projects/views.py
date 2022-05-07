@@ -83,13 +83,18 @@ def create_project(request):
 
 # -------------------------------------------------------------#
 
-
 class CreateComment(CreateView):
     model = Comment
-    template_name = 'projects/create_comment.html'
+    template_name = 'projects/project.html'
     fields = ["comment", "project"]
 
-    success_url = reverse_lazy('projects')
+    def get_success_url(self):
+        url = self.request.get_full_path()
+        url = url.split("/")
+        url.pop()
+        url = "/".join(url)
+
+        return f"{url}#comments"
 
     def form_valid(self, form):
         form.instance.user_id = self.request.user.id
@@ -98,7 +103,8 @@ class CreateComment(CreateView):
 
 class EditComment(UpdateView):
     model = Comment
-    template_name = 'projects/create_comment.html'
+    # template_name = 'projects/create_comment.html'
+    template_name = 'projects/project.html'
     fields = ["comment", "project"]
     pk_ur_kwargs = 'comment.id'
     success_url = reverse_lazy('projects')
@@ -115,7 +121,7 @@ class DeleteComment(DeleteView):
     success_url = reverse_lazy('projects')
 
 
-@csrf_exempt
+@ csrf_exempt
 def upload_project_images(request):
 
     try:

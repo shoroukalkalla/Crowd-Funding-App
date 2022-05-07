@@ -10,7 +10,7 @@
             
                     <div id="carouselExampleIndicators" class="carousel slide img_box" data-bs-ride="carousel">
                         <div class="carousel-indicators">
-                            {% for img in images %}
+                        {% for img in images %}
                         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{forloop.counter0}}" {% if forloop.counter0 == 0 %} class="active" aria-current="true" {% endif %} aria-label="Slide{{forloop.counter0}}"></button>
                         {% endfor %}
                 

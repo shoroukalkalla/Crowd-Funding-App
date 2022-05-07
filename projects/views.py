@@ -25,13 +25,9 @@ def get_project_data(project_id):
         project_id=project.id).aggregate(Sum('donation_amount'))
     donators = Donation.objects.filter(
         project_id=project.id).values('donator').distinct().count()
-<<<<<<< HEAD
-    comments=Comment.objects.filter(project_id=project_id)    
-    data = {'project': project, 'user': user, 'images': images, "num_of_Projects": num_of_Projects, 'donation_amount': amount['donation_amount__sum'], 'donators':donators ,'comments':comments}
-=======
+    comments=Comment.objects.filter(project_id=project_id)         
     data = {'project': project, 'user': user, 'images': images, "num_of_Projects": num_of_Projects,
-            'donation_amount': amount['donation_amount__sum'], 'donators': donators}
->>>>>>> 540a0612a491afa6c42f1f20da6f89d33e88afa0
+            'donation_amount': amount['donation_amount__sum'], 'donators': donators ,'comments':comments}
     return data
 
 
@@ -43,15 +39,7 @@ def get_projects(request):
         data = get_project_data(project['id'])
         project_array.append(data)
 
-<<<<<<< HEAD
-    for p in project_array:
-        print(p)
-        print("\n================================")
-
-    return render(request, 'projects/projects.html', {'projects':project_array})
-=======
     return render(request, 'projects/projects.html', {'projects': project_array})
->>>>>>> 540a0612a491afa6c42f1f20da6f89d33e88afa0
 
 
 def get_project(request, project_id):
@@ -93,7 +81,6 @@ def create_project(request):
     return render(request, "projects/project_create.html", context)
 
 
-<<<<<<< HEAD
 # -------------------------------------------------------------#
 
 class CreateComment(CreateView):
@@ -126,7 +113,6 @@ class DeleteComment(DeleteView):
     success_url = reverse_lazy('projects')    
 
 
-=======
 @csrf_exempt
 def upload_project_images(request):
 
@@ -148,4 +134,3 @@ def upload_project_images(request):
             "success": False
         })
         raise e
->>>>>>> 540a0612a491afa6c42f1f20da6f89d33e88afa0

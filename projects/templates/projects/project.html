@@ -16,9 +16,11 @@
                     </div>
                     <div class="carousel-inner img_box">
                         {% for img in images %}
-                      <div class="carousel-item {% if forloop.counter0 == 0 %} active {% endif %} data-interval="100"">
+                      <div class="carousel-item {% if forloop.counter0 == 0 %} active {% endif %}" data-interval="50">
                         <img src="{{img.image.url}}" class="d-block mw-100" alt="...">
                       </div>
+                      {% empty %}
+                      <img src="{{MEDIA_URL}}/projects/images/default.jpg" class="d-block"/>
                       {% endfor %}
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">

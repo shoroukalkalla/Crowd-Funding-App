@@ -3,7 +3,8 @@
 {% load crispy_forms_tags %}
 {% block content %}
 <form method="post">
-    {% csrf_token %} {{form}}  
+    {% csrf_token %} {{form.comment|as_crispy_field}}  
+    {{form.project|as_crispy_field}} 
     <div class="text-end mt-2">
         <input type="submit" value="save" class="btn btn-secondary rounded-3"/>
     </div>

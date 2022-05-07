@@ -81,22 +81,15 @@ def create_project(request):
 
 # -------------------------------------------------------------#
 
-# def add_comment(request):
-#     if request.method =="POST":
-#         form=Comment(request.POST , request.FILES)
-#         if form.is_valid():
-#             comment = form.save()
-#             return redirect("project" , project_id=comment.project_id)
-#     else:
-#         form = Comment()
-#     return render(request , "pro/form.html" , context={"form": form})    
-
-
 class CreateComment(CreateView):
     model = Comment
     template_name = 'projects/create_comment.html'
-    fields = "__all__"
-    success_url = reverse_lazy('project')
+    fields = ["comment","project"]
+    success_url = reverse_lazy('projects')
+
+    def form_valid(self, form):
+        form.instance.user_id =self.request.user.id
+        return super(CreateComment,self).form_valid(form)
 
 # class EditComment(UpdateView):
 #     model = Comment

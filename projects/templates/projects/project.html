@@ -168,10 +168,10 @@
 
         <!-- ------Comments -------- -->
         {% for comment in comments %}
-        <div class="users_comments mt-4 bg-light rounded shadow-sm py-2 px-3">
-            <div class="user d-flex mt-3">
+        <div class="users_comments mt-4 bg-light rounded shadow-sm py-2 px-3 ">
+            <div class="user d-flex mt-3 d-flex justify-content-between">
                 <div class="user_avatar">
-                    <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title={{comment.user.name}}>
+                    <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title={{comment.user.username}}>
                         <img
                             src={{comment.user.avatar.url}}
                             class="avatar"
@@ -179,10 +179,12 @@
                         />
                     </span>
                 </div>
-                <div class="user_info ms-3 w-100 ">
+                <div class="user_info ms-3 w-100 d-flex justify-content-between">
                     <p>{{comment.comment}}</p>
-                    <a class="btn btn-outline-info"  href="{% url   'comment'  comment.id %}"><i class="fa-solid fa-pen-to-square"></i></a>
-                    <a class="btn btn-outline-danger" href="{% url   'delete_comment'  comment.id %}"><i class="fa-solid fa-trash-can"></i></a>
+                    <div>
+                        <a class="text-warning border-0 "  href="{% url   'comment'  comment.id %}"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a class="text-danger border-0 mx-2" href="{% url   'delete_comment'  comment.id %}"><i class="fa-solid fa-trash-can"></i></a>
+                    </div>
                 </div>
             </div>
         </div>

@@ -91,38 +91,19 @@ class CreateComment(CreateView):
         form.instance.user_id =self.request.user.id
         return super(CreateComment,self).form_valid(form)
 
-# class EditComment(UpdateView):
-#     model = Comment
-#     template_name = 'projects/create_comment.html'
-#     queryset = Comment.objects.all()
-#     fields = ["user" , "project" , "comment"]
-#     # success_url = reverse_lazy('projects')
-#     success_url = "/"
+class EditComment(UpdateView):
+    model = Comment
+    template_name = 'projects/create_comment.html'
+    fields = ["comment","project"]
+    pk_ur_kwargs = 'comment.id'
+    print("############")
+    print(pk_ur_kwargs)
+    print("############")
+    success_url = reverse_lazy('projects')
 
-#     def get_form_kwargs(self):
-#         kwargs = super(EditComment,self).get_form_kwargs()
-#         print(kwargs)
-#         print("###########################################")
-#         kwargs['user'] = self.request.user
-#         print("###########################################")
-#         return kwargs
-
-#     def form_valid(self,form):
-#         self.object = form.save(commit=False)
-#         self.object.user = self.request.user
-#         self.object.save
-#         return super().form_valid(form)
-
-def Edit_comment(request,comment_id):
-    comment= get_object_or_404(Comment,id=comment_id)
-    if request.method =="POST":
-        form=Comment(request.POST , request.FILES , instance=comment)
-        if form.is_valid():
-            comment = form.save()
-            return redirect("porjects" , comment_id=comment.id)
-    else:
-        form = Comment(instance=comment)
-    return render(request, "projects/create_comment.html",context={"form": form})
+    def form_valid(self,form):
+        form.instance.user_id =self.request.user.id
+        return super(EditComment,self).form_valid(form)
 
 
 class DeleteComment(DeleteView):

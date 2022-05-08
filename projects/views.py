@@ -145,12 +145,20 @@ def upload_project_images(request):
         raise e
 
 # -------------------Donation-----------------------------#
+
+
 class CreateDonation(CreateView):
-    model=Donation
+    model = Donation
     template_name = 'projects/project.html'
     fields = ["donation_amount", "project"]
 
-    success_url = reverse_lazy('projects')
+    def get_success_url(self):
+        url = self.request.get_full_path()
+        url = url.split("/")
+        url.pop()
+        url = "/".join(url)
+
+        return url
 
     def form_valid(self, form):
         form.instance.donator_id = self.request.user.id

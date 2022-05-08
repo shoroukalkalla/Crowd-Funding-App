@@ -1,0 +1,93 @@
+{% extends 'layouts/base.html' %}
+{% load my_filters %}
+{% block content %} 
+{% load static %}
+
+
+<div class="projects mt-5">
+
+    {% for project in projects %}
+    <div class="project" data-id="{{project.project.id}}">
+        <div class="img_box">
+            <img
+                class="mw-100"
+                {% if project.images %}
+                src="{{project.images.0.image.url}}"
+                {% else %}
+                src="{{MEDIA_URL}}/projects/images/default.jpg"
+                {% endif %}
+                alt=""
+            />
+        </div>
+        <div class="content bg-light p-3">
+            <h4 class="text-muted fs-6 fw-normal">{{project.project.category}}</h4>
+            <h3 class="title p-1">{{project.project.title}}</h3>
+            <div class="project_details">
+                <p class="raised_info">
+                    <span class="fw-bold">{{project.donation_amount|currency}} Raised</span> from
+                    <span class="fw-bold">{{project.project.total_target |currency}} Goal</span>
+                </p>
+                <div class="progress">
+                    <div
+                        class="progress-bar bg-info"
+                        role="progressbar"
+                        style="width: {{ project.donation_amount |as_percentage_of:project.project.total_target }}%"
+                        aria-valuenow="{{ project.donation_amount |as_percentage_of:project.project.total_target }}"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                    ></div>
+                </div>
+
+                <hr class="opacity-25" />
+
+                <div class="info">
+                    <div class="row">
+                        <div class="col-4">
+                            <p class="mb-0 text-center">
+                                <span class="fw-bold">{{project.project.end_time|remaining_days}}</span>
+                                <span class="d-block">Days Remain</span>
+                            </p>
+                        </div>
+                        <div class="col-4">
+                            <p class="mb-0 text-center">
+                                <span class="fw-bold">{{project.donators}}</span>
+                                <span class="d-block">Backers</span>
+                            </p>
+                        </div>
+                        <div class="col-4">
+                            <p class="mb-0 text-center">
+                                <span class="fw-bold">{{ project.donation_amount |as_percentage_of:project.project.total_target }}%</span>
+                                <span class="d-block">Funded</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <hr class="opacity-25" />
+                <div class="info">
+                    <div class="row">
+                        <div class="col-6">
+                            <p class="mb-0 text-center">
+                               <a ><button class="btn btn-warning">Edit</button></a>
+                            </p>
+                        </div>
+                        <div class="col-6">
+                            <p class="mb-0 text-center">
+                                <a><button class="btn btn-danger">Delete</button></a>  
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %} {% block script %}
+<script src="{% static 'projects/js/script.js' %}"></script>
+{% endblock %}
+
+
+
+

@@ -47,6 +47,18 @@ def get_project(request, project_id):
     return render(request, 'projects/project.html', context)
 
 
+
+def get_user_projects(request):
+    project_array = []
+
+    projects = Project.objects.filter(user_id=request.user.id).values('id')
+    for project in projects:
+        data = get_project_data(project['id'])
+        project_array.append(data)
+
+    return render(request, 'projects/user_projects.html', {'projects': project_array})
+
+
 def create_project(request):
     if request.method == 'POST':
         project_form = ProjectForm(request.POST)
@@ -79,6 +91,12 @@ def create_project(request):
     context = {'project_form': project_form, 'tags': verifiedTags}
 
     return render(request, "projects/project_create.html", context)
+
+
+
+
+def edit_project(request):
+    return render(request, "projects/project_edit.html")
 
 
 # -------------------------------------------------------------#

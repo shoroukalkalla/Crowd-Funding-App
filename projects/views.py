@@ -168,9 +168,13 @@ class EditComment(UpdateView):
 
 class DeleteComment(DeleteView):
     model = Comment
-    pk_ur_kwargs = 'comment.id'
-    template_name = 'projects/delete_comment.html'
-    success_url = reverse_lazy('projects')
+    # pk_ur_kwargs = 'comment.id'
+    # template_name = 'projects/delete_comment.html'
+    # success_url = reverse_lazy('projects')
+    success_url = reverse_lazy("login")
+
+    def get_success_url(self):
+        return f"/projects/{self.request.POST['project_id']}#comments"
 
 
 @ csrf_exempt

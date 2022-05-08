@@ -39,6 +39,9 @@
             left: 50%;
             transform:translateX(-50%);
         }
+        #myToast {
+          z-index: 1000
+        }
     </style>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -68,7 +71,7 @@
 
     {% if messages %}
       {% for message in messages %}
-          <div class="toast bg-success text-white fade" id="myToast">
+          <div class="toast bg-success text-white fade position-fixed" id="myToast">
             <div class="toast-header bg-success text-white {% if message.tags == 'error' %} bg-danger {% endif %}">
                 <strong class="me-auto"
                     ><em class="fa-solid fa-check-double"></em> {{message}}</strong

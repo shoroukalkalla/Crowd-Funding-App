@@ -14,6 +14,9 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.files.storage import FileSystemStorage
 
+from django.contrib.messages.views import SuccessMessageMixin
+
+
 # Create your views here.
 
 
@@ -133,7 +136,7 @@ def edit_project(request, project_id):
 
 # -------------------------------------------------------------#
 
-class CreateComment(CreateView):
+class CreateComment(SuccessMessageMixin, CreateView):
     model = Comment
     template_name = 'projects/project.html'
 
@@ -151,8 +154,11 @@ class CreateComment(CreateView):
         form.instance.user_id = self.request.user.id
         return super(CreateComment, self).form_valid(form)
 
+    def get_success_message(self, cleaned_data):
+        return "Comment was created"
 
-class EditComment(UpdateView):
+
+class EditComment(SuccessMessageMixin, UpdateView):
     model = Comment
     template_name = 'projects/project.html'
     fields = ["comment", "project"]
@@ -165,13 +171,15 @@ class EditComment(UpdateView):
         form.instance.user_id = self.request.user.id
         return super(EditComment, self).form_valid(form)
 
+    def get_success_message(self, cleaned_data):
+        return "Comment was updated"
 
-class DeleteComment(DeleteView):
+
+class DeleteComment(SuccessMessageMixin, DeleteView):
     model = Comment
-    # pk_ur_kwargs = 'comment.id'
-    # template_name = 'projects/delete_comment.html'
-    # success_url = reverse_lazy('projects')
-    success_url = reverse_lazy("login")
+
+    def get_success_message(self, cleaned_data):
+        return "Comment was deleted"
 
     def get_success_url(self):
         return f"/projects/{self.request.POST['project_id']}#comments"

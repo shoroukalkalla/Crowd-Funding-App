@@ -5,6 +5,7 @@
 
 {% block content %}
 
+
 <div class="project_desc mt-5">
     <div class="row d-flex align-items-center">
         <div class="col-6">
@@ -49,13 +50,13 @@
             <div class="user d-flex align-items-center">
                 <div class="user_avatar">
                     <img
-                        src="{{user.avatar.url}}"
+                        src="{{project_user.avatar.url}}"
                         class="avatar"
-                        alt="{{user.name}}"
+                        alt="{{project_user.name}}"
                     />
                 </div>
                 <div class="user_info ms-3">
-                    <span class="fs-4">{{user}}</span>
+                    <span class="fs-4">{{project_user}}</span>
                     <span class="d-block">{{num_of_Projects}} Campaigns</span>
                 </div>
             </div>
@@ -194,9 +195,9 @@
         <div class="users_comments mt-4 bg-light rounded shadow-sm py-2 px-3 ">
             <div class="user d-flex mt-3 d-flex justify-content-between">
                 <div class="user_avatar">
-                    <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title={{comment.user.username}}>
+                    <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title={{comment.project_user.username}}>
                         <img
-                            src={{comment.user.avatar.url}}
+                            src="{{MEDIA_URL}}{{comment.user.avatar}}"
                             class="avatar"
                             alt="Jean"
                         />

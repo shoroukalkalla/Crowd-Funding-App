@@ -115,25 +115,25 @@
             <div class="back_campaign mt-4">
                 <div class="generic_campaign">
                     <button
-                        class="donationBtn btn btn-secondary bg-transparent text-dark clicked rounded-pill px-3 py-2"
+                        class="donationBtn btn btn-secondary  text-ligth clicked rounded-pill px-3 py-2"
                         onclick='addDonation(event,10)'
                     >
                         $10
                     </button>
                     <button
-                        class="donationBtn btn btn-secondary text-light rounded-pill px-3 py-2"
+                        class="donationBtn btn btn-secondary text-dark bg-transparent rounded-pill px-3 py-2"
                         onclick='addDonation(event,30)'
                     >
                         $30
                     </button>
                     <button
-                        class="donationBtn btn btn-secondary text-light rounded-pill px-3 py-2"
+                        class="donationBtn btn btn-secondary text-dark bg-transparent rounded-pill px-3 py-2"
                         onclick='addDonation(event,50)'
                     >
                         $50
                     </button>
                     <button
-                        class="donationBtn btn btn-secondary text-light rounded-pill px-3 py-2"
+                        class="donationBtn btn btn-secondary text-dark bg-transparent rounded-pill px-3 py-2"
                         onclick='addDonation(event,100)'
                     >
                         $100
@@ -286,15 +286,13 @@
         event.target.classList.add("clicked");
         for(btn of donationBtns){
             if(btn.classList.contains('clicked')){
-                btn.classList.add("bg-transparent")
-                btn.classList.add("text-dark")
-            }else{
                 btn.classList.remove("bg-transparent")
                 btn.classList.remove("text-dark")
+            }else{
+                btn.classList.add("bg-transparent")
+                btn.classList.add("text-dark")
             }
         }
-        
-
     }
 
 </script>

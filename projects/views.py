@@ -1,3 +1,4 @@
+from django.forms import ValidationError
 from django.shortcuts import render
 from django.db.models import Sum
 from django.shortcuts import redirect
@@ -44,11 +45,6 @@ def get_projects(request):
 
 def get_project(request, project_id):
     context = get_project_data(project_id)
-
-    print('------------------------------')
-    print(context)
-    print('------------------------------')
-
     return render(request, 'projects/project.html', context)
 
 
@@ -91,6 +87,7 @@ def create_project(request):
 class CreateComment(CreateView):
     model = Comment
     template_name = 'projects/project.html'
+
     fields = ["comment", "project"]
 
     def get_success_url(self):

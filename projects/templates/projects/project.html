@@ -6,6 +6,9 @@
 {% block content %}
 
 
+{% if not project_user.email %}
+<meta http-equiv="REFRESH" content="0;url='/'" />
+{% endif %}
 <div class="project_desc mt-5">
     <div class="row d-flex align-items-center">
         <div class="col-6">
@@ -86,32 +89,7 @@
 
                 <hr class="opacity-25" />
 
-                <div class="progress_box mt-3">
-                    <div
-                        class="progress_info mb-1 d-flex justify-content-between"
-                    >
-                        <span>Raised: </span>
-                        <span>{{ donation_amount | as_percentage_of:project.total_target }}%</span>
-                    </div>
-                    <div class="progress">
-                        <div
-                            class="progress-bar bg-info"
-                            role="progressbar"
-                            style="width: {{ donation_amount | as_percentage_of:project.total_target }}%"
-                            aria-valuenow="{{ donation_amount | as_percentage_of:project.total_target }}"
-                            aria-valuemin="0"
-                            aria-valuemax="100"
-                        ></div>
-                    </div>
-                    <div class="goal mt-1">
-                        <span class="fw-bold">Goal: </span>
-                        
-                        <span>{{project.total_target|currency }}</span>
 
-                        
-
-                    </div>
-                </div>
             </div>
 
             <div class="back_campaign mt-4">
@@ -174,7 +152,7 @@
                 <div class="user_info ms-3 w-100">
                     <form method="POST" action="/projects/{{project.id}}/comment_create">
                         {% csrf_token %}
-                        <input type="text" class="form-control" name="comment"/>
+                        <input type="text" class="form-control" name="comment" required/>
                         <input type="hidden" name="project" value="{{project.id}}" />
                         <div class="text-end mt-2">
                             <input

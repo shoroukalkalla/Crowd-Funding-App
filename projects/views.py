@@ -48,7 +48,6 @@ def get_project(request, project_id):
     return render(request, 'projects/project.html', context)
 
 
-
 def get_user_projects(request):
     project_array = []
 
@@ -94,8 +93,6 @@ def create_project(request):
     return render(request, "projects/project_create.html", context)
 
 
-
-
 def edit_project(request, project_id):
     if request.method == 'POST':
         project_form = ProjectForm(request.POST)
@@ -123,18 +120,15 @@ def edit_project(request, project_id):
 
         return redirect('project', project_id=project.id)
 
-
-    project = get_object_or_404(Project,id=project_id)
-    verified_tags = Tag.objects.filter(is_verified=True) 
-    project_tags = project.tags.all()    
+    project = get_object_or_404(Project, id=project_id)
+    verified_tags = Tag.objects.filter(is_verified=True)
+    project_tags = project.tags.all()
     project_form = ProjectForm(instance=project)
 
+    context = {'project_form': project_form, 'tags': verified_tags,
+               'project': project, 'project_tags': project_tags}
 
-    context = {'project_form': project_form, 'tags': verified_tags, 'project': project, 'project_tags': project_tags}
-    
-    return render(request, "projects/project_edit.html", context)   
-
-    
+    return render(request, "projects/project_edit.html", context)
 
 
 # -------------------------------------------------------------#
@@ -163,7 +157,9 @@ class EditComment(UpdateView):
     template_name = 'projects/project.html'
     fields = ["comment", "project"]
     pk_ur_kwargs = 'comment.id'
-    success_url = reverse_lazy('projects')
+
+    def get_success_url(self):
+        return f"/projects/{self.request.POST['project']}#comment{self.kwargs['pk']}"
 
     def form_valid(self, form):
         form.instance.user_id = self.request.user.id

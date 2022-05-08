@@ -64,7 +64,7 @@ body {
 /* Project Description */
 
 .project_desc .img_box {
-    height: 550px;
+    /* height: 550px; */
 }
 .project_desc .img_box img {
     height: 100%;

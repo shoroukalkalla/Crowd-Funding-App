@@ -115,26 +115,26 @@
             <div class="back_campaign mt-4">
                 <div class="generic_campaign">
                     <button
-                        class="btn btn-secondary  rounded-pill px-3 py-2"
-                        onclick='addDonation(10)'
+                        class="donationBtn btn btn-secondary bg-transparent text-dark clicked rounded-pill px-3 py-2"
+                        onclick='addDonation(event,10)'
                     >
                         $10
                     </button>
                     <button
-                        class="btn btn-secondary  rounded-pill px-3 py-2"
-                        onclick='addDonation(30)'
+                        class="donationBtn btn btn-secondary text-light rounded-pill px-3 py-2"
+                        onclick='addDonation(event,30)'
                     >
                         $30
                     </button>
                     <button
-                        class="btn btn-secondary  rounded-pill px-3 py-2"
-                        onclick='addDonation(50)'
+                        class="donationBtn btn btn-secondary text-light rounded-pill px-3 py-2"
+                        onclick='addDonation(event,50)'
                     >
                         $50
                     </button>
                     <button
-                        class="btn btn-secondary  rounded-pill px-3 py-2"
-                        onclick='addDonation(100)'
+                        class="donationBtn btn btn-secondary text-light rounded-pill px-3 py-2"
+                        onclick='addDonation(event,100)'
                     >
                         $100
                     </button>
@@ -147,6 +147,7 @@
                             type="text" 
                             class="form-control d-inline-block w-25 rounded-pill p-2 set_money" 
                             name="donation_amount"
+                            value=10
                         />
                         <input
                             type="submit"
@@ -164,9 +165,8 @@
             {{project.details}}
         </p>
     </div>
-    <div id="comments" class="comments my-4">
-        <h3>Comments</h3>
-        {% if user.is_authenticated %}
+        <div id="comments" class="comments my-4">
+            <h3>Comments</h3>
             <div class="user d-flex mt-3">
                 <div class="user_avatar">
                     <img
@@ -190,7 +190,6 @@
                     </form>
                 </div>
             </div>
-        {% endif %}
 
         <hr class="opacity-25" />
 
@@ -233,7 +232,6 @@
         {% empty %}
             <h4 class="text-center w-100"> No comments </h4>
         {% endfor %}
-
     </div>
 </div>
 {% endblock %}
@@ -242,6 +240,8 @@
 <script>
     let editButtons = document.querySelectorAll('.users_comments .edit_comment');
     let inputDonation =document.getElementsByName("donation_amount")[0];
+    let donationBtns = document.querySelectorAll(".donationBtn");
+
 
     editButtons.forEach(button => {
         button.addEventListener('click', e => {
@@ -269,15 +269,32 @@
 
     function cancelEditComment(event, commentText) {
         let commentFormEditContainer = event.target.parentElement.parentElement.parentElement;
-        let commentControllers = commentFormEditContainer.nextElementSibling
-        
+        let commentControllers = commentFormEditContainer.nextElementSibling;
+
         commentFormEditContainer.innerHTML = commentText;
         commentFormEditContainer.classList.remove('w-100');
         commentControllers.classList.remove('d-none')
     }
 
-    function addDonation(num){
-        inputDonation.value=num
+    function addDonation(event,num){
+        inputDonation.value=num;
+        for(btn of donationBtns){
+            if(btn.classList.contains('clicked')){
+                btn.classList.remove("clicked");
+            }
+        }
+        event.target.classList.add("clicked");
+        for(btn of donationBtns){
+            if(btn.classList.contains('clicked')){
+                btn.classList.add("bg-transparent")
+                btn.classList.add("text-dark")
+            }else{
+                btn.classList.remove("bg-transparent")
+                btn.classList.remove("text-dark")
+            }
+        }
+        
+
     }
 
 </script>

@@ -164,8 +164,9 @@
             {{project.details}}
         </p>
     </div>
-        <div id="comments" class="comments my-4">
-            <h3>Comments</h3>
+    <div id="comments" class="comments my-4">
+        <h3>Comments</h3>
+        {% if user.is_authenticated %}
             <div class="user d-flex mt-3">
                 <div class="user_avatar">
                     <img
@@ -189,6 +190,7 @@
                     </form>
                 </div>
             </div>
+        {% endif %}
 
         <hr class="opacity-25" />
 
@@ -231,6 +233,7 @@
         {% empty %}
             <h4 class="text-center w-100"> No comments </h4>
         {% endfor %}
+
     </div>
 </div>
 {% endblock %}

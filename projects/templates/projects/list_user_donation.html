@@ -10,10 +10,12 @@
         {% for donation in donations%}
             <tr>
                 <td>
-                    {{donation.project.title}}
+                    <a  href="{% url   'project' donation.project.id  %}"class="text-decoration-none">
+                        {{donation.project.title}}
+                    </a>
                 </td>
                 <td>
-                    {{donation.donation_amount}}
+                        {{donation.donation_amount}}
                 </td>
             </tr>
             {% empty %}

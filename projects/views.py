@@ -108,7 +108,6 @@ class CreateComment(CreateView):
 
 class EditComment(UpdateView):
     model = Comment
-    # template_name = 'projects/create_comment.html'
     template_name = 'projects/project.html'
     fields = ["comment", "project"]
     pk_ur_kwargs = 'comment.id'

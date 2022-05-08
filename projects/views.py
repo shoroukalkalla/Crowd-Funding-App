@@ -3,7 +3,7 @@ from django.db.models import Sum
 from django.shortcuts import redirect
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from django.shortcuts import render ,redirect,get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import ProjectForm
 from .models import Comment, ProjectImage, Tag, Project, Donation
@@ -25,9 +25,9 @@ def get_project_data(project_id):
         project_id=project.id).aggregate(Sum('donation_amount'))
     donators = Donation.objects.filter(
         project_id=project.id).values('donator').distinct().count()
-    comments=Comment.objects.filter(project_id=project_id)         
+    comments = Comment.objects.filter(project_id=project_id)
     data = {'project': project, 'user': user, 'images': images, "num_of_Projects": num_of_Projects,
-            'donation_amount': amount['donation_amount__sum'], 'donators': donators ,'comments':comments}
+            'donation_amount': amount['donation_amount__sum'], 'donators': donators, 'comments': comments}
     return data
 
 
@@ -85,35 +85,43 @@ def create_project(request):
 
 class CreateComment(CreateView):
     model = Comment
-    template_name = 'projects/create_comment.html'
-    fields = ["comment","project"]
-    
-    success_url = reverse_lazy('projects')
+    template_name = 'projects/project.html'
+    fields = ["comment", "project"]
+
+    def get_success_url(self):
+        url = self.request.get_full_path()
+        url = url.split("/")
+        url.pop()
+        url = "/".join(url)
+
+        return f"{url}#comments"
 
     def form_valid(self, form):
-        form.instance.user_id =self.request.user.id
-        return super(CreateComment,self).form_valid(form)
+        form.instance.user_id = self.request.user.id
+        return super(CreateComment, self).form_valid(form)
+
 
 class EditComment(UpdateView):
     model = Comment
-    template_name = 'projects/create_comment.html'
-    fields = ["comment","project"]
+    # template_name = 'projects/create_comment.html'
+    template_name = 'projects/project.html'
+    fields = ["comment", "project"]
     pk_ur_kwargs = 'comment.id'
     success_url = reverse_lazy('projects')
 
-    def form_valid(self,form):
-        form.instance.user_id =self.request.user.id
-        return super(EditComment,self).form_valid(form)
+    def form_valid(self, form):
+        form.instance.user_id = self.request.user.id
+        return super(EditComment, self).form_valid(form)
 
 
 class DeleteComment(DeleteView):
     model = Comment
     pk_ur_kwargs = 'comment.id'
     template_name = 'projects/delete_comment.html'
-    success_url = reverse_lazy('projects')    
+    success_url = reverse_lazy('projects')
 
 
-@csrf_exempt
+@ csrf_exempt
 def upload_project_images(request):
 
     try:

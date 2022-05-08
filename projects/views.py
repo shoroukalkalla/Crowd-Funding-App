@@ -227,3 +227,11 @@ class CreateDonation(LoginRequiredMixin,CreateView):
     def form_valid(self, form):
         form.instance.donator_id = self.request.user.id
         return super(CreateDonation, self).form_valid(form)
+
+
+def get_user_donations(request):
+    donations = Donation.objects.filter(donator=request.user.id)
+    context={
+        'donations': donations,
+    }
+    return render(request, 'projects/list_user_donation.html', context)

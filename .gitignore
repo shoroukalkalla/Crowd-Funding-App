@@ -162,3 +162,8 @@ cython_debug/
 node_modules
 ~
 ~/*
+
+media/projects/images/*
+!/media/projects/images/default.jpg
+media/users/*
+!/media/users/default.png

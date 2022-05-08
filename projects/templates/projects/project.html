@@ -195,9 +195,9 @@
         <!-- ------Comments -------- -->
         {% for comment in comments %}
         <div class="users_comments mt-4 bg-light rounded shadow-sm py-2 px-3 " id="comment{{comment.id}}">
-            <div class="user d-flex mt-3 d-flex justify-content-between">
+            <div class="user d-flex mt-3 d-flex">
                 <div class="user_avatar">
-                    <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title={{comment.project_user.username}}>
+                    <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title={{comment.user.username}}>
                         <img
                             src="{{MEDIA_URL}}{{comment.user.avatar}}"
                             class="avatar"
@@ -205,14 +205,17 @@
                         />
                     </span>
                 </div>
-                <div class="user_info ms-3 w-100 d-flex justify-content-between">
-                    <div class="comment" data-comment_id = {{comment.id}} data-project_id = {{project.id}}>{{comment.comment}} </div>
-                    {% if user.id == comment.user_id %}
-                        <div>
-                            <button class="text-warning border-0 edit_comment"><em class="fa-solid fa-pen-to-square"></em></button>
-                            <a class="text-danger border-0 mx-2" href="{% url   'delete_comment'  comment.id %}"><em class="fa-solid fa-trash-can"></em></a>
-                        </div>
-                    {% endif %}
+                <div class="ms-2 w-100">
+                    <span class="fw-bold">{{comment.user.first_name}}</span>
+                    <div class="user_info w-100 d-flex justify-content-between">
+                        <div class="comment" data-comment_id = {{comment.id}} data-project_id = {{project.id}}>{{comment.comment}} </div>
+                        {% if user.id == comment.user_id %}
+                            <div>
+                                <button class="text-warning border-0 edit_comment"><em class="fa-solid fa-pen-to-square"></em></button>
+                                <a class="text-danger border-0 mx-2" href="{% url   'delete_comment'  comment.id %}"><em class="fa-solid fa-trash-can"></em></a>
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>

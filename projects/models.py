@@ -20,7 +20,6 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
 
-
 class Project(models.Model):
     title = models.CharField(max_length=150)
     details = models.CharField(max_length=150)

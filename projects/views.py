@@ -1,3 +1,4 @@
+from django.forms import ValidationError
 from django.shortcuts import render
 from django.db.models import Sum
 from django.shortcuts import redirect
@@ -26,7 +27,7 @@ def get_project_data(project_id):
     donators = Donation.objects.filter(
         project_id=project.id).values('donator').distinct().count()
     comments = Comment.objects.filter(project_id=project_id)
-    data = {'project': project, 'user': user, 'images': images, "num_of_Projects": num_of_Projects,
+    data = {'project': project, 'project_user': user, 'images': images, "num_of_Projects": num_of_Projects,
             'donation_amount': amount['donation_amount__sum'], 'donators': donators, 'comments': comments}
     return data
 
@@ -104,6 +105,7 @@ def edit_project(request):
 class CreateComment(CreateView):
     model = Comment
     template_name = 'projects/project.html'
+
     fields = ["comment", "project"]
 
     def get_success_url(self):
@@ -121,7 +123,6 @@ class CreateComment(CreateView):
 
 class EditComment(UpdateView):
     model = Comment
-    # template_name = 'projects/create_comment.html'
     template_name = 'projects/project.html'
     fields = ["comment", "project"]
     pk_ur_kwargs = 'comment.id'
@@ -160,3 +161,23 @@ def upload_project_images(request):
             "success": False
         })
         raise e
+
+# -------------------Donation-----------------------------#
+
+
+class CreateDonation(CreateView):
+    model = Donation
+    template_name = 'projects/project.html'
+    fields = ["donation_amount", "project"]
+
+    def get_success_url(self):
+        url = self.request.get_full_path()
+        url = url.split("/")
+        url.pop()
+        url = "/".join(url)
+
+        return url
+
+    def form_valid(self, form):
+        form.instance.donator_id = self.request.user.id
+        return super(CreateDonation, self).form_valid(form)

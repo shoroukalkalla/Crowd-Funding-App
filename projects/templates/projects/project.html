@@ -5,6 +5,10 @@
 
 {% block content %}
 
+
+{% if not project_user.email %}
+<meta http-equiv="REFRESH" content="0;url='/'" />
+{% endif %}
 <div class="project_desc mt-5">
     <div class="row d-flex align-items-center">
         <div class="col-6">
@@ -49,13 +53,13 @@
             <div class="user d-flex align-items-center">
                 <div class="user_avatar">
                     <img
-                        src="{{user.avatar.url}}"
+                        src="{{project_user.avatar.url}}"
                         class="avatar"
-                        alt="{{user.name}}"
+                        alt="{{project_user.name}}"
                     />
                 </div>
                 <div class="user_info ms-3">
-                    <span class="fs-4">{{user}}</span>
+                    <span class="fs-4">{{project_user}}</span>
                     <span class="d-block">{{num_of_Projects}} Campaigns</span>
                 </div>
             </div>
@@ -84,33 +88,33 @@
                 </div>
 
                 <hr class="opacity-25" />
-
                 <div class="progress_box mt-3">
                     <div
                         class="progress_info mb-1 d-flex justify-content-between"
                     >
                         <span>Raised: </span>
-                        <span>{{ donation_amount | as_percentage_of:project.total_target }}%</span>
+                        <span>{% widthratio donation_amount project.total_target 100 %}%</span>
                     </div>
                     <div class="progress">
                         <div
                             class="progress-bar bg-info"
                             role="progressbar"
-                            style="width: {{ donation_amount | as_percentage_of:project.total_target }}%"
-                            aria-valuenow="{{ donation_amount | as_percentage_of:project.total_target }}"
+                            style="width: {% widthratio donation_amount project.total_target 100 %}%"
+                            aria-valuenow="{% widthratio donation_amount project.total_target 100 %}"
                             aria-valuemin="0"
                             aria-valuemax="100"
                         ></div>
                     </div>
                     <div class="goal mt-1">
                         <span class="fw-bold">Goal: </span>
-                        
+                       
                         <span>{{project.total_target|currency }}</span>
 
-                        
+                     
 
                     </div>
                 </div>
+
             </div>
 
             <div class="back_campaign mt-4">
@@ -137,18 +141,18 @@
                     </button>
                 </div>
                 <div class="custom_campaign mt-4">
-                    <form>
+                    <form method="POST" action="/projects/{{project.id}}/create_donation">
                         <span>$</span>
+                        {% csrf_token %}
                         <input
-                            type="text"
-                            class="form-control d-inline-block w-25 rounded-pill p-2 set_money"
-                            value="10"
-                        />
+                            type="text" 
+                            class="form-control d-inline-block w-25 rounded-pill p-2 set_money" 
+                            name="donation_amount"/>
                         <input
                             type="submit"
                             value="Back Campaign"
-                            class="btn btn-success rounded-pill p-2"
-                        />
+                            class="btn btn-success rounded-pill p-2"/>
+                        <input type="hidden" name="project" value="{{project.id}}" />
                     </form>
                 </div>
             </div>
@@ -173,7 +177,7 @@
                 <div class="user_info ms-3 w-100">
                     <form method="POST" action="/projects/{{project.id}}/comment_create">
                         {% csrf_token %}
-                        <input type="text" class="form-control" name="comment"/>
+                        <input type="text" class="form-control" name="comment" required/>
                         <input type="hidden" name="project" value="{{project.id}}" />
                         <div class="text-end mt-2">
                             <input
@@ -193,9 +197,9 @@
         <div class="users_comments mt-4 bg-light rounded shadow-sm py-2 px-3 ">
             <div class="user d-flex mt-3 d-flex justify-content-between">
                 <div class="user_avatar">
-                    <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title={{comment.user.username}}>
+                    <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title={{comment.project_user.username}}>
                         <img
-                            src={{comment.user.avatar.url}}
+                            src="{{MEDIA_URL}}{{comment.user.avatar}}"
                             class="avatar"
                             alt="Jean"
                         />

@@ -26,7 +26,7 @@ def get_project_data(project_id):
         project_id=project.id).aggregate(Sum('donation_amount'))
     donators = Donation.objects.filter(
         project_id=project.id).values('donator').distinct().count()
-    comments = Comment.objects.filter(project_id=project_id)
+    comments = Comment.objects.filter(project_id=project_id).order_by('-id')
     data = {'project': project, 'project_user': user, 'images': images, "num_of_Projects": num_of_Projects,
             'donation_amount': amount['donation_amount__sum'], 'donators': donators, 'comments': comments}
     return data

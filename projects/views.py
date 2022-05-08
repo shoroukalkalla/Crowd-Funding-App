@@ -105,7 +105,6 @@ class CreateComment(CreateView):
 
 class EditComment(UpdateView):
     model = Comment
-    # template_name = 'projects/create_comment.html'
     template_name = 'projects/project.html'
     fields = ["comment", "project"]
     pk_ur_kwargs = 'comment.id'
@@ -144,3 +143,15 @@ def upload_project_images(request):
             "success": False
         })
         raise e
+
+# -------------------Donation-----------------------------#
+class CreateDonation(CreateView):
+    model=Donation
+    template_name = 'projects/project.html'
+    fields = ["donation_amount", "project"]
+
+    success_url = reverse_lazy('projects')
+
+    def form_valid(self, form):
+        form.instance.donator_id = self.request.user.id
+        return super(CreateDonation, self).form_valid(form)

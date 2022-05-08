@@ -116,18 +116,18 @@
                     </button>
                 </div>
                 <div class="custom_campaign mt-4">
-                    <form>
+                    <form method="POST" action="/projects/{{project.id}}/create_donation">
                         <span>$</span>
+                        {% csrf_token %}
                         <input
-                            type="text"
-                            class="form-control d-inline-block w-25 rounded-pill p-2 set_money"
-                            value="10"
-                        />
+                            type="text" 
+                            class="form-control d-inline-block w-25 rounded-pill p-2 set_money" 
+                            name="donation_amount"/>
                         <input
                             type="submit"
                             value="Back Campaign"
-                            class="btn btn-success rounded-pill p-2"
-                        />
+                            class="btn btn-success rounded-pill p-2"/>
+                        <input type="hidden" name="project" value="{{project.id}}" />
                     </form>
                 </div>
             </div>

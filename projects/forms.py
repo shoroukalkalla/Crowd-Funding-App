@@ -1,4 +1,4 @@
-
+from datetime import datetime
 from tracemalloc import start
 from .models import Project, Category, Tag, ProjectImage
 from django import forms
@@ -7,9 +7,8 @@ from django.forms.widgets import DateTimeInput, DateInput
 
 class ProjectForm(forms.ModelForm):
     start_time = forms.DateTimeField(
-    widget=DateTimeInput(attrs={'type': 'datetime-local'})
-    )
-    end_time = forms.DateTimeField(widget=DateTimeInput(attrs={'type': 'datetime-local'}))
+    widget=DateTimeInput(attrs={'type': 'datetime-local'}))
+    end_time = forms.DateTimeField(widget=DateTimeInput(attrs={'type': 'datetime-local','min' : datetime.now().date()}))
     class Meta:
         model = Project
         fields = [

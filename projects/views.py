@@ -96,8 +96,45 @@ def create_project(request):
 
 
 
-def edit_project(request):
-    return render(request, "projects/project_edit.html")
+def edit_project(request, project_id):
+    if request.method == 'POST':
+        project_form = ProjectForm(request.POST)
+        # fetching Images
+        # images = request.FILES.getlist('images')
+        images = request.POST['images'].split()
+        # Adding New Tags
+        retags = request.POST.getlist('tags[]')
+        for tag in retags:
+            if not Tag.objects.filter(name=tag).exists():
+                Tag.objects.create(name=tag, is_verified=False)
+        # Creating new Project
+        if project_form.is_valid():
+            project = project_form.save(commit=False)
+            project.user = request.user
+            project.save()
+            # saving tages
+            for tag in retags:
+                project.tags.add(Tag.objects.get(name=tag))
+            project.save()
+            # saving images
+            for img in images:
+                ProjectImage.objects.create(
+                    image=f"projects/images/{img}", project=project)
+
+        return redirect('project', project_id=project.id)
+
+
+    project = get_object_or_404(Project,id=project_id)
+    verified_tags = Tag.objects.filter(is_verified=True) 
+    project_tags = project.tags.all()    
+    project_form = ProjectForm(instance=project)
+
+
+    context = {'project_form': project_form, 'tags': verified_tags, 'project': project, 'project_tags': project_tags}
+    
+    return render(request, "projects/project_edit.html", context)   
+
+    
 
 
 # -------------------------------------------------------------#

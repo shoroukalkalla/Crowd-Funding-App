@@ -9,7 +9,7 @@ urlpatterns = [
     path('projects/user-projects', get_user_projects, name='user_projects'),
     path('projects/create/', create_project, name='create_project'),
     path('projects/<int:project_id>/', get_project, name='project'),
-    path('projects/<int:project_id>/edit', edit_project, name='project'),
+    path('projects/<int:project_id>/edit', edit_project, name='project_edit'),
 
     path('projects/<int:project_id>/comment_create',CreateComment.as_view(), name="create_comment"),
     path('comments/<pk>', EditComment.as_view(), name='comment'),

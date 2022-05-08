@@ -59,7 +59,16 @@
                     <select class="tags">
                         <option>Choose...</option>
                         {% for tag in tags %}
-                        <option value="{{tag.name}}">{{ tag.name }}</option>
+                        {% if tag in project_tags %}
+                        <option value="{{tag.name}}" class="d-none">{{ tag.name }}</option>
+                        {% else %}
+                        <option value="{{tag.name}}" >{{ tag.name }}</option>
+                        {% endif%}
+                        {% endfor %}
+                        {% for tag in project_tags%}
+                        {% if tag not in tags %}
+                        <option value="{{tag.name}}" class="d-none">{{ tag.name }}</option>
+                        {% endif%}
                         {% endfor %}
                     </select>
                     <div class="selected_tags my-3 d-flex flex-wrap"></div>
@@ -116,6 +125,13 @@
         }
     });
 
+    window.addEventListener("load", function (event) {
+       let selected = document.querySelectorAll("option[class='d-none']")
+        for (let tag of selected){
+            tags(tag, ".selected_tags")
+        }
+    });
+
     document.querySelector("#add_tag").addEventListener("keyup", (e) => {
         e.preventDefault();
 
@@ -139,7 +155,7 @@
             newOption.text = e.target.value;
             newOption.classList.add("d-none");
             document.querySelector(".tags").append(newOption);
-            tags(e, ".selected_tags", true);
+            tags(e, ".selected_tags", 'new');
             e.target.value = "";
         }
     });
@@ -147,15 +163,18 @@
     // Gyms Tags
     document
         .querySelector(".tags")
-        .addEventListener("input", (e) => tags(e, ".selected_tags"));
+        .addEventListener("input", (e) => tags(e, ".selected_tags", 'old'));
 
-    function tags(e, tagsContainer, isInput = false) {
+    function tags(e, tagsContainer, input) {
         let option;
 
-        if (isInput) {
+        if (input == 'new') {
             option = e.target;
-        } else {
+        } else if (input == 'old') {
             option = e.target.options[e.target.selectedIndex];
+        }else{
+            option = e
+
         }
         let parentSpan = document.createElement("span");
         let spanTag = document.createElement("span");
@@ -189,7 +208,7 @@
         parentSpan.append(deleteTag);
         document.querySelector(tagsContainer).append(parentSpan);
 
-        if (!isInput) {
+        if (input == 'old') {
             option.classList.add("d-none");
             e.target.options[0].selected = true;
         }

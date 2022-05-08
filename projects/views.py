@@ -5,6 +5,7 @@ from django.shortcuts import redirect
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import ProjectForm
 from .models import Comment, ProjectImage, Tag, Project, Donation
@@ -210,7 +211,7 @@ def upload_project_images(request):
 # -------------------Donation-----------------------------#
 
 
-class CreateDonation(CreateView):
+class CreateDonation(LoginRequiredMixin,CreateView):
     model = Donation
     template_name = 'projects/project.html'
     fields = ["donation_amount", "project"]

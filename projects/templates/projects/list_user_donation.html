@@ -10,10 +10,10 @@
         {% for donation in donations%}
             <tr>
                 <td>
-                    {{donation.donation_amount}}
+                    {{donation.project.title}}
                 </td>
                 <td>
-                    {{donation.project.title}}
+                    {{donation.donation_amount}}
                 </td>
             </tr>
             {% empty %}

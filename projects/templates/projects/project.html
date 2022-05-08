@@ -107,35 +107,34 @@
                     </div>
                     <div class="goal mt-1">
                         <span class="fw-bold">Goal: </span>
-                       
                         <span>{{project.total_target|currency }}</span>
-
-                     
-
                     </div>
                 </div>
-
             </div>
 
             <div class="back_campaign mt-4">
                 <div class="generic_campaign">
                     <button
                         class="btn btn-secondary bg-transparent text-dark rounded-pill px-3 py-2"
+                        onclick='addDonation(10)'
                     >
                         $10
                     </button>
                     <button
                         class="btn btn-secondary bg-transparent text-dark rounded-pill px-3 py-2"
+                        onclick='addDonation(30)'
                     >
                         $30
                     </button>
                     <button
                         class="btn btn-secondary bg-transparent text-dark rounded-pill px-3 py-2"
+                        onclick='addDonation(50)'
                     >
                         $50
                     </button>
                     <button
                         class="btn btn-secondary bg-transparent text-dark rounded-pill px-3 py-2"
+                        onclick='addDonation(100)'
                     >
                         $100
                     </button>
@@ -147,7 +146,8 @@
                         <input
                             type="text" 
                             class="form-control d-inline-block w-25 rounded-pill p-2 set_money" 
-                            name="donation_amount"/>
+                            name="donation_amount"
+                        />
                         <input
                             type="submit"
                             value="Back Campaign"
@@ -241,6 +241,7 @@
 {% block script %}
 <script>
     let editButtons = document.querySelectorAll('.users_comments .edit_comment');
+    let inputDonation =document.getElementsByName("donation_amount")[0];
 
     editButtons.forEach(button => {
         button.addEventListener('click', e => {
@@ -274,5 +275,10 @@
         commentFormEditContainer.classList.remove('w-100');
         commentControllers.classList.remove('d-none')
     }
+
+    function addDonation(num){
+        inputDonation.value=num
+    }
+
 </script>
 {% endblock %}

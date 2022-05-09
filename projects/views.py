@@ -1,25 +1,25 @@
-from django.forms import ValidationError
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.db.models import Sum
 from django.shortcuts import redirect
-from django.views.generic import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+from django.core.files.storage import FileSystemStorage
+from django.contrib.messages.views import SuccessMessageMixin
+from django.views.generic import CreateView, UpdateView, DeleteView
+
 
 from .forms import ProjectForm
 from .models import Comment, ProjectImage, Tag, Project, Donation
 from users.models import User
 
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.core.files.storage import FileSystemStorage
 
-from django.contrib.messages.views import SuccessMessageMixin
 
 
 # Create your views here.
-
 
 def get_project_data(project_id):
     project = Project.objects.get(id=project_id)
@@ -96,16 +96,22 @@ def create_project(request):
 
     return render(request, "projects/project_create.html", context)
 
-
+@login_required
 def edit_project(request, project_id):
+    project = get_object_or_404(Project, id=project_id)
+    verified_tags = Tag.objects.filter(is_verified=True)
+    project_tags = project.tags.all()
+    project_form = ProjectForm(instance=project)
+
     if request.method == 'POST':
-        project_form = ProjectForm(request.POST)
+        project_form = ProjectForm(request.POST, instance=project)
         # fetching Images
         # images = request.FILES.getlist('images')
         images = request.POST['images'].split()
         # Adding New Tags
         retags = request.POST.getlist('tags[]')
         for tag in retags:
+            print(tag)
             if not Tag.objects.filter(name=tag).exists():
                 Tag.objects.create(name=tag, is_verified=False)
         # Creating new Project
@@ -114,6 +120,7 @@ def edit_project(request, project_id):
             project.user = request.user
             project.save()
             # saving tages
+            project.tags.clear()
             for tag in retags:
                 project.tags.add(Tag.objects.get(name=tag))
             project.save()
@@ -123,23 +130,22 @@ def edit_project(request, project_id):
                     image=f"projects/images/{img}", project=project)
 
         return redirect('project', project_id=project.id)
+    else:
+   
 
-    project = get_object_or_404(Project, id=project_id)
-    verified_tags = Tag.objects.filter(is_verified=True)
-    project_tags = project.tags.all()
-    project_form = ProjectForm(instance=project)
-
-    context = {'project_form': project_form, 'tags': verified_tags,
+        context = {'project_form': project_form, 'tags': verified_tags,
                'project': project, 'project_tags': project_tags}
 
-    return render(request, "projects/project_edit.html", context)
-
+        if request.user.id == project.user.id:
+            return render(request, "projects/project_edit.html", context)
+        else :
+            pass
 
 # -------------------------------------------------------------#
 
 class CreateComment(SuccessMessageMixin, CreateView):
     model = Comment
-    template_name = 'projects/project.html'
+    # template_name = 'projects/project.html'
 
     fields = ["comment", "project"]
 
@@ -161,7 +167,7 @@ class CreateComment(SuccessMessageMixin, CreateView):
 
 class EditComment(SuccessMessageMixin, UpdateView):
     model = Comment
-    template_name = 'projects/project.html'
+    # template_name = 'projects/project.html'
     fields = ["comment", "project"]
     pk_ur_kwargs = 'comment.id'
 

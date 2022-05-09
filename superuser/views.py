@@ -77,3 +77,4 @@ class DeleteUser(DeleteView):
     pk_ur_kwargs = 'user.id'
     template_name = 'superuser/delete_category.html'
     success_url = reverse_lazy('list_users')        
+

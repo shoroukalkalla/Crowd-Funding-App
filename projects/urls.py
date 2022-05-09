@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import EditComment, get_projects, get_project, create_project, CreateComment, DeleteComment, get_user_donations, upload_project_images, get_user_projects, edit_project
 from django.urls import path
-from .views import CreateComment, DeleteComment, EditComment, get_projects, get_project, create_project, upload_project_images, CreateDonation
+from .views import CreateComment, DeleteComment, EditComment,ReportProject, get_projects, get_project, create_project, upload_project_images, CreateDonation
 
 
 urlpatterns = [
@@ -15,6 +15,9 @@ urlpatterns = [
          CreateComment.as_view(), name="create_comment"),
     path('comments/<pk>', EditComment.as_view(), name='comment'),
     path('comments/delete/<pk>', DeleteComment.as_view(), name='delete_comment'),
+    path('projects/<int:project_id>/report', ReportProject, name='report_project'),
+
+
     path('upload_images/', upload_project_images, name="upload_project_images"),
 
 

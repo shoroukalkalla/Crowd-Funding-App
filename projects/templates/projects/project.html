@@ -350,7 +350,7 @@
 
             let commentText = replyForm.textContent;
             replyForm.innerHTML= `
-                <form method="POST" action="/comments/${comment.dataset.comment_id}/comment_reply_create">
+                <form method="POST" action="/comments/${comment.dataset.comment_id}/comment_reply_create" class="w-100">
                         {% csrf_token %}
                         <input type="text" class="form-control w-100" name="reply" required/>
                         <input type="hidden" name="comment" value="${comment.dataset.comment_id}" />

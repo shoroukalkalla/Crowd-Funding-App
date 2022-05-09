@@ -1,7 +1,5 @@
-from tkinter import Widget
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.forms import ImageField
 from django.utils.translation import gettext_lazy as _
 from django_countries.fields import CountryField
 from django.urls import reverse

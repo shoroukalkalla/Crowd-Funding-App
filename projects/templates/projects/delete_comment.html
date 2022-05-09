@@ -1,0 +1,20 @@
+{% extends 'layouts/base.html' %}
+{% block content %}
+
+<div class="container text-center w-75 m-auto">
+
+    <h3 class="py-3">Delete Comment</h3>
+    <form method="post">
+        {% csrf_token %}
+        <div class="alert alert-danger mt-2 d-flex justify-content-between p-4" role="alert">
+            Are you Sure  ?!
+            <div>
+                <button type="submit" class="btn btn-danger" title="Delete"><i class="fa-solid fa-trash-can"></i></button>
+                <button type="button" class="btn btn-secondary" title="Go Back" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+{% endblock %}

@@ -1,4 +1,4 @@
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import User
 from django import forms
 from django.forms.widgets import DateInput
@@ -21,18 +21,8 @@ class CustomRegistration(UserCreationForm):
         for fieldname in ['username', 'password1', 'password2']:
             self.fields[fieldname].help_text = None
 
-
-# class CustomLogin(UserChangeForm):
-
-#     password = ReadOnlyPasswordHashField()
-
-#     class Meta:
-#         model = User
-#         fields = ("email", )
-
 class CustomLogin(AuthenticationForm):
     username = forms.CharField(label='Email / Username')
-
 
 class Profile(forms.ModelForm):
     def __init__(self, *args, **kwargs):

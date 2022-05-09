@@ -11,6 +11,7 @@ defusedxml==0.7.1
 Django==4.0.4
 django-countries==7.3.2
 django-crispy-forms==1.14.0
+django-tempus-dominus==5.1.2.17
 django-utils-six==2.0
 executing==0.8.3
 idna==3.3
@@ -20,9 +21,11 @@ matplotlib-inline==0.1.3
 mysqlclient==2.1.0
 oauthlib==3.2.0
 parso==0.8.3
+pexpect==4.8.0
 pickleshare==0.7.5
 Pillow==9.1.0
 prompt-toolkit==3.0.29
+ptyprocess==0.7.0
 pure-eval==0.2.2
 pycodestyle==2.8.0
 Pygments==2.12.0

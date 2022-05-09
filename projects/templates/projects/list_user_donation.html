@@ -1,0 +1,27 @@
+{% extends 'layouts/base.html' %}
+{% block content %}
+<h1> My Donations </h1>
+<table class="table table-hover table-striped text-center">
+    <thead>
+        <th>Project</th>
+        <th>Donation Mount</th>
+    </thead>
+    <tbody>
+        {% for donation in donations%}
+            <tr>
+                <td>
+                    <a  href="{% url   'project' donation.project.id  %}"class="text-decoration-none">
+                        {{donation.project.title}}
+                    </a>
+                </td>
+                <td>
+                        ${{donation.donation_amount}}
+                </td>
+            </tr>
+            {% empty %}
+            <h4 class="text-center w-100"> No Donations </h4>
+        {% endfor %}  
+    </tbody>
+</table>
+
+{% endblock %}

@@ -1,7 +1,7 @@
 from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
-from projects.models import Category, Project, ProjectTag
+from projects.models import Category, Project, Tag
 from re import template
 
 from users.models import User
@@ -50,14 +50,14 @@ def verify_project(req, project_id):
 
 
 class ListTag(ListView):
-    model = ProjectTag
+    model = Tag
     context_object_name = 'tags'
-    queryset = ProjectTag.objects.select_related('project')
+    queryset = Tag.objects.select_related('project')
     template_name = 'superuser/list_tags.html'
 
 
 def verify_tag(req, id):
-    ProjectTag.objects.filter(id=id).update(is_verified=True)
+    Tag.objects.filter(id=id).update(is_verified=True)
     return redirect(reverse('list_tags'))
 
 

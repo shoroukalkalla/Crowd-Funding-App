@@ -1,19 +1,52 @@
-{% extends 'layouts/base.html' %} {% block content %}
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% load my_filters %}
+{% load crispy_forms_tags %}
 
+{% block content %}
+
+
+{% if not project_user.email %}
+<meta http-equiv="REFRESH" content="0;url='/'" />
+{% endif %}
 <div class="project_desc mt-5">
     <div class="row d-flex align-items-center">
-        <div class="col-6">
-            <div class="img_box">
-                <img
-                    class="mw-100"
-                    src="https://images.unsplash.com/photo-1541976844346-f18aeac57b06?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=435&q=80"
-                    alt=""
-                />
-            </div>
+        <div class="col-md-12 col-lg-6 mb-md-4 mb-lg-0">
+            
+                    <div id="carouselExampleIndicators" class="carousel slide img_box" data-bs-ride="carousel">
+                        <div class="carousel-indicators">
+                        {% for img in images %}
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{forloop.counter0}}" {% if forloop.counter0 == 0 %} class="active" aria-current="true" {% endif %} aria-label="Slide{{forloop.counter0}}"></button>
+                        {% endfor %}
+                
+                        </div>
+                        <div class="carousel-inner img_box">
+                            {% for img in images %}
+                          <div class="carousel-item {% if forloop.counter0 == 0 %} active {% endif %}" data-interval="50">
+                            <img src="{{img.image.url}}" class="d-block mw-100" alt="...">
+                          </div>
+                          {% empty %}
+                          <img src="{{MEDIA_URL}}/projects/images/default.jpg" class="d-block"/>
+                          {% endfor %}
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                          <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                          <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                    
         </div>
-        <div class="col-6">
-            <h4 class="text-muted fs-6 fw-normal">Category</h4>
-            <h3 class="title p-1">Let's Move Mountains For This.</h3>
+        <div class="col-md-12 col-lg-6">
+            <h4 class="text-muted fs-6 fw-normal">{{project.category}}</h4>
+            <h3 class="title p-1">{{project.title}}</h3>
+            <a data-bs-toggle="modal" data-bs-target="#reportProject{{project.id}}" class="btn btn-danger rounded-pill p-2" href="{% url   'report_project'  project.id %}">Report</a>
+
+
+  
             <div class="rates my-3">
                 <em class="fa-solid fa-star text-warning"></em>
                 <em class="fa-solid fa-star text-warning"></em>
@@ -24,14 +57,14 @@
             <div class="user d-flex align-items-center">
                 <div class="user_avatar">
                     <img
-                        src="https://images.unsplash.com/photo-1574108233269-86d1199d28de?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"
+                        src="{{project_user.avatar.url}}"
                         class="avatar"
-                        alt="Jean"
+                        alt="{{project_user.name}}"
                     />
                 </div>
                 <div class="user_info ms-3">
-                    <span class="fs-4">Jean</span>
-                    <span class="d-block">5 Campaigns</span>
+                    <span class="fs-4">{{project_user}}</span>
+                    <span class="d-block">{{num_of_Projects}} Campaigns</span>
                 </div>
             </div>
             <div class="project_info mt-5">
@@ -39,47 +72,46 @@
                     <div class="row">
                         <div class="col-4">
                             <p class="mb-0 text-center">
-                                <span class="fw-bold">$5,000</span>
+                                <span class="fw-bold">{{ donation_amount|currency }}</span>
                                 <span class="d-block">Pledged</span>
                             </p>
                         </div>
                         <div class="col-4">
                             <p class="mb-0 text-center">
-                                <span class="fw-bold">10</span>
+                                <span class="fw-bold">{{donators}}</span>
                                 <span class="d-block">Backers</span>
                             </p>
                         </div>
                         <div class="col-4">
                             <p class="mb-0 text-center">
-                                <span class="fw-bold">100</span>
-                                <span class="d-block">Days Remain</span>
+                                <span class="fw-bold">{{project.end_time|timeuntil}}</span>
+                                <span class="d-block">Remaining</span>
                             </p>
                         </div>
                     </div>
                 </div>
 
                 <hr class="opacity-25" />
-
                 <div class="progress_box mt-3">
                     <div
                         class="progress_info mb-1 d-flex justify-content-between"
                     >
                         <span>Raised: </span>
-                        <span>50%</span>
+                        <span>{{ donation_amount |as_percentage_of:project.total_target }}%</span>
                     </div>
                     <div class="progress">
                         <div
                             class="progress-bar bg-info"
                             role="progressbar"
-                            style="width: 50%"
-                            aria-valuenow="50"
+                            style="width: {{ donation_amount |as_percentage_of:project.total_target }}%"
+                            aria-valuenow="{{ donation_amount |as_percentage_of:project.total_target }}"
                             aria-valuemin="0"
                             aria-valuemax="100"
                         ></div>
                     </div>
                     <div class="goal mt-1">
                         <span class="fw-bold">Goal: </span>
-                        <span>20,000</span>
+                        <span>{{project.total_target|currency }}</span>
                     </div>
                 </div>
             </div>
@@ -87,40 +119,51 @@
             <div class="back_campaign mt-4">
                 <div class="generic_campaign">
                     <button
-                        class="btn btn-secondary bg-transparent text-dark rounded-pill px-3 py-2"
+                        class="donationBtn btn btn-secondary  text-ligth clicked rounded-pill px-3 py-2"
+                        onclick='addDonation(event,10)'
                     >
                         $10
                     </button>
                     <button
-                        class="btn btn-secondary bg-transparent text-dark rounded-pill px-3 py-2"
+                        class="donationBtn btn btn-secondary text-dark bg-transparent rounded-pill px-3 py-2"
+                        onclick='addDonation(event,30)'
                     >
                         $30
                     </button>
                     <button
-                        class="btn btn-secondary bg-transparent text-dark rounded-pill px-3 py-2"
+                        class="donationBtn btn btn-secondary text-dark bg-transparent rounded-pill px-3 py-2"
+                        onclick='addDonation(event,50)'
                     >
                         $50
                     </button>
                     <button
-                        class="btn btn-secondary bg-transparent text-dark rounded-pill px-3 py-2"
+                        class="donationBtn btn btn-secondary text-dark bg-transparent rounded-pill px-3 py-2"
+                        onclick='addDonation(event,100)'
                     >
                         $100
                     </button>
                 </div>
                 <div class="custom_campaign mt-4">
-                    <form>
+                    <form method="POST" action="/projects/{{project.id}}/create_donation">
                         <span>$</span>
+                        {% csrf_token %}
                         <input
-                            type="text"
-                            class="form-control d-inline-block w-25 rounded-pill p-2 set_money"
-                            value="10"
+                            type="text" 
+                            class="form-control d-inline-block w-25 rounded-pill p-2 set_money" 
+                            name="donation_amount"
+                            value=10
                         />
                         <input
                             type="submit"
                             value="Back Campaign"
-                            class="btn btn-success rounded-pill p-2"
-                        />
+                            class="btn btn-success rounded-pill p-2"/>
+
+
+   
+                        <input type="hidden" name="project" value="{{project.id}}" />
+
                     </form>
+
                 </div>
             </div>
         </div>
@@ -128,88 +171,140 @@
     <div class="desc my-4">
         <h3>Description</h3>
         <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores
-            esse sit ea debitis, nesciunt corrupti exercitationem itaque.
-            Blanditiis maiores tempore iusto necessitatibus, beatae libero
-            numquam cum corrupti voluptatem dolores voluptatibus perspiciatis.
-            Incidunt id, fuga corporis necessitatibus ipsa distinctio similique
-            ea officiis sunt porro ratione atque deleniti numquam voluptas
-            minima consequatur repudiandae laudantium? Sequi ipsam ducimus odio
-            autem cum vero quae rerum, excepturi quod atque possimus, corporis,
-            a eum adipisci iure qui quaerat earum aliquid quas ipsa odit omnis
-            veritatis impedit ad? Dolores nostrum odio natus quod, beatae
-            consequatur tenetur soluta, maiores ex nobis saepe voluptatibus
-            atque consectetur, non assumenda praesentium.
+            {{project.details}}
         </p>
     </div>
-    <div class="comments my-4">
-        <h3>Comments</h3>
-        <div class="user d-flex mt-3">
-            <div class="user_avatar">
-                <img
-                    src="https://images.unsplash.com/photo-1574108233269-86d1199d28de?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"
-                    class="avatar"
-                    alt="Jean"
-                />
+        <div id="comments" class="comments my-4">
+            <h3>Comments</h3>
+            {% if user.is_authenticated %}
+            <div class="user d-flex mt-3">
+                <div class="user_avatar">
+                    <img
+                        src="{{MEDIA_URL}}{{user.avatar}}"
+                        class="avatar"
+                        alt="Jean"
+                    />
+                </div>
+                <div class="user_info ms-3 w-100">
+                    <form method="POST" action="/projects/{{project.id}}/comment_create">
+                        {% csrf_token %}
+                        <input type="text" class="form-control" name="comment" required/>
+                        <input type="hidden" name="project" value="{{project.id}}" />
+                        <div class="text-end mt-2">
+                            <input
+                                type="submit"
+                                value="Add Comment"
+                                class="btn btn-secondary rounded-3"
+                            />
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="user_info ms-3 w-100">
-                <form>
-                    <input type="text" class="form-control" />
-                    <div class="text-end mt-2">
-                        <input
-                            type="submit"
-                            value="Add Comment"
-                            class="btn btn-secondary rounded-3"
-                        />
-                    </div>
-                </form>
-            </div>
-        </div>
-
+            {% endif %}
         <hr class="opacity-25" />
 
-        <div class="users_comments mt-4">
-            <div class="user d-flex mt-3">
+        <!-- ------Comments -------- -->
+        {% for comment in comments %}
+        <div class="users_comments mt-4 bg-light rounded shadow-sm py-2 px-3 " id="comment{{comment.id}}">
+            <div class="user d-flex mt-3 d-flex">
                 <div class="user_avatar">
-                    <img
-                        src="https://cdn.pixabay.com/photo/2017/04/01/21/06/portrait-2194457_960_720.jpg"
-                        class="avatar"
-                        alt="Jean"
-                    />
+                    <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title={{comment.user.username}}>
+                        <img
+                            src="{{MEDIA_URL}}{{comment.user.avatar}}"
+                            class="avatar"
+                            alt="Jean"
+                        />
+                    </span>
                 </div>
-                <div class="user_info ms-3 w-100">
-                    <p>
-                        Lorem ipsum dolor sit, amet consectetur adipisicing
-                        elit. Excepturi quis vel ullam asperiores, distinctio
-                        incidunt, non et error officiis quisquam praesentium
-                        pariatur. Quis, beatae nesciunt fugit asperiores rerum
-                        recusandae qui odit maiores atque ad cupiditate,
-                        temporibus dignissimos. Quasi, maxime eum! Sapiente
-                        mollitia commodi id quia iste aliquid non minima
-                        aspernatur.
-                    </p>
+                <div class="ms-2 w-100">
+                    <span class="fw-bold">{{comment.user.first_name}}</span>
+                    <div class="user_info w-100 d-flex justify-content-between">
+                        <div class="comment" data-comment_id = {{comment.id}} data-project_id = {{project.id}}>{{comment.comment}} </div>
+                        {% if user.id == comment.user_id %}
+                            <div>
+                                <button class="text-warning border-0 edit_comment"><em class="fa-solid fa-pen-to-square"></em></button>
+                                <a data-bs-toggle="modal" data-bs-target="#deleteComment{{comment.id}}" class="text-danger border-0 mx-2" href="{% url   'delete_comment'  comment.id %}"><em class="fa-solid fa-trash-can"></em></a>
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
+                
+                <!-- Delete Modal -->
+
+                {% include 'projects/deleteModal.html' with delete_modal_id=comment.id delete_modal_title='deleteComment' project_id=project.id%}
+                {% include 'projects/reportModal.html' with report_modal_id=project.id report_modal_title='reportProject' project_id=project.id%}
+
+                <!-- End Modal-->
+
+
+
             </div>
         </div>
-        <div class="users_comments mt-4">
-            <div class="user d-flex mt-3">
-                <div class="user_avatar">
-                    <img
-                        src="https://images.unsplash.com/photo-1582233479366-6d38bc390a08?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1183&q=80"
-                        class="avatar"
-                        alt="Jean"
-                    />
-                </div>
-                <div class="user_info ms-3 w-100">
-                    <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Dolores laboriosam nostrum deleniti corporis magni
-                        eveniet sunt sed dolore eaque iusto?
-                    </p>
-                </div>
-            </div>
-        </div>
+        {% empty %}
+            <h4 class="text-center w-100"> No comments </h4>
+        {% endfor %}
     </div>
 </div>
+{% endblock %}
 
+{% block script %}
+<script>
+    let editButtons = document.querySelectorAll('.users_comments .edit_comment');
+    let inputDonation =document.getElementsByName("donation_amount")[0];
+    let donationBtns = document.querySelectorAll(".donationBtn");
+
+
+    editButtons.forEach(button => {
+        button.addEventListener('click', e => {
+            let commentControllers = e.target.parentElement.parentElement;
+            let comment = commentControllers.previousElementSibling;
+
+            commentControllers.classList.add('class', 'd-none');
+
+            comment.setAttribute('class', 'w-100')
+            // comment.classlist.add('w-100');
+            let commentText = comment.textContent;
+            
+            comment.innerHTML = `
+                <form method='POST' action = '/comments/${comment.dataset.comment_id}'>
+                    {% csrf_token %}
+                <input type="text" name="comment" value='${commentText}' class="form-control" required />
+                <input type="hidden" value=${comment.dataset.project_id} name="project" />
+                <div class="mt-2">
+                    <button type="button" onclick="cancelEditComment(event, '${commentText}')" class="btn btn-secondary">Cancel</button>
+                    <input class="btn btn-success" type="submit" value="Save" />
+                </div>
+            `
+        })
+    })
+
+    function cancelEditComment(event, commentText) {
+        let commentFormEditContainer = event.target.parentElement.parentElement.parentElement;
+        let commentControllers = commentFormEditContainer.nextElementSibling;
+
+        commentFormEditContainer.innerHTML = commentText;
+        commentFormEditContainer.classList.remove('w-100');
+        commentControllers.classList.remove('d-none')
+    }
+
+    function addDonation(event,num){
+        inputDonation.value=num;
+        for(btn of donationBtns){
+            if(btn.classList.contains('clicked')){
+                btn.classList.remove("clicked");
+            }
+        }
+        event.target.classList.add("clicked");
+        for(btn of donationBtns){
+            if(btn.classList.contains('clicked')){
+                btn.classList.remove("bg-transparent")
+                btn.classList.remove("text-dark")
+            }else{
+                btn.classList.add("bg-transparent")
+                btn.classList.add("text-dark")
+            }
+        }
+    }
+
+</script>
 {% endblock %}

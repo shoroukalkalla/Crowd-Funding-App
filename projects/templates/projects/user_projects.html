@@ -1,0 +1,19 @@
+{% extends 'projects/projects.html' %} {% load my_filters %} {% load static %}
+{% block user_projects%}
+<hr class="opacity-25" />
+<div class="info">
+  <div class="row">
+    <div class="col-6">
+      <p class="mb-0 text-center">
+        <a href="{% url 'project_edit' project.project.id %}"><button class="btn btn-warning">Edit</button></a>
+     
+      </p>
+    </div>
+    <div class="col-6">
+      <p class="mb-0 text-center">
+        <a><button class="btn btn-danger">Delete</button></a>
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

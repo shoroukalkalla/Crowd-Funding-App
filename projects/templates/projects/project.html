@@ -43,8 +43,12 @@
         <div class="col-md-12 col-lg-6">
             <h4 class="text-muted fs-6 fw-normal">{{project.category}}</h4>
             <h3 class="title p-1">{{project.title}}</h3>
-            <a data-bs-toggle="modal" data-bs-target="#reportProject{{project.id}}" class="btn btn-danger rounded-pill p-2" href="{% url   'report_project'  project.id %}">Report</a>
 
+            {% if project.user.id != user.id %}
+            <a data-bs-toggle="modal" data-bs-target="#reportProject{{project.id}}" class="btn btn-danger rounded-pill p-2" href="{% url   'report_project'  project.id %}">Report</a>
+            {% include 'projects/reportModal.html' with report_modal_id=project.id report_modal_title='reportProject' project_id=project.id%}
+
+            {% endif %}
 
   
             <div class="rates my-3">
@@ -232,7 +236,6 @@
                 <!-- Delete Modal -->
 
                 {% include 'projects/deleteModal.html' with delete_modal_id=comment.id delete_modal_title='deleteComment' project_id=project.id%}
-                {% include 'projects/reportModal.html' with report_modal_id=project.id report_modal_title='reportProject' project_id=project.id%}
 
                 <!-- End Modal-->
 
@@ -243,8 +246,11 @@
         {% empty %}
             <h4 class="text-center w-100"> No comments </h4>
         {% endfor %}
+
+
     </div>
 </div>
+
 {% endblock %}
 
 {% block script %}

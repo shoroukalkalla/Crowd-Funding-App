@@ -12,15 +12,20 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.files.storage import FileSystemStorage
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import CreateView, UpdateView, DeleteView
+from rest_framework import viewsets, generics
+from rest_framework.views import APIView
+from django.http import Http404
+from django.core.exceptions import PermissionDenied
+
+
+from .serializers import ProjectSerializer, ProjectImagesSerializer
 
 from requests import request
 from django.contrib import messages
 
-from .forms import ProjectForm,ProjectReports
-from .models import Comment, ProjectImage, Tag, Project, Donation,ProjectReport
+from .forms import ProjectForm, ProjectReports
+from .models import Comment, ProjectImage, Tag, Project, Donation, ProjectReport, ProjectImage
 from users.models import User
-
-
 
 
 # Create your views here.
@@ -55,7 +60,7 @@ def get_project(request, project_id):
     context = get_project_data(project_id)
     return render(request, 'projects/project.html', context)
 
-
+@login_required
 def get_user_projects(request):
     project_array = []
 
@@ -66,7 +71,7 @@ def get_user_projects(request):
 
     return render(request, 'projects/user_projects.html', {'projects': project_array})
 
-
+@login_required
 def create_project(request):
     if request.method == 'POST':
         project_form = ProjectForm(request.POST)
@@ -100,6 +105,7 @@ def create_project(request):
 
     return render(request, "projects/project_create.html", context)
 
+
 @login_required
 def edit_project(request, project_id):
     project = get_object_or_404(Project, id=project_id)
@@ -112,6 +118,10 @@ def edit_project(request, project_id):
         # fetching Images
         # images = request.FILES.getlist('images')
         images = request.POST['images'].split()
+        deleted_images = request.POST['ids'].split(',')
+        for img in deleted_images:
+            print(img)
+            ProjectImage.objects.get(id=img).delete()
         # Adding New Tags
         retags = request.POST.getlist('tags[]')
         for tag in retags:
@@ -132,18 +142,19 @@ def edit_project(request, project_id):
             for img in images:
                 ProjectImage.objects.create(
                     image=f"projects/images/{img}", project=project)
+            
 
         return redirect('project', project_id=project.id)
     else:
-   
 
         context = {'project_form': project_form, 'tags': verified_tags,
-               'project': project, 'project_tags': project_tags}
+                   'project': project, 'project_tags': project_tags}
 
         if request.user.id == project.user.id:
             return render(request, "projects/project_edit.html", context)
-        else :
-            pass
+        else:
+            raise PermissionDenied()
+
 
 # -------------------------------------------------------------#
 
@@ -196,16 +207,15 @@ class DeleteComment(SuccessMessageMixin, DeleteView):
         return f"/projects/{self.request.POST['project_id']}#comments"
 
 #-------------------------------------report----------------------------------------------#
+
+
 def ReportProject(request, project_id):
-     if request.method == 'POST':
+    if request.method == 'POST':
         projectReports = ProjectReports(request.POST)
         if projectReports.is_valid():
-         projectReports.save()
-         messages.success(request,'The report has sent successfully')
-         return redirect('project', project_id=project_id)
-  
-
-    
+            projectReports.save()
+            messages.success(request, 'The report has sent successfully')
+            return redirect('project', project_id=project_id)
 
 
 @ csrf_exempt
@@ -230,10 +240,30 @@ def upload_project_images(request):
         })
         raise e
 
+
+class ProjectViewSet(viewsets.ModelViewSet, APIView):
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
+
+
+
+class ProjectImagesViewSet(viewsets.ModelViewSet,generics.ListAPIView):
+    serializer_class = ProjectImagesSerializer
+
+    def get_queryset(self):
+        """
+        Optionally restricts the returned purchases to a given user,
+        by filtering against a `username` query parameter in the URL.
+        """
+        queryset = ProjectImage.objects.all()
+        project_id = self.request.query_params.get('project_id')
+        if project_id is not None:
+            queryset = queryset.filter(project_id=project_id)
+        return queryset
 # -------------------Donation-----------------------------#
 
 
-class CreateDonation(LoginRequiredMixin,CreateView):
+class CreateDonation(LoginRequiredMixin, CreateView):
     model = Donation
     template_name = 'projects/project.html'
     fields = ["donation_amount", "project"]
@@ -253,7 +283,7 @@ class CreateDonation(LoginRequiredMixin,CreateView):
 
 def get_user_donations(request):
     donations = Donation.objects.filter(donator=request.user.id)
-    context={
+    context = {
         'donations': donations,
     }
     return render(request, 'projects/list_user_donation.html', context)

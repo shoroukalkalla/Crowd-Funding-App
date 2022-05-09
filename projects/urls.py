@@ -1,7 +1,18 @@
-from django.urls import path
+from django.urls import path, include
 from .views import EditComment, get_projects, get_project, create_project, CreateComment, DeleteComment, get_user_donations, upload_project_images, get_user_projects, edit_project
 from django.urls import path
 from .views import CreateComment, DeleteComment, EditComment,ReportProject, get_projects, get_project, create_project, upload_project_images, CreateDonation
+
+from rest_framework import routers
+
+
+from .views import ProjectViewSet, ProjectImagesViewSet
+
+router = routers.DefaultRouter()
+router.register(r'api/projects', ProjectViewSet)
+router.register(r'api/images', ProjectImagesViewSet, basename='images')
+
+
 
 
 urlpatterns = [
@@ -19,6 +30,7 @@ urlpatterns = [
 
 
     path('upload_images/', upload_project_images, name="upload_project_images"),
+    path('', include(router.urls)),
 
 
     path('projects/<int:project_id>/create_donation',

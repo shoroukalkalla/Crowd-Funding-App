@@ -9,8 +9,11 @@ from django.forms.widgets import DateTimeInput, DateInput
 
 class ProjectForm(forms.ModelForm):
     start_time = forms.DateTimeField(
-        widget=DateTimeInput(attrs={'type': 'datetime-local'}))
-    end_time = forms.DateTimeField(widget=DateTimeInput(
+        input_formats=["%Y-%m-%dT%H:%M", ],
+        widget=DateTimeInput(attrs={'type': 'datetime-local'},format='%Y-%m-%dT%H:%M'))
+    end_time = forms.DateTimeField(
+        input_formats=["%Y-%m-%dT%H:%M", ],
+        widget=DateTimeInput(format='%Y-%m-%dT%H:%M',
         attrs={'type': 'datetime-local', 'min': datetime.now().date()}))
 
     class Meta:

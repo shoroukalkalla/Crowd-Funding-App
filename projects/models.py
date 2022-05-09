@@ -42,6 +42,9 @@ class ProjectImage(models.Model):
     image = models.ImageField(upload_to="projects/images",
                                 height_field=None, width_field=None, max_length=100)
 
+    def delete(self, using=None, keep_parents=False):
+        self.image.storage.delete(self.image.name)
+        super().delete()
 
 class Donation(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)

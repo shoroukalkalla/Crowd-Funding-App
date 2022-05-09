@@ -48,7 +48,8 @@ INSTALLED_APPS = [
 
     "crispy_forms",
     "crispy_bootstrap5",
-    'tempus_dominus'
+    'tempus_dominus',
+    'rest_framework'
 ]
 
 AUTH_USER_MODEL = 'users.User'
@@ -174,3 +175,15 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = "shroukalkalla1997@gmail.com"
 EMAIL_HOST_PASSWORD = "milhtvzeteapfgbv"
 DEFAULT_FROM_EMAIL = "shroukalkalla1997@gmail.com"
+
+
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
+
+DATE_FORMAT = 'YYYY-MM-DD'

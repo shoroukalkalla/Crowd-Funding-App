@@ -1,8 +1,9 @@
+from django.http import JsonResponse
+from pyexpat import model
 from django.forms import ValidationError
 from django.shortcuts import render
 from django.db.models import Sum
 from django.shortcuts import redirect
-from django.views.generic import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -12,14 +13,28 @@ from .models import Comment, CommentReply, ProjectImage, Tag, Project, Donation
 from users.models import User
 
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.core.files.storage import FileSystemStorage
-
 from django.contrib.messages.views import SuccessMessageMixin
+from django.views.generic import CreateView, UpdateView, DeleteView
+from rest_framework import viewsets, generics
+from rest_framework.views import APIView
+from django.http import Http404
+from django.core.exceptions import PermissionDenied
+
+
+from .serializers import ProjectSerializer, ProjectImagesSerializer
+
+from requests import request
+from django.contrib import messages
+
+from .forms import ProjectForm, ProjectReports ,CommentReport
+from .models import Comment, ProjectImage, Tag, Project, Donation, ProjectReport, ProjectImage
+from users.models import User
 
 
 # Create your views here.
-
 
 def get_project_data(project_id):
     project = Project.objects.get(id=project_id)
@@ -31,7 +46,7 @@ def get_project_data(project_id):
     donators = Donation.objects.filter(
         project_id=project.id).values('donator').distinct().count()
     comments = Comment.objects.filter(project_id=project_id).order_by('-id')
-    commentReplies=CommentReply.objects.all();
+    commentReplies=CommentReply.objects.all().order_by('-id');
     data = {'project': project, 'project_user': user, 'images': images, "num_of_Projects": num_of_Projects,
             'donation_amount': amount['donation_amount__sum'], 'donators': donators, 'comments': comments,'commentReplies':commentReplies}
     return data
@@ -52,7 +67,7 @@ def get_project(request, project_id):
     context = get_project_data(project_id)
     return render(request, 'projects/project.html', context)
 
-
+@login_required
 def get_user_projects(request):
     project_array = []
 
@@ -63,7 +78,7 @@ def get_user_projects(request):
 
     return render(request, 'projects/user_projects.html', {'projects': project_array})
 
-
+@login_required
 def create_project(request):
     if request.method == 'POST':
         project_form = ProjectForm(request.POST)
@@ -98,15 +113,26 @@ def create_project(request):
     return render(request, "projects/project_create.html", context)
 
 
+@login_required
 def edit_project(request, project_id):
+    project = get_object_or_404(Project, id=project_id)
+    verified_tags = Tag.objects.filter(is_verified=True)
+    project_tags = project.tags.all()
+    project_form = ProjectForm(instance=project)
+
     if request.method == 'POST':
-        project_form = ProjectForm(request.POST)
+        project_form = ProjectForm(request.POST, instance=project)
         # fetching Images
         # images = request.FILES.getlist('images')
         images = request.POST['images'].split()
+        deleted_images = request.POST['ids'].split(',')
+        for img in deleted_images:
+            print(img)
+            ProjectImage.objects.get(id=img).delete()
         # Adding New Tags
         retags = request.POST.getlist('tags[]')
         for tag in retags:
+            print(tag)
             if not Tag.objects.filter(name=tag).exists():
                 Tag.objects.create(name=tag, is_verified=False)
         # Creating new Project
@@ -115,6 +141,7 @@ def edit_project(request, project_id):
             project.user = request.user
             project.save()
             # saving tages
+            project.tags.clear()
             for tag in retags:
                 project.tags.add(Tag.objects.get(name=tag))
             project.save()
@@ -122,25 +149,25 @@ def edit_project(request, project_id):
             for img in images:
                 ProjectImage.objects.create(
                     image=f"projects/images/{img}", project=project)
+            
 
         return redirect('project', project_id=project.id)
+    else:
 
-    project = get_object_or_404(Project, id=project_id)
-    verified_tags = Tag.objects.filter(is_verified=True)
-    project_tags = project.tags.all()
-    project_form = ProjectForm(instance=project)
+        context = {'project_form': project_form, 'tags': verified_tags,
+                   'project': project, 'project_tags': project_tags}
 
-    context = {'project_form': project_form, 'tags': verified_tags,
-               'project': project, 'project_tags': project_tags}
-
-    return render(request, "projects/project_edit.html", context)
+        if request.user.id == project.user.id:
+            return render(request, "projects/project_edit.html", context)
+        else:
+            raise PermissionDenied()
 
 
 # -------------------------------------------------------------#
 
 class CreateComment(SuccessMessageMixin, CreateView):
     model = Comment
-    template_name = 'projects/project.html'
+    # template_name = 'projects/project.html'
 
     fields = ["comment", "project"]
 
@@ -162,7 +189,7 @@ class CreateComment(SuccessMessageMixin, CreateView):
 
 class EditComment(SuccessMessageMixin, UpdateView):
     model = Comment
-    template_name = 'projects/project.html'
+    # template_name = 'projects/project.html'
     fields = ["comment", "project"]
     pk_ur_kwargs = 'comment.id'
 
@@ -185,6 +212,29 @@ class DeleteComment(SuccessMessageMixin, DeleteView):
 
     def get_success_url(self):
         return f"/projects/{self.request.POST['project_id']}#comments"
+
+#-------------------------------------report----------------------------------------------#
+
+
+def ReportProject(request, project_id):
+    if request.method == 'POST':
+        projectReports = ProjectReports(request.POST)
+        if projectReports.is_valid():
+            projectReports.save()
+            messages.success(request, 'The report has sent successfully')
+            return redirect('project', project_id=project_id)
+
+def ReportComment(request,comment_id):
+    comment=get_object_or_404(Comment,id=comment_id)
+    projectId=comment.project.id
+    if request.method == 'POST':
+        commentReports = CommentReport(request.POST)
+        if commentReports.is_valid():
+            commentReports.save()
+            messages.success(request, 'The report has sent successfully')    
+            return redirect('project', project_id=projectId)
+
+
 
 
 @ csrf_exempt
@@ -209,10 +259,30 @@ def upload_project_images(request):
         })
         raise e
 
+
+class ProjectViewSet(viewsets.ModelViewSet, APIView):
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
+
+
+
+class ProjectImagesViewSet(viewsets.ModelViewSet,generics.ListAPIView):
+    serializer_class = ProjectImagesSerializer
+
+    def get_queryset(self):
+        """
+        Optionally restricts the returned purchases to a given user,
+        by filtering against a `username` query parameter in the URL.
+        """
+        queryset = ProjectImage.objects.all()
+        project_id = self.request.query_params.get('project_id')
+        if project_id is not None:
+            queryset = queryset.filter(project_id=project_id)
+        return queryset
 # -------------------Donation-----------------------------#
 
 
-class CreateDonation(LoginRequiredMixin,CreateView):
+class CreateDonation(LoginRequiredMixin, CreateView):
     model = Donation
     template_name = 'projects/project.html'
     fields = ["donation_amount", "project"]
@@ -232,7 +302,7 @@ class CreateDonation(LoginRequiredMixin,CreateView):
 
 def get_user_donations(request):
     donations = Donation.objects.filter(donator=request.user.id)
-    context={
+    context = {
         'donations': donations,
     }
     return render(request, 'projects/list_user_donation.html', context)

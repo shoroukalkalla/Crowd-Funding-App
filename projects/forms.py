@@ -1,14 +1,19 @@
 from datetime import datetime
+from importlib.metadata import files
+from statistics import mode
 from tracemalloc import start
-from .models import Project, Category, Tag, ProjectImage
+from .models import Project, Category, Tag, ProjectImage,ProjectReport,CommentReport
 from django import forms
 from django.forms.widgets import DateTimeInput, DateInput
 
 
 class ProjectForm(forms.ModelForm):
     start_time = forms.DateTimeField(
-        widget=DateTimeInput(attrs={'type': 'datetime-local'}))
-    end_time = forms.DateTimeField(widget=DateTimeInput(
+        input_formats=["%Y-%m-%dT%H:%M", ],
+        widget=DateTimeInput(attrs={'type': 'datetime-local'},format='%Y-%m-%dT%H:%M'))
+    end_time = forms.DateTimeField(
+        input_formats=["%Y-%m-%dT%H:%M", ],
+        widget=DateTimeInput(format='%Y-%m-%dT%H:%M',
         attrs={'type': 'datetime-local', 'min': datetime.now().date()}))
 
     class Meta:
@@ -42,4 +47,15 @@ class TagForm(forms.ModelForm):
 class ProjectImageForm(forms.ModelForm):
     class Meta:
         model = ProjectImage
+        fields = '__all__'
+
+
+class ProjectReports(forms.ModelForm):
+    class Meta:
+        model =ProjectReport
+        fields = '__all__'
+
+class CommentReport(forms.ModelForm):
+    class Meta:
+        model =CommentReport
         fields = '__all__'

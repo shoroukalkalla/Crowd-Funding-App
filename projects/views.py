@@ -23,7 +23,7 @@ from .serializers import ProjectSerializer, ProjectImagesSerializer
 from requests import request
 from django.contrib import messages
 
-from .forms import ProjectForm, ProjectReports
+from .forms import ProjectForm, ProjectReports ,CommentReport
 from .models import Comment, ProjectImage, Tag, Project, Donation, ProjectReport, ProjectImage
 from users.models import User
 
@@ -216,6 +216,16 @@ def ReportProject(request, project_id):
             projectReports.save()
             messages.success(request, 'The report has sent successfully')
             return redirect('project', project_id=project_id)
+
+def ReportComment(request,comment_id):
+    comment=get_object_or_404(Comment,id=comment_id)
+    projectId=comment.project.id
+    if request.method == 'POST':
+        commentReports = CommentReport(request.POST)
+        if commentReports.is_valid():
+            commentReports.save()
+            messages.success(request, 'The report has sent successfully')    
+            return redirect('project', project_id=projectId)
 
 
 @ csrf_exempt

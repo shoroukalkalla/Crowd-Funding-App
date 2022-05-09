@@ -1,5 +1,5 @@
 from django.urls import path, re_path
-from .views import CreateCategory, DeleteProject, DeleteUser, ListCategory, EditCategory, DeleteCategory, ListProject, ListTag, ListUser, verify_project, verify_tag
+from .views import CreateCategory, DeleteProject, DeleteUser, ListCategory, EditCategory, DeleteCategory, ListProject, ListTag, ListUser, verify_project, verify_tag, ListProjectsReport
 
 
 urlpatterns = [
@@ -16,4 +16,6 @@ urlpatterns = [
     path('project/delete/<pk>', DeleteProject.as_view(), name='delete_project'),
     path('user/', ListUser.as_view(), name='list_users'),
     path('user/delete/<pk>', DeleteUser.as_view(), name='delete_user'),
+    path('projectsReports/', ListProjectsReport.as_view(), name='projects_reports'),
+
 ]

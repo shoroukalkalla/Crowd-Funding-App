@@ -1,7 +1,7 @@
 from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
-from projects.models import Category, Project, Tag
+from projects.models import Category, Project, Tag, ProjectReport
 from re import template
 
 from users.models import User
@@ -77,3 +77,9 @@ class DeleteUser(DeleteView):
     pk_ur_kwargs = 'user.id'
     template_name = 'superuser/delete_category.html'
     success_url = reverse_lazy('list_users')        
+
+class ListProjectsReport(ListView):
+    model = ProjectReport
+    context_object_name = 'reports'
+    template_name = 'superuser/list_reports.html'
+   

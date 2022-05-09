@@ -21,13 +21,13 @@ urlpatterns = [
     path('projects/create/', create_project, name='create_project'),
     path('projects/<int:project_id>/', get_project, name='project'),
     path('projects/<int:project_id>/edit', edit_project, name='project_edit'),
-
     path('projects/<int:project_id>/comment_create',
          CreateComment.as_view(), name="create_comment"),
     path('comments/<pk>', EditComment.as_view(), name='comment'),
     path('comments/delete/<pk>', DeleteComment.as_view(), name='delete_comment'),
     path('projects/<int:project_id>/report', ReportProject, name='report_project'),
     path('comments/<int:comment_id>/report', ReportComment, name='report_comment'),
+
 
 
 

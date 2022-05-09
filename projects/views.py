@@ -228,6 +228,8 @@ def ReportComment(request,comment_id):
             return redirect('project', project_id=projectId)
 
 
+
+
 @ csrf_exempt
 def upload_project_images(request):
 

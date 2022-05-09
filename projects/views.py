@@ -1,3 +1,4 @@
+from pyexpat import model
 from django.forms import ValidationError
 from django.shortcuts import render
 from django.db.models import Sum
@@ -6,9 +7,11 @@ from django.views.generic import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
+from requests import request
+from django.contrib import messages
 
-from .forms import ProjectForm
-from .models import Comment, ProjectImage, Tag, Project, Donation
+from .forms import ProjectForm,ProjectReports
+from .models import Comment, ProjectImage, Tag, Project, Donation,ProjectReport
 from users.models import User
 
 from django.http import JsonResponse
@@ -184,6 +187,18 @@ class DeleteComment(SuccessMessageMixin, DeleteView):
 
     def get_success_url(self):
         return f"/projects/{self.request.POST['project_id']}#comments"
+
+#-------------------------------------report----------------------------------------------#
+def ReportProject(request, project_id):
+     if request.method == 'POST':
+        projectReports = ProjectReports(request.POST)
+        if projectReports.is_valid():
+         projectReports.save()
+         messages.success(request,'The report has sent successfully')
+         return redirect('project', project_id=project_id)
+  
+
+    
 
 
 @ csrf_exempt

@@ -116,25 +116,25 @@
                 <div class="generic_campaign">
                     <button
                         class="donationBtn btn btn-secondary  text-ligth clicked rounded-pill px-3 py-2"
-                        onclick='addDonation(event,10)'
+                    
                     >
                         $10
                     </button>
                     <button
                         class="donationBtn btn btn-secondary text-dark bg-transparent rounded-pill px-3 py-2"
-                        onclick='addDonation(event,30)'
+                
                     >
                         $30
                     </button>
                     <button
                         class="donationBtn btn btn-secondary text-dark bg-transparent rounded-pill px-3 py-2"
-                        onclick='addDonation(event,50)'
+                    
                     >
                         $50
                     </button>
                     <button
                         class="donationBtn btn btn-secondary text-dark bg-transparent rounded-pill px-3 py-2"
-                        onclick='addDonation(event,100)'
+                    
                     >
                         $100
                     </button>
@@ -197,7 +197,7 @@
         <!-- ------Comments -------- -->
         {% for comment in comments %}
         <div class="users_comments mt-4 bg-light rounded shadow-sm py-2 px-3 " id="comment{{comment.id}}">
-            <div class="user d-flex mt-3 d-flex">
+            <div class="user d-flex mt-3">
                 <div class="user_avatar">
                     <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title={{comment.user.username}}>
                         <img
@@ -211,24 +211,48 @@
                     <span class="fw-bold">{{comment.user.first_name}}</span>
                     <div class="user_info w-100 d-flex justify-content-between">
                         <div class="comment" data-comment_id = {{comment.id}} data-project_id = {{project.id}}>{{comment.comment}} </div>
-                        {% if user.id == comment.user_id %}
-                            <div>
-                                <button class="text-warning border-0 edit_comment"><em class="fa-solid fa-pen-to-square"></em></button>
-                                <a data-bs-toggle="modal" data-bs-target="#deleteComment{{comment.id}}" class="text-danger border-0 mx-2" href="{% url   'delete_comment'  comment.id %}"><em class="fa-solid fa-trash-can"></em></a>
+                        <div>
+                            {% if user.id == comment.user_id %}
+                            <button class="text-warning border-0 edit_comment"><em class="fa-solid fa-pen-to-square"></em></button>
+                            <a data-bs-toggle="modal" data-bs-target="#deleteComment{{comment.id}}" class="text-danger border-0 mx-2" href="{% url   'delete_comment'  comment.id %}"><em class="fa-solid fa-trash-can"></em></a>
+                            {% endif %}
+                            <i class="fa-solid fa-reply text-primary reply_comment" title="Reply"></i>
                             </div>
-                        {% endif %}
-                    </div>
+                        </div>
                 </div>
-                
+
                 <!-- Delete Modal -->
 
                 {% include 'projects/deleteModal.html' with delete_modal_id=comment.id delete_modal_title='deleteComment' project_id=project.id%}
 
                 <!-- End Modal-->
 
-
-
             </div>
+            {% for commentReply in commentReplies %}
+                {% if comment.id == commentReply.comment_id %}
+                <div class="user d-flex mt-3 px-3">
+                    <div class="user_avatar">
+                        <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title={{comment.user.username}}>
+                            <img
+                                src="{{MEDIA_URL}}{{commentReply.user.avatar}}"
+                                class="avatar"
+                                alt="Jean"
+                            />
+                        </span>
+                    </div>
+                    <div class="ms-2 w-100">
+                        <span class="fw-bold">{{comment.user.first_name}}</span>
+                        <div class="user_info w-100 d-flex justify-content-between">
+                            <div class="comment" data-comment_id = {{comment.id}} data-project_id = {{project.id}}>{{commentReply.reply}} </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            {% endfor %}
+            <div class ="replyForm d-none py-2">
+                
+            </div>
+
         </div>
         {% empty %}
             <h4 class="text-center w-100"> No comments </h4>
@@ -242,7 +266,7 @@
     let editButtons = document.querySelectorAll('.users_comments .edit_comment');
     let inputDonation =document.getElementsByName("donation_amount")[0];
     let donationBtns = document.querySelectorAll(".donationBtn");
-
+    let replyBtns =document.querySelectorAll('.reply_comment');
 
     editButtons.forEach(button => {
         button.addEventListener('click', e => {
@@ -276,24 +300,53 @@
         commentFormEditContainer.classList.remove('w-100');
         commentControllers.classList.remove('d-none')
     }
+   // --------------------------------------------------------------//
+    donationBtns.forEach(donationBtn => {
+        donationBtn.addEventListener("click",addDonation)
+    })  
+    
+    function addDonation(event){
+        let lastClickedBtn=document.querySelector('.clicked');
+        lastClickedBtn.classList.remove("clicked")
+        lastClickedBtn.classList.add("bg-transparent")
+        lastClickedBtn.classList.add("text-dark")
+        
+        let clickedBtn=event.target;
+        clickedBtn.classList.add("clicked");
+        clickedBtn.classList.remove("bg-transparent");
+        clickedBtn.classList.remove("text-dark");
+        inputDonation.value= Number(clickedBtn.textContent.trim().slice(1));  
+    }
 
-    function addDonation(event,num){
-        inputDonation.value=num;
-        for(btn of donationBtns){
-            if(btn.classList.contains('clicked')){
-                btn.classList.remove("clicked");
-            }
-        }
-        event.target.classList.add("clicked");
-        for(btn of donationBtns){
-            if(btn.classList.contains('clicked')){
-                btn.classList.remove("bg-transparent")
-                btn.classList.remove("text-dark")
-            }else{
-                btn.classList.add("bg-transparent")
-                btn.classList.add("text-dark")
-            }
-        }
+    // --------------------------------------------------------------//
+    replyBtns.forEach(replyBtn => {
+        replyBtn.addEventListener('click', e => {
+            let commentControllers = e.target.parentElement;
+            let comment = commentControllers.previousElementSibling;
+            let replyForm = commentControllers.parentElement.parentElement.parentElement.nextElementSibling;
+
+            replyBtn.classList.add('class', 'd-none');
+            replyForm.classList.remove('d-none');
+
+            let commentText = replyForm.textContent;
+            replyForm.innerHTML= `
+                <form method="POST" action="/comments/${comment.dataset.comment_id}/comment_reply_create">
+                        {% csrf_token %}
+                        <input type="text" class="form-control" name="reply" required/>
+                        <input type="hidden" name="comment" value="${comment.dataset.comment_id}" />
+                        <input type="hidden" name="project" value="${comment.dataset.project_id}" />
+                        <div class="mt-2">
+                            <button type="button" onclick="cancelCommentReply(event)" class="btn btn-secondary">Cancel</button>
+                            <input class="btn btn-success" type="submit" value="Save" />
+                        </div>
+                </form>
+            `
+        })
+    });
+
+    function cancelCommentReply(event){
+        event.target.parentElement.parentElement.classList.add('d-none')
+        document.querySelector(".reply_comment.d-none").classList.remove("d-none");
     }
 
 </script>

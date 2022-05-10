@@ -9,7 +9,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import ProjectForm
-from .models import Comment, CommentReply, ProjectImage, Tag, Project, Donation
+from .models import Comment, CommentReply, ProjectImage, Tag, Project, Donation,ProjectRate
 from users.models import User
 
 from django.http import JsonResponse
@@ -29,7 +29,7 @@ from .serializers import ProjectSerializer, ProjectImagesSerializer
 from requests import request
 from django.contrib import messages
 
-from .forms import ProjectForm, ProjectReports ,CommentReport
+from .forms import ProjectForm, ProjectReports ,CommentReport,ProjectRate
 from .models import Comment, ProjectImage, Tag, Project, Donation, ProjectReport, ProjectImage
 from users.models import User
 
@@ -234,7 +234,14 @@ def ReportComment(request,comment_id):
             messages.success(request, 'The report has sent successfully')    
             return redirect('project', project_id=projectId)
 
-
+#-----------------------------------------rating--------------------------------
+def submit_review(request, project_id):
+    if request.method == 'POST':
+        projectRate = ProjectRate(request.POST)
+        if projectRate.is_valid():
+            projectRate.save()
+            messages.success(request, 'the rate has sent successfully')
+            return redirect('project', project_id=project_id)
 
 
 @ csrf_exempt
@@ -323,3 +330,7 @@ class CreateCommentReply(SuccessMessageMixin, CreateView):
 
     def get_success_message(self, cleaned_data):
         return "Comment Reply was Saved"
+
+
+
+   

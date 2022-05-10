@@ -2,7 +2,7 @@ from datetime import datetime
 from importlib.metadata import files
 from statistics import mode
 from tracemalloc import start
-from .models import Project, Category, Tag, ProjectImage,ProjectReport,CommentReport
+from .models import Project, Category, Tag, ProjectImage,ProjectReport,CommentReport,ProjectRate
 from django import forms
 from django.forms.widgets import DateTimeInput, DateInput
 
@@ -58,4 +58,9 @@ class ProjectReports(forms.ModelForm):
 class CommentReport(forms.ModelForm):
     class Meta:
         model =CommentReport
+        fields = '__all__'
+
+class ProjectRate(forms.ModelForm):
+    class Meta:
+        model =ProjectRate
         fields = '__all__'

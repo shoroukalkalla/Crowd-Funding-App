@@ -1,7 +1,8 @@
+from pyexpat import model
 from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
-from projects.models import Category, Project, Tag, ProjectReport
+from projects.models import Category, CommentReport, Project, Tag, ProjectReport
 from re import template
 
 from users.models import User
@@ -82,4 +83,9 @@ class ListProjectsReport(ListView):
     model = ProjectReport
     context_object_name = 'reports'
     template_name = 'superuser/list_reports.html'
+
+class ListProjectsCommentReport(ListView):
+    model=CommentReport
+    context_object_name = 'commentReports'
+    template_name = 'superuser/list_comment_reports.html'
    

@@ -76,4 +76,4 @@ class ProjectRate(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     value = models.PositiveIntegerField(
-        validators=[MinValueValidator(1), MaxValueValidator(5)])
+        validators=[MinValueValidator(0), MaxValueValidator(5)])

@@ -1,0 +1,32 @@
+
+.rating {
+  border: none;
+}
+
+.rating > label {
+  color: #90A0A3;
+  float: right;
+}
+
+.rating > label:before {
+  font-size: 2em;
+  font-family: FontAwesome;
+  content: "\f005";
+}
+
+.rating > input {
+  display: none;
+}
+
+.rating > input:checked ~ label,
+.rating:not(:checked) > label:hover,
+.rating:not(:checked) > label:hover ~ label {
+  color:green;
+}
+
+.rating > input:checked + label:hover,
+.rating > input:checked ~ label:hover,
+.rating > label:hover ~ input:checked ~ label,
+.rating > input:checked ~ label:hover ~ label {
+  color: orange;
+}

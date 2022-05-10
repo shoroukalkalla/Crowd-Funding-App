@@ -1,14 +1,20 @@
 {% extends 'layouts/base.html' %}
+
 {% load static %}
+
 {% load my_filters %}
 {% load crispy_forms_tags %}
+
 
 {% block content %}
 
 
 {% if not project_user.email %}
 <meta http-equiv="REFRESH" content="0;url='/'" />
+
 {% endif %}
+<link rel="stylesheet" href="{% static 'projects/css/rating.css' %}" />
+
 <div class="project_desc mt-5">
     <div class="row d-flex align-items-center">
         <div class="col-md-12 col-lg-6 mb-md-4 mb-lg-0">
@@ -40,9 +46,26 @@
                     </div>
                     
         </div>
+        
         <div class="col-md-12 col-lg-6">
             <h4 class="text-muted fs-6 fw-normal">{{project.category}}</h4>
+            <!--------------------------------------------Rating-------------------------------------------------> 
+<div class="rating">
+    <input type="radio" id="star5" name="rating" value="5" />
+    <label class="star" for="star5" title="Awesome" aria-hidden="true"></label>
+    <input type="radio" id="star4" name="rating" value="4" />
+    <label class="star" for="star4" title="Great" aria-hidden="true"></label>
+    <input type="radio" id="star3" name="rating" value="3" />
+    <label class="star" for="star3" title="Very good" aria-hidden="true"></label>
+    <input type="radio" id="star2" name="rating" value="2" />
+    <label class="star" for="star2" title="Good" aria-hidden="true"></label>
+    <input type="radio" id="star1" name="rating" value="1" />
+    <label class="star" for="star1" title="Bad" aria-hidden="true"></label>
+  </div>
             <h3 class="title p-1">{{project.title}}</h3>
+
+
+ 
 <!-------------------------------------------Report------------------------------------------------------->
             {% if project.user.id != user.id %}
             <a data-bs-toggle="modal" data-bs-target="#reportProject{{project.id}}" class="btn btn-danger rounded-pill p-2" href="{% url   'report_project'  project.id %}">Report</a>
@@ -50,14 +73,7 @@
 
             {% endif %}
 
-  
-            <div class="rates my-3">
-                <em class="fa-solid fa-star text-warning"></em>
-                <em class="fa-solid fa-star text-warning"></em>
-                <em class="fa-solid fa-star text-warning"></em>
-                <em class="fa-solid fa-star text-warning"></em>
-                <em class="fa-regular fa-star"></em>
-            </div>
+
             <div class="user d-flex align-items-center">
                 <div class="user_avatar">
                     <img
@@ -66,6 +82,7 @@
                         alt="{{project_user.name}}"
                     />
                 </div>
+                
                 <div class="user_info ms-3">
                     <span class="fs-4">{{project_user}}</span>
                     <span class="d-block">{{num_of_Projects}} Campaigns</span>
@@ -257,6 +274,8 @@
 {% endblock %}
 
 {% block script %}
+<script src="{% static 'projects/js/rating.js' %}"></script>
+
 <script>
     let editButtons = document.querySelectorAll('.users_comments .edit_comment');
     let inputDonation =document.getElementsByName("donation_amount")[0];

@@ -50,12 +50,21 @@
         <div class="col-md-12 col-lg-6">
             <h4 class="text-muted fs-6 fw-normal">{{project.category}}</h4>
             <h3 class="title p-1">{{project.title}}</h3>
+            <div class="rating-star"> Average-Rating
+                <span>
+                    <i class="fa fa-star{% if project.averageReview < 0.5 %}-o{% elif project.averageReview >= 0.5 and project.averageReview < 1 %}-half-o {% endif %}" aria-hidden="true"></i>
+                    <i class="fa fa-star{% if project.averageReview < 1.5 %}-o{% elif project.averageReview >= 1.5 and project.averageReview < 2 %}-half-o {% endif %}" aria-hidden="true"></i>
+                    <i class="fa fa-star{% if project.averageReview < 2.5 %}-o{% elif project.averageReview >= 2.5 and project.averageReview < 3 %}-half-o {% endif %}" aria-hidden="true"></i>
+                    <i class="fa fa-star{% if project.averageReview < 3.5 %}-o{% elif project.averageReview >= 3.5 and project.averageReview < 4 %}-half-o {% endif %}" aria-hidden="true"></i>
+                    <i class="fa fa-star{% if project.averageReview < 4.5 %}-o{% elif project.averageReview >= 4.5 and project.averageReview < 5 %}-half-o {% endif %}" aria-hidden="true"></i>
+                    </span>
+            </div>
 
 
  
 <!-------------------------------------------Report------------------------------------------------------->
             {% if project.user.id != user.id %}
-            <a data-bs-toggle="modal" data-bs-target="#reportProject{{project.id}}" class="btn btn-danger rounded-pill p-2" href="{% url   'report_project'  project.id %}">Report</a>
+            <a data-bs-toggle="modal" data-bs-target="#reportProject{{project.id}}" class="btn btn-danger rounded-pill p-2 my-3" href="{% url   'report_project'  project.id %}">Report</a>
             {% include 'projects/reportModal.html' with report_modal_id=project.id report_modal_title='reportProject' project_id=project.id%}
 
             {% endif %}
@@ -283,14 +292,39 @@
     </div>
     
 
-
+    {% if project.user.id != user.id %}
+<div>
     <form class="my-5"  action="{% url 'submit_review' user.id  project.id %}" method="POST">
         {% csrf_token %}
-        <h5>Write Your Review</h5>
+
 
         <div class="text-center">
+
             <!-- Rating stars -->
-            <label>How do you rate this project?</label>
+            {% for review in reviews %}
+				<article class="box mb-3">
+					<div class="icontext w-100">
+
+						<div class="text">
+                            {% if review.user.id == user.id %}
+							<h6 class="mb-1">Your Last Rating</h6>
+							<div class="rating-star">
+								<span>
+									<i class="fa fa-star{% if review.value == 0.5 %}-half-o{% elif review.value < 1 %}-o {% endif %}" aria-hidden="true"></i>
+									<i class="fa fa-star{% if review.value == 1.5 %}-half-o{% elif review.value < 2 %}-o {% endif %}" aria-hidden="true"></i>
+									<i class="fa fa-star{% if review.value == 2.5 %}-half-o{% elif review.value < 3 %}-o {% endif %}" aria-hidden="true"></i>
+									<i class="fa fa-star{% if review.value == 3.5 %}-half-o{% elif review.value < 4 %}-o {% endif %}" aria-hidden="true"></i>
+									<i class="fa fa-star{% if review.value == 4.5 %}-half-o{% elif review.value < 5 %}-o {% endif %}" aria-hidden="true"></i>
+								</span>
+							</div>
+						</div>
+					</div> <!-- icontext.// -->
+					
+				</article>
+                {% endif %}
+{% endfor %}
+<label>Do you Want to change this ?</label>
+
             <br>
             <div class="rate">
                 <input type="radio" name="value" id="rating10" value="5" required /><label for="rating10" title="5"></label>
@@ -307,13 +341,24 @@
             <input type="hidden" name="project" value="{{project.id}}"/>
             <input type="hidden" name="user"value="{{user.id}}"/>
         <br>
-                    <input type="submit" value="Submit Rate" class="btn btn-primary my-3 mx-2">
-               
+        {% if user.is_authenticated %}
+
+                    <input type="submit" value="Edit Rating" class="btn btn-warning my-3 mx-2">
+                
+               {% endif %}
     
 
         </div>
     </form>
+
 </div>
+
+ {% endif %}
+ 
+
+
+</div>
+
 
 {% endblock %}
 

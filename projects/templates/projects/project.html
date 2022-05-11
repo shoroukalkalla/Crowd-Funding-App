@@ -284,11 +284,11 @@
     
 
 
-    <form class="my-5"  action="{% url 'submit_review' project.id %}" method="POST">
+    <form class="my-5"  action="{% url 'submit_review' user.id  project.id %}" method="POST">
         {% csrf_token %}
         <h5>Write Your Review</h5>
 
-        <div>
+        <div class="text-center">
             <!-- Rating stars -->
             <label>How do you rate this project?</label>
             <br>
@@ -306,8 +306,8 @@
             </div>
             <input type="hidden" name="project" value="{{project.id}}"/>
             <input type="hidden" name="user"value="{{user.id}}"/>
-        
-                    <input type="submit" value="Submit Review" class="btn btn-primary">
+        <br>
+                    <input type="submit" value="Submit Rate" class="btn btn-primary my-3 mx-2">
                
     
 

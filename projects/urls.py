@@ -27,7 +27,7 @@ urlpatterns = [
     path('comments/delete/<pk>', DeleteComment.as_view(), name='delete_comment'),
     path('projects/<int:project_id>/report', ReportProject, name='report_project'),
     path('comments/<int:comment_id>/report', ReportComment, name='report_comment'),
-    path('project/<int:project_id>/rate', submit_review, name="submit_review"),
+    path('project/<int:user_id>/<int:project_id>/rate', submit_review, name="submit_review"),
 
 
 

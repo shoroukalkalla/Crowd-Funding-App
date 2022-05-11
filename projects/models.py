@@ -79,5 +79,5 @@ class CommentReply(models.Model):
 class ProjectRate(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    value = models.PositiveIntegerField(
+    value = models.FloatField(
         validators=[MinValueValidator(0), MaxValueValidator(5)])

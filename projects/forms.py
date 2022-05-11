@@ -60,7 +60,7 @@ class CommentReport(forms.ModelForm):
         model =CommentReport
         fields = '__all__'
 
-class ProjectRate(forms.ModelForm):
+class ProjectRateForm(forms.ModelForm):
     class Meta:
         model =ProjectRate
         fields = '__all__'

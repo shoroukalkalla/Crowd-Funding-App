@@ -1,4 +1,6 @@
 from django.http import JsonResponse
+from django.db.models import Q
+
 from pyexpat import model
 from django.forms import ValidationError
 from django.shortcuts import render
@@ -29,8 +31,8 @@ from .serializers import ProjectSerializer, ProjectImagesSerializer
 from requests import request
 from django.contrib import messages
 
-from .forms import ProjectForm, ProjectReports ,CommentReport,ProjectRate
-from .models import Comment, ProjectImage, Tag, Project, Donation, ProjectReport, ProjectImage
+from .forms import ProjectForm, ProjectReports ,CommentReport,ProjectRateForm
+from .models import Comment, ProjectImage, Tag, Project, Donation, ProjectReport, ProjectImage,ProjectRate
 from users.models import User
 
 
@@ -235,13 +237,24 @@ def ReportComment(request,comment_id):
             return redirect('project', project_id=projectId)
 
 #-----------------------------------------rating--------------------------------
-def submit_review(request, project_id):
+def submit_review(request, user_id,project_id):
+    rate=ProjectRate.objects.filter(user=user_id,project=project_id).first()
+    # isSameProject=Q( rate.project.id==project_id)
     if request.method == 'POST':
-        projectRate = ProjectRate(request.POST)
-        if projectRate.is_valid():
-            projectRate.save()
+        if rate:
+                # if isSameProject:
+                rate.value=request.POST["value"]
+                project_rate = ProjectRateForm(request.POST,instance=rate)
+                if project_rate.is_valid():
+                 project_rate.save()
+                 messages.success(request, 'the rate has updated successfully')
+
+        else:   
+            project_rate = ProjectRateForm(request.POST)
+            project_rate.save()
             messages.success(request, 'the rate has sent successfully')
-            return redirect('project', project_id=project_id)
+        return redirect('project', project_id=project_id)
+
 
 
 @ csrf_exempt

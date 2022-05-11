@@ -49,7 +49,9 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bootstrap5",
     'tempus_dominus',
-    'rest_framework'
+    'rest_framework',
+    'star_ratings'
+
 ]
 
 AUTH_USER_MODEL = 'users.User'
@@ -187,3 +189,7 @@ REST_FRAMEWORK = {
 }
 
 DATE_FORMAT = 'YYYY-MM-DD'
+STAR_RATINGS_RERATE = False
+STAR_RATINGS_RERATE=True
+STAR_RATINGS_RERATE_SAME_DELETE = True
+STAR_RATINGS_RANGE=5

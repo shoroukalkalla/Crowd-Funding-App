@@ -71,9 +71,13 @@ class CommentReport(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     report = models.CharField(max_length=150)
 
+class CommentReply(models.Model):
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    reply = models.CharField(max_length=150)
 
 class ProjectRate(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    value = models.PositiveIntegerField(
-        validators=[MinValueValidator(1), MaxValueValidator(5)])
+    value = models.FloatField(
+        validators=[MinValueValidator(0), MaxValueValidator(5)])

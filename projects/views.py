@@ -1,4 +1,6 @@
 from django.http import JsonResponse
+from django.db.models import Q
+
 from pyexpat import model
 from django.forms import ValidationError
 from django.shortcuts import render
@@ -7,6 +9,12 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
+
+from .forms import ProjectForm
+from .models import Comment, CommentReply, ProjectImage, Tag, Project, Donation,ProjectRate
+from users.models import User
+
+from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.core.files.storage import FileSystemStorage
@@ -23,8 +31,8 @@ from .serializers import ProjectSerializer, ProjectImagesSerializer
 from requests import request
 from django.contrib import messages
 
-from .forms import ProjectForm, ProjectReports
-from .models import Comment, ProjectImage, Tag, Project, Donation, ProjectReport, ProjectImage
+from .forms import ProjectForm, ProjectReports ,CommentReport,ProjectRateForm
+from .models import Comment, ProjectImage, Tag, Project, Donation, ProjectReport, ProjectImage,ProjectRate
 from users.models import User
 
 
@@ -40,8 +48,9 @@ def get_project_data(project_id, are_projects = False):
     donators = Donation.objects.filter(
         project_id=project.id).values('donator').distinct().count()
     comments = Comment.objects.filter(project_id=project_id).order_by('-id')
+    commentReplies=CommentReply.objects.all().order_by('-id');
     data = {'project': project, 'project_user': user, 'images': images, "num_of_Projects": num_of_Projects,
-            'donation_amount': amount['donation_amount__sum'], 'donators': donators, 'comments': comments}
+            'donation_amount': amount['donation_amount__sum'], 'donators': donators, 'comments': comments,'commentReplies':commentReplies}
     return data
 
 
@@ -217,6 +226,36 @@ def ReportProject(request, project_id):
             messages.success(request, 'The report has sent successfully')
             return redirect('project', project_id=project_id)
 
+def ReportComment(request,comment_id):
+    comment=get_object_or_404(Comment,id=comment_id)
+    projectId=comment.project.id
+    if request.method == 'POST':
+        commentReports = CommentReport(request.POST)
+        if commentReports.is_valid():
+            commentReports.save()
+            messages.success(request, 'The report has sent successfully')    
+            return redirect('project', project_id=projectId)
+
+#-----------------------------------------rating--------------------------------
+def submit_review(request, user_id,project_id):
+    rate=ProjectRate.objects.filter(user=user_id,project=project_id).first()
+    # isSameProject=Q( rate.project.id==project_id)
+    if request.method == 'POST':
+        if rate:
+                # if isSameProject:
+                rate.value=request.POST["value"]
+                project_rate = ProjectRateForm(request.POST,instance=rate)
+                if project_rate.is_valid():
+                 project_rate.save()
+                 messages.success(request, 'the rate has updated successfully')
+
+        else:   
+            project_rate = ProjectRateForm(request.POST)
+            project_rate.save()
+            messages.success(request, 'the rate has sent successfully')
+        return redirect('project', project_id=project_id)
+
+
 
 @ csrf_exempt
 def upload_project_images(request):
@@ -287,3 +326,24 @@ def get_user_donations(request):
         'donations': donations,
     }
     return render(request, 'projects/list_user_donation.html', context)
+
+# ----------------Comment Reply----------------------#
+
+class CreateCommentReply(SuccessMessageMixin, CreateView):
+    model = CommentReply
+    template_name = 'projects/project.html'
+    fields = ["comment", "reply"]
+
+    def get_success_url(self):
+        return f"/projects/{self.request.POST['project']}#comment{self.kwargs['pk']}"
+
+    def form_valid(self, form):
+        form.instance.user_id = self.request.user.id
+        return super(CreateCommentReply, self).form_valid(form)
+
+    def get_success_message(self, cleaned_data):
+        return "Comment Reply was Saved"
+
+
+
+   

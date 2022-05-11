@@ -27,6 +27,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+    <link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}">
     {% block styles %} {% endblock %}
     {% block header_script %} {% endblock %}
 
@@ -66,6 +67,9 @@
       <a href={% url 'list_project' %} class="btn btn-info">List Projects</a>
       <a href={% url 'list_tags' %} class="btn btn-primary">List Tags</a>
       <a href={% url 'list_users' %} class="btn btn-warning">List Users</a>
+      <a href={% url 'projects_reports' %} class="btn btn-danger">List Projects Reports</a>
+      <a href={% url 'projects_comment_reports' %} class="btn btn-danger">List Comments Reports</a>
+      <a href={% url 'projects_donations' %} class="btn btn-warning">List Projects Donations</a>
       {% endif %}
     </div>
 
@@ -93,6 +97,8 @@
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
       crossorigin="anonymous"
     ></script>
+    <script type="text/javascript" src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
+
     {% block script %} {% endblock %}
   </body>
 </html>

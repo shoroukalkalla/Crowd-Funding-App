@@ -1,14 +1,20 @@
 {% extends 'layouts/base.html' %}
+
 {% load static %}
+
 {% load my_filters %}
 {% load crispy_forms_tags %}
+
 
 {% block content %}
 
 
 {% if not project_user.email %}
 <meta http-equiv="REFRESH" content="0;url='/'" />
+
 {% endif %}
+<link rel="stylesheet" href="{% static 'projects/css/new.css' %}" />
+
 <div class="project_desc mt-5">
     <div class="row d-flex align-items-center">
         <div class="col-md-12 col-lg-6 mb-md-4 mb-lg-0">
@@ -40,24 +46,30 @@
                     </div>
                     
         </div>
+        
         <div class="col-md-12 col-lg-6">
             <h4 class="text-muted fs-6 fw-normal">{{project.category}}</h4>
             <h3 class="title p-1">{{project.title}}</h3>
+            <div class="rating-star"> Average-Rating
+                <span>
+                    <i class="fa fa-star{% if project.averageReview < 0.5 %}-o{% elif project.averageReview >= 0.5 and project.averageReview < 1 %}-half-o {% endif %}" aria-hidden="true"></i>
+                    <i class="fa fa-star{% if project.averageReview < 1.5 %}-o{% elif project.averageReview >= 1.5 and project.averageReview < 2 %}-half-o {% endif %}" aria-hidden="true"></i>
+                    <i class="fa fa-star{% if project.averageReview < 2.5 %}-o{% elif project.averageReview >= 2.5 and project.averageReview < 3 %}-half-o {% endif %}" aria-hidden="true"></i>
+                    <i class="fa fa-star{% if project.averageReview < 3.5 %}-o{% elif project.averageReview >= 3.5 and project.averageReview < 4 %}-half-o {% endif %}" aria-hidden="true"></i>
+                    <i class="fa fa-star{% if project.averageReview < 4.5 %}-o{% elif project.averageReview >= 4.5 and project.averageReview < 5 %}-half-o {% endif %}" aria-hidden="true"></i>
+                    </span>
+            </div>
+
+
+ 
 <!-------------------------------------------Report------------------------------------------------------->
             {% if project.user.id != user.id %}
-            <a data-bs-toggle="modal" data-bs-target="#reportProject{{project.id}}" class="btn btn-danger rounded-pill p-2" href="{% url   'report_project'  project.id %}">Report</a>
+            <a data-bs-toggle="modal" data-bs-target="#reportProject{{project.id}}" class="btn btn-danger rounded-pill p-2 my-3" href="{% url   'report_project'  project.id %}">Report</a>
             {% include 'projects/reportModal.html' with report_modal_id=project.id report_modal_title='reportProject' project_id=project.id%}
 
             {% endif %}
 
-  
-            <div class="rates my-3">
-                <em class="fa-solid fa-star text-warning"></em>
-                <em class="fa-solid fa-star text-warning"></em>
-                <em class="fa-solid fa-star text-warning"></em>
-                <em class="fa-solid fa-star text-warning"></em>
-                <em class="fa-regular fa-star"></em>
-            </div>
+
             <div class="user d-flex align-items-center">
                 <div class="user_avatar">
                     <img
@@ -66,6 +78,7 @@
                         alt="{{project_user.name}}"
                     />
                 </div>
+                
                 <div class="user_info ms-3">
                     <span class="fs-4">{{project_user}}</span>
                     <span class="d-block">{{num_of_Projects}} Campaigns</span>
@@ -277,11 +290,85 @@
 
 
     </div>
+    
+
+    {% if project.user.id != user.id %}
+<div>
+    <form class="my-5"  action="{% url 'submit_review' user.id  project.id %}" method="POST">
+        {% csrf_token %}
+
+
+        <div class="text-center">
+
+            <!-- Rating stars -->
+            {% for review in reviews %}
+				<article class="box mb-3">
+					<div class="icontext w-100">
+
+						<div class="text">
+                            {% if review.user.id == user.id %}
+							<h6 class="mb-1">Your Last Rating</h6>
+							<div class="rating-star">
+								<span>
+									<i class="fa fa-star{% if review.value == 0.5 %}-half-o{% elif review.value < 1 %}-o {% endif %}" aria-hidden="true"></i>
+									<i class="fa fa-star{% if review.value == 1.5 %}-half-o{% elif review.value < 2 %}-o {% endif %}" aria-hidden="true"></i>
+									<i class="fa fa-star{% if review.value == 2.5 %}-half-o{% elif review.value < 3 %}-o {% endif %}" aria-hidden="true"></i>
+									<i class="fa fa-star{% if review.value == 3.5 %}-half-o{% elif review.value < 4 %}-o {% endif %}" aria-hidden="true"></i>
+									<i class="fa fa-star{% if review.value == 4.5 %}-half-o{% elif review.value < 5 %}-o {% endif %}" aria-hidden="true"></i>
+								</span>
+                                <a class="text-danger border-0 mx-2" href="{% url   'delete_rate'  review.id %}" ><em class="fa-solid fa-trash-can"></em></a>
+
+							</div>
+						</div>
+					</div> <!-- icontext.// -->
+					
+				</article>
+                {% endif %}
+                {% endfor %}
+ 
+<label>New Rating:</label>
+
+            <br>
+            <div class="rate">
+                <input type="radio" name="value" id="rating10" value="5" required /><label for="rating10" title="5"></label>
+                <input type="radio" name="value" id="rating9" value="4.5" required /><label for="rating9" title="4.5" class="half"></label>
+                <input type="radio" name="value" id="rating8" value="4" required /><label for="rating8" title="4"></label>
+                <input type="radio" name="value" id="rating7" value="3.5" required /><label for="rating7" title="3.5" class="half"></label>
+                <input type="radio" name="value" id="rating6" value="3" required /><label for="rating6" title="3"></label>
+                <input type="radio" name="value" id="rating5" value="2.5" required /><label for="rating5" title="2.5" class="half"></label>
+                <input type="radio" name="value" id="rating4" value="2" required /><label for="rating4" title="2"></label>
+                <input type="radio" name="value" id="rating3" value="1.5" required /><label for="rating3" title="1.5" class="half"></label>
+                <input type="radio" name="value" id="rating2" value="1" required /><label for="rating2" title="1"></label>
+                <input type="radio" name="value" id="rating1" value="0.5" required /><label for="rating1" title="0.5" class="half"></label>
+            </div>
+            <input type="hidden" name="project" value="{{project.id}}"/>
+            <input type="hidden" name="user"value="{{user.id}}"/>
+        <br>
+        {% if user.is_authenticated %}
+
+                    <input type="submit" value="Edit Rating" class="btn btn-warning my-3 mx-2">
+                
+               {% endif %}
+    
+
+        </div>
+    </form>
+
+
 </div>
+
+ {% endif %}
+ 
+
+
+</div>
+
 
 {% endblock %}
 
 {% block script %}
+<script src="{% static 'projects/js/rating.js' %}"></script>
+
 <script>
     let editButtons = document.querySelectorAll('.users_comments .edit_comment');
     let inputDonation =document.getElementsByName("donation_amount")[0];
@@ -370,4 +457,5 @@
     }
 
 </script>
+
 {% endblock %}

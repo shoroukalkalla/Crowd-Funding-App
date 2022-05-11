@@ -1,4 +1,6 @@
 from django.http import JsonResponse
+from django.db.models import Q
+
 from pyexpat import model
 from django.forms import ValidationError
 from django.shortcuts import render
@@ -9,7 +11,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import ProjectForm
-from .models import Comment, CommentReply, ProjectImage, Tag, Project, Donation
+from .models import Comment, CommentReply, ProjectImage, Tag, Project, Donation,ProjectRate
 from users.models import User
 
 from django.http import JsonResponse
@@ -17,7 +19,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.core.files.storage import FileSystemStorage
 from django.contrib.messages.views import SuccessMessageMixin
-from django.views.generic import CreateView, UpdateView, DeleteView
+from django.views.generic import CreateView, UpdateView, DeleteView,ListView
 from rest_framework import viewsets, generics
 from rest_framework.views import APIView
 from django.http import Http404
@@ -29,8 +31,8 @@ from .serializers import ProjectSerializer, ProjectImagesSerializer
 from requests import request
 from django.contrib import messages
 
-from .forms import ProjectForm, ProjectReports ,CommentReport
-from .models import Comment, ProjectImage, Tag, Project, Donation, ProjectReport, ProjectImage
+from .forms import ProjectForm, ProjectReports ,CommentReport,ProjectRateForm
+from .models import Comment, ProjectImage, Tag, Project, Donation, ProjectReport, ProjectImage,ProjectRate
 from users.models import User
 
 
@@ -46,9 +48,11 @@ def get_project_data(project_id):
     donators = Donation.objects.filter(
         project_id=project.id).values('donator').distinct().count()
     comments = Comment.objects.filter(project_id=project_id).order_by('-id')
-    commentReplies=CommentReply.objects.all().order_by('-id');
+    commentReplies=CommentReply.objects.all().order_by('-id')
+    reviews = ProjectRate.objects.filter(project_id=project_id);
+
     data = {'project': project, 'project_user': user, 'images': images, "num_of_Projects": num_of_Projects,
-            'donation_amount': amount['donation_amount__sum'], 'donators': donators, 'comments': comments,'commentReplies':commentReplies}
+            'donation_amount': amount['donation_amount__sum'], 'donators': donators, 'comments': comments,'commentReplies':commentReplies,'reviews':reviews}
     return data
 
 
@@ -234,6 +238,30 @@ def ReportComment(request,comment_id):
             messages.success(request, 'The report has sent successfully')    
             return redirect('project', project_id=projectId)
 
+#-----------------------------------------rating--------------------------------
+def submit_review(request, user_id,project_id):
+    rate=ProjectRate.objects.filter(user=user_id,project=project_id).first()
+    if request.method == 'POST':
+        if rate:
+                project_rate = ProjectRateForm(request.POST,instance=rate)
+                if project_rate.is_valid():
+                 project_rate.save()
+                 messages.success(request, 'the rate has updated successfully')
+
+        else:   
+            project_rate = ProjectRateForm(request.POST)
+            project_rate.save()
+            messages.success(request, 'the rate has sent successfully')
+        return redirect('project', project_id=project_id)
+
+
+
+def delete_rate(request,rate_id):
+    rate=get_object_or_404(ProjectRate,id=rate_id)
+    rate.delete()
+    return redirect('project', project_id=rate.project.id)
+
+  
 
 
 
@@ -323,3 +351,7 @@ class CreateCommentReply(SuccessMessageMixin, CreateView):
 
     def get_success_message(self, cleaned_data):
         return "Comment Reply was Saved"
+
+
+
+   

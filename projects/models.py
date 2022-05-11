@@ -1,6 +1,6 @@
 from django.db import models
 from users.models import User
-
+from django.db.models import Avg
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 
@@ -35,6 +35,12 @@ class Project(models.Model):
 
     def __str__(self):
         return self.title
+    def averageReview(self):
+     reviews = ProjectRate.objects.filter(project=self).aggregate(average=Avg('value'))
+     avg = 0
+     if reviews['average'] is not None:
+      avg = float(reviews['average'])
+     return avg    
 
 
 class ProjectImage(models.Model):
@@ -79,5 +85,7 @@ class CommentReply(models.Model):
 class ProjectRate(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    value = models.PositiveIntegerField(
-        validators=[MinValueValidator(1), MaxValueValidator(5)])
+    value = models.FloatField(
+        validators=[MinValueValidator(0), MaxValueValidator(5)])
+
+

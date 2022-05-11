@@ -256,6 +256,12 @@ def submit_review(request, user_id,project_id):
 
 
 
+def delete_rate(request,rate_id):
+    rate=get_object_or_404(ProjectRate,id=rate_id)
+    rate.delete()
+    return redirect('project', project_id=rate.project.id)
+
+  
 
 
 

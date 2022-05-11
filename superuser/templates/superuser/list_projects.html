@@ -1,9 +1,8 @@
 {% extends 'layouts/base.html' %} {% load static %} {% load crispy_forms_tags %}
 {% block content %}
 <div>
-  <h1>List Projects</h1>
-  {% for project in projects %}
-  <table class="table">
+  <h3 class="my-3">List Projects</h3>
+  <table class="table table-striped table-dark">
     <thead>
       <tr>
         <th scope="col">ID</th>
@@ -19,6 +18,8 @@
       </tr>
     </thead>
     <tbody>
+{% for project in projects %}
+
       <tr>
         <th scope="row">{{project.id}}</th>
         <td>{{project.title}}</td>
@@ -41,8 +42,9 @@
           <a class="btn btn-danger" href={% url 'delete_project' project.id %}>Delete</a>
         </td>
       </tr>
+{% endfor %}
+
     </tbody>
   </table>
-  {% endfor %}
 </div>
 {% endblock %}

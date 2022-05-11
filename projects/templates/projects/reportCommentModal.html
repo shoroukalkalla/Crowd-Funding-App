@@ -1,0 +1,68 @@
+<!-- Modal -->
+<div
+    class="modal fade"
+    id="{{reportComment_modal_title}}{{reportComment_modal_id}}"
+    tabindex="-1"
+    aria-labelledby="{{reportComment_modal_title}}{{reportComment_modal_id}}Label"
+    aria-hidden="true"
+>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5
+                    class="modal-title"
+                    id="{{reportComment_modal_title}}{{reportComment_modal_id}}Label"
+                >
+                    Report Comment😥
+                </h5>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                ></button>
+            </div>
+            <div class="modal-body">
+                <form
+                    method="post"
+                    action="{% url 'report_comment'  comment.id %}"
+                >
+                    {% csrf_token %}
+                    <input
+                        type="hidden"
+                        name="comment"
+                        value="{{comment.id}}"
+                    />
+                    <input
+                    type="hidden"
+                    name="user"
+                    value={{user.id}}
+                />
+                    <label>Enter Your report for this comment</label>
+                    <textarea class="form-control col-xs-12" name="report"></textarea>
+
+                
+
+            </div>
+            <div class="modal-footer">
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                >
+                    Close
+                </button>
+
+                <input
+                type="submit"
+                class="btn btn-danger"
+                value="Send"
+            />
+
+
+            </form>
+
+            </div>
+        </div>
+    </div>
+</div>

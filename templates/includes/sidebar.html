@@ -3,16 +3,19 @@
         class="d-flex flex-column flex-shrink-0 bg-light sidebar"
         style="width: 4.5rem"
     >
-        <a
-            href="/"
-            class="d-block p-3 link-dark text-decoration-none"
-            title="Home"
-            data-bs-toggle="tooltip"
-            data-bs-placement="right"
-        >
-            <em class="fa-solid fa-handshake-angle"></em>
-        </a>
         <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
+            <li>
+                <a
+                    href="/"
+                    class="nav-link py-3 border-bottom"
+                    title="Home"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="right"
+                    data-url="/"
+                >
+                    <em class="fa-solid fa-handshake-angle"></em>
+                </a>
+            </li>
             <li class="nav-item">
                 <a
                     href="{% url 'list_project' %}"

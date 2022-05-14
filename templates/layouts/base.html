@@ -117,6 +117,7 @@
         <script>
             let sidebar = document.querySelector(".sidebar");
             let url = window.location.href.split("8000")[1];
+
             sidebar
                 .querySelector(`[data-url="${url}"]`)
                 ?.classList.add("active");

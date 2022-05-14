@@ -112,8 +112,15 @@
             type="text/javascript"
             src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"
         ></script>
-        <script src="{% static 'js/sidebars.js' %}"></script>
 
-        {% block script %} {% endblock %}
+        {% if user.is_superuser %}
+        <script>
+            let sidebar = document.querySelector(".sidebar");
+            let url = window.location.href.split("8000")[1];
+            sidebar
+                .querySelector(`[data-url="${url}"]`)
+                ?.classList.add("active");
+        </script>
+        {% endif %} {% block script %} {% endblock %}
     </body>
 </html>

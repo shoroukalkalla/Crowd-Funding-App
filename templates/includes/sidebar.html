@@ -1,29 +1,27 @@
 <main>
     <div
-        class="d-flex flex-column flex-shrink-0 bg-light"
+        class="d-flex flex-column flex-shrink-0 bg-light sidebar"
         style="width: 4.5rem"
     >
         <a
             href="/"
             class="d-block p-3 link-dark text-decoration-none"
-            title="Icon-only"
+            title="Home"
             data-bs-toggle="tooltip"
             data-bs-placement="right"
         >
-            <svg class="bi" width="40" height="32">
-                <use xlink:href="#Crowd_Funding" />
-            </svg>
-            <span class="visually-hidden">Icon-only</span>
+            <em class="fa-solid fa-handshake-angle"></em>
         </a>
         <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
             <li class="nav-item">
                 <a
                     href="{% url 'list_project' %}"
-                    class="nav-link active py-3 border-bottom"
+                    class="nav-link py-3 border-bottom"
                     aria-current="page"
                     title="Projects"
                     data-bs-toggle="tooltip"
                     data-bs-placement="right"
+                    data-url="/superuser/project/"
                 >
                     <em class="fa-solid fa-sheet-plastic"></em>
                 </a>
@@ -35,6 +33,7 @@
                     title="Users"
                     data-bs-toggle="tooltip"
                     data-bs-placement="right"
+                    data-url="/superuser/user/"
                 >
                     <em class="fa-solid fa-users"></em>
                 </a>
@@ -46,6 +45,7 @@
                     title="Categories"
                     data-bs-toggle="tooltip"
                     data-bs-placement="right"
+                    data-url="/superuser/categories/"
                 >
                     <em class="fa-solid fa-layer-group"></em>
                 </a>
@@ -57,19 +57,9 @@
                     title="Tags"
                     data-bs-toggle="tooltip"
                     data-bs-placement="right"
+                    data-url="/superuser/tag/"
                 >
                     <em class="fa-solid fa-tags"></em>
-                </a>
-            </li>
-            <li>
-                <a
-                    href="#"
-                    class="nav-link py-3 border-bottom"
-                    title="Comments"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="right"
-                >
-                    <em class="fa-solid fa-comments"></em>
                 </a>
             </li>
             <li>
@@ -79,6 +69,7 @@
                     title="Project Reports"
                     data-bs-toggle="tooltip"
                     data-bs-placement="right"
+                    data-url="/superuser/projectsReports/"
                 >
                     <em class="fa-solid fa-flag"></em>
                 </a>
@@ -90,6 +81,7 @@
                     title="Project Comments Report"
                     data-bs-toggle="tooltip"
                     data-bs-placement="right"
+                    data-url="/superuser/projectsCommentes/"
                 >
                     <em class="fa-solid fa-comment-slash"></em>
                 </a>
@@ -101,6 +93,7 @@
                     title="Project Donations"
                     data-bs-toggle="tooltip"
                     data-bs-placement="right"
+                    data-url="/superuser/projectsDonations/"
                 >
                     <em class="fa-solid fa-hand-holding-dollar"></em>
                 </a>

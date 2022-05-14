@@ -1,40 +1,112 @@
-<aside>
-  <ul class="list-unstyled">
-    <li>
-      <i class="fa-solid fa-sheet-plastic"></i>
-      <a href={% url 'list_project' %}>List Projects</a>
-    </li>
-    <li>
-      <i class="fa-solid fa-users"></i>
-      <a href={% url 'list_users' %}>List Users</a>
-    </li>
-    <li>
-      <i class="fa-solid fa-layer-group"></i>
-      <a href={% url 'create_category' %}>Add Category</a>
-    </li>
-    <li>
-        <i class="fa-solid fa-layer-group"></i>
-      <a href={% url 'list_category' %}>List Category</a>
-    </li>
-    <li>
-      <i class="fa-solid fa-tags"></i>
-      <a href={% url 'list_tags' %}>List Tags</a>
-    </li>
-    <li>
-      <i class="fa-solid fa-comments"></i>
-      <a href="#">Comments</a>
-    </li>
-    <li>
-      <i class="fa-solid fa-flag"></i>
-      <a href={% url 'projects_reports' %}>List Projects Reports</a>
-    </li>
-    <li>
-      <i class="fa-solid fa-comment-slash"></i>
-      <a href={% url 'projects_comment_reports' %}>List Comments Reports</a>
-    </li>
-    <li>
-      <i class="fa-solid fa-hand-holding-dollar"></i>
-      <a href={% url 'projects_donations' %}>List Projects Donations</a>
-    </li>
-  </ul>
-</aside>
+<main>
+    <div
+        class="d-flex flex-column flex-shrink-0 bg-light"
+        style="width: 4.5rem"
+    >
+        <a
+            href="/"
+            class="d-block p-3 link-dark text-decoration-none"
+            title="Icon-only"
+            data-bs-toggle="tooltip"
+            data-bs-placement="right"
+        >
+            <svg class="bi" width="40" height="32">
+                <use xlink:href="#Crowd_Funding" />
+            </svg>
+            <span class="visually-hidden">Icon-only</span>
+        </a>
+        <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
+            <li class="nav-item">
+                <a
+                    href="{% url 'list_project' %}"
+                    class="nav-link active py-3 border-bottom"
+                    aria-current="page"
+                    title="Projects"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="right"
+                >
+                    <em class="fa-solid fa-sheet-plastic"></em>
+                </a>
+            </li>
+            <li>
+                <a
+                    href="{% url 'list_users' %}"
+                    class="nav-link py-3 border-bottom"
+                    title="Users"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="right"
+                >
+                    <em class="fa-solid fa-users"></em>
+                </a>
+            </li>
+            <li>
+                <a
+                    href="{% url 'list_category' %}"
+                    class="nav-link py-3 border-bottom"
+                    title="Categories"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="right"
+                >
+                    <em class="fa-solid fa-layer-group"></em>
+                </a>
+            </li>
+            <li>
+                <a
+                    href="{% url 'list_tags' %}"
+                    class="nav-link py-3 border-bottom"
+                    title="Tags"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="right"
+                >
+                    <em class="fa-solid fa-tags"></em>
+                </a>
+            </li>
+            <li>
+                <a
+                    href="#"
+                    class="nav-link py-3 border-bottom"
+                    title="Comments"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="right"
+                >
+                    <em class="fa-solid fa-comments"></em>
+                </a>
+            </li>
+            <li>
+                <a
+                    href="{% url 'projects_reports' %}"
+                    class="nav-link py-3 border-bottom"
+                    title="Project Reports"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="right"
+                >
+                    <em class="fa-solid fa-flag"></em>
+                </a>
+            </li>
+            <li>
+                <a
+                    href="{% url 'projects_comment_reports' %}"
+                    class="nav-link py-3 border-bottom"
+                    title="Project Comments Report"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="right"
+                >
+                    <em class="fa-solid fa-comment-slash"></em>
+                </a>
+            </li>
+            <li>
+                <a
+                    href="{% url 'projects_donations' %}"
+                    class="nav-link py-3 border-bottom"
+                    title="Project Donations"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="right"
+                >
+                    <em class="fa-solid fa-hand-holding-dollar"></em>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="b-example-divider"></div>
+</main>

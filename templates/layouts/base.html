@@ -114,6 +114,7 @@
         ></script>
 
         {% if user.is_superuser %}
+        <script src="{% static 'js/sidebars.js' %}"></script>
         <script>
             let sidebar = document.querySelector(".sidebar");
             let url = window.location.href.split("8000")[1];

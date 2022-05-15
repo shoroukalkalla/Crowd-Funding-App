@@ -6,35 +6,28 @@
   <table class="table table-responsive-md  cell-border compact stripe table-dark my-4 text-center">
     <thead>
       <tr>
-        <th scope="col">ID</th>
         <th scope="col">Name</th>
         <th scope="col">Is Verified</th>
         <th scope="col">Project Name</th>
       </tr>
     </thead>
     <tbody>
-      {% for tag in tags %}
-      <tr>
-        <th scope="row">{{forloop.counter}}</th>
-        <td>{{tag.name}}</td>
-         {% if tag.is_verified %}
+      {% for project_tag in project_tags %}
+      <tr class="">
+        <td>{{project_tag.tag.name}}</td>
+         {% if project_tag.tag.is_verified %}
         <td>
           <button class="btn btn-success rounded-pill">Verified</button>
         </td>
         {% else %}
         <td>
-          <a class="btn btn-info" href={% url 'verify_tag' tag.id %}>Verify</a>
+          <a class="btn btn-primary" href={% url 'verify_tag' project_tag.tag.name %}>Verify</a>
         </td>
         {% endif %}
         <td>
           <ul class="list-unstyled">
-            {% for project in projects %}
-                {% for projectTag in project.tags.all %}
-                  {% if tag.name == projectTag.name%}
-                      <li>{{project.title}}</li>
-                      <!-- <td>{{projectTag.name}}</td> -->
-                  {% endif %} 
-                {% endfor %} 
+            {% for project in project_tag.project %}
+                <li class="mb-3"><a class="btn btn-info" href="{% url 'project' project.0 %}">{{project.1}}</a></li>
             {% endfor %} 
           </ul>
         </td>

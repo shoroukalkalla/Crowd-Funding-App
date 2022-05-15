@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% extends 'layouts/base.html' %} {% load my_filters %} {% block content %} {%load static %} {% block data %}{% endblock %}
 
 <div class="projects my-3 pagpagi">
@@ -6,9 +7,48 @@
           <div class="project" data-id="{{project.project.id}}">
             <div class="img_box">
               <img
+=======
+{% extends 'layouts/base.html' %}
+{% load my_filters %}
+{% block content %} 
+{% load static %}
+<div class="projects mt-5 ">
+    <div class="mb-4" >
+      <div id="SlideShow" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            {% for project_rate in projects_rate|slice:":6" %}
+            <button type="button" data-bs-target="#SlideShow" data-bs-slide-to="{{forloop.counter0}}" {% if forloop.counter0 == 0 %} class="active" aria-current="true" {% endif %} aria-label="Slide{{forloop.counter0}}"></button>
+            {% endfor %}
+        </div>
+        <div class="carousel-inner">
+            {% for project_rate in projects_rate|slice:":6" %}
+            <div class="carousel-item {% if forloop.counter0 == 0 %} active {% endif %}">
+                <img src="{{project_rate.image.image.url}}" class="d-block w-100" alt="..." style="height:250px;">
+                <div class="carousel-caption d-none d-md-block">
+                  <a href="{% url   'project' project_rate.project.id  %}" class="text-capitalize fs-4 fw-bolder">{{project_rate.project.title}}</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#SlideShow" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#SlideShow" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+       </div>
+    </div>
+    <br/>
+    {% for project in projects %}
+    <div class="project" data-id="{{project.project.id}}">
+        <div class="img_box">
+            <img
+>>>>>>> refs/remotes/origin/main
                 class="mw-100"
                 {% if project.images %}
-                src="{{project.images.0.image.url}}"
+                src="{{project.images.image.url}}"
                 {% else %}
                 src="{{MEDIA_URL}}/projects/images/default.jpg"
                 {% endif %}

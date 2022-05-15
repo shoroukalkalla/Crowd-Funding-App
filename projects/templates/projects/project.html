@@ -1,17 +1,10 @@
 {% extends 'layouts/base.html' %}
-
 {% load static %}
-
 {% load my_filters %}
 {% load crispy_forms_tags %}
-
-
 {% block content %}
-
-
 {% if not project_user.email %}
 <meta http-equiv="REFRESH" content="0;url='/'" />
-
 {% endif %}
 <link rel="stylesheet" href="{% static 'projects/css/new.css' %}" />
 
@@ -20,13 +13,11 @@
 <div class="project_desc mt-5 text-light">
     <div class="row d-flex align-items-center">
         <div class="col-md-12 col-lg-6 mb-md-4 mb-lg-0">
-            
                     <div id="carouselExampleIndicators" class="carousel slide img_box" data-bs-ride="carousel">
                         <div class="carousel-indicators">
                         {% for img in images %}
                         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{forloop.counter0}}" {% if forloop.counter0 == 0 %} class="active" aria-current="true" {% endif %} aria-label="Slide{{forloop.counter0}}"></button>
                         {% endfor %}
-                
                         </div>
                         <div class="carousel-inner img_box">
                             {% for img in images %}
@@ -45,10 +36,8 @@
                           <span class="carousel-control-next-icon" aria-hidden="true"></span>
                           <span class="visually-hidden">Next</span>
                         </button>
-                    </div>
-                    
-        </div>
-        
+                    </div>        
+        </div> 
         <div class="col-md-12 col-lg-6">
             <h4 class="text-muted fs-6 fw-normal">{{project.category}}</h4>
             <h3 class="title p-1">{{project.title}}</h3>
@@ -61,9 +50,6 @@
                     <i class="fa fa-star{% if project.averageReview < 4.5 %}-o{% elif project.averageReview >= 4.5 and project.averageReview < 5 %}-half-o {% endif %}" aria-hidden="true"></i>
                     </span>
             </div>
-
-
- 
 <!-------------------------------------------Report------------------------------------------------------->
 {% if user.is_authenticated %}
  
@@ -126,7 +112,7 @@
                         <div
                             class="progress-bar bg-info"
                             role="progressbar"
-                            style="width: {{ donation_amount |as_percentage_of:project.total_target }}%"
+                            style="width:'{{ donation_amount |as_percentage_of:project.total_target }}%'"
                             aria-valuenow="{{ donation_amount |as_percentage_of:project.total_target }}"
                             aria-valuemin="0"
                             aria-valuemax="100"
@@ -352,7 +338,7 @@
             <input type="hidden" name="user"value="{{user.id}}"/>
         <br>
 
-                    <input type="submit" value="Edit Rating" class="btn btn-warning my-3 mx-2">
+                    <input type="submit" value="Confirm Rating" class="btn btn-warning my-3 mx-2">
                 
                {% endif %}
 

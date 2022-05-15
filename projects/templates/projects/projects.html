@@ -3,8 +3,8 @@
 {% block content %} 
 {% load static %}
 <div class="projects mt-5 ">
-    <div class="offset-5 mt-3">
-    <div id="SlideShow" class="carousel slide" data-bs-ride="carousel">
+    <div class="mb-4" >
+      <div id="SlideShow" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-indicators">
             {% for project_rate in projects_rate|slice:":6" %}
             <button type="button" data-bs-target="#SlideShow" data-bs-slide-to="{{forloop.counter0}}" {% if forloop.counter0 == 0 %} class="active" aria-current="true" {% endif %} aria-label="Slide{{forloop.counter0}}"></button>
@@ -13,9 +13,9 @@
         <div class="carousel-inner">
             {% for project_rate in projects_rate|slice:":6" %}
             <div class="carousel-item {% if forloop.counter0 == 0 %} active {% endif %}">
-                <img src="{{project_rate.image.image.url}}" class="d-block w-100" alt="...">
+                <img src="{{project_rate.image.image.url}}" class="d-block w-100" alt="..." style="height:250px;">
                 <div class="carousel-caption d-none d-md-block">
-                  <a class="text-dark text-capitalize fs-2 fw-bolder ">{{project_rate.project.title}}</a>
+                  <a href="{% url   'project' project_rate.project.id  %}" class="text-capitalize fs-4 fw-bolder">{{project_rate.project.title}}</a>
                 </div>
             </div>
             {% endfor %}
@@ -28,7 +28,7 @@
           <span class="carousel-control-next-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Next</span>
         </button>
-    </div>
+       </div>
     </div>
     <br/>
     {% for project in projects %}

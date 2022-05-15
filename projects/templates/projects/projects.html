@@ -81,16 +81,17 @@
 
 </div>
 <div class="d-flex   justify-content-center align-items-center ">
-    {% if page.has_previous %}
-    <a class="text-decoration-none text-light mx-4 my-4" href="{% url 'projects' %}?page={{page.previous_page_number}}">  <i class="fa-solid fa-angles-left fa-lg"></i>Previous</a>
-    {% endif %}
-    {% if page.has_next %}
-    
-    <a class="text-decoration-none text-light mx-4 my-4" href="{% url 'projects' %}?page={{page.next_page_number}}"> Next <i  class="fa-solid fa-angles-right fa-lg "></i></a>
-    {% endif %}
+  {% if page.has_previous %}
+  <a class="text-decoration-none text-light mx-4 my-4" href="{% url 'projects' %}?page={{page.previous_page_number}}">  <i class="fa-solid fa-angles-left fa-lg"></i>Previous</a>
+  {% endif %}
+  {% if page.has_next %}
+  
+  <a class="text-decoration-none text-light mx-4 my-4" href="{% url 'projects' %}?page={{page.next_page_number}}"> Next <i  class="fa-solid fa-angles-right fa-lg "></i></a>
+  {% endif %}
 
 
 </div>
+
 
 {% endblock %} {% block script %}
 <script src="{% static 'projects/js/script.js' %}"></script>

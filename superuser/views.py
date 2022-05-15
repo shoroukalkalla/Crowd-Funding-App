@@ -58,16 +58,27 @@ class ListTag(ListView):
     queryset = Tag.objects.select_related('project')
     template_name = 'superuser/list_tags.html'
 # -------------------Tags---------------------------#
+
+
 def get_tags(request):
-    tags = Tag.objects.all()
-    projects=Project.objects.filter(~Q(tags__isnull =True))
+    tags_query = Tag.objects.all()
+    tags = []
+    for tag in tags_query:
+        tag_project = tag.project_set.values_list('id', 'title')
+        if tag_project:
+            project_tag = {
+                'tag': tag,
+                'project': tag_project
+            }
+            tags.append(project_tag)
+
     context = {
-        'tags': tags,
-        'projects':projects
+        'project_tags': tags,
     }
     return render(request, 'superuser/list_tags.html', context)
-    
+
 # ----------------------------------------------------#
+
 
 def verify_tag(req, id):
     Tag.objects.filter(id=id).update(is_verified=True)
@@ -80,30 +91,33 @@ class DeleteProject(DeleteView):
     template_name = 'superuser/delete_category.html'
     success_url = reverse_lazy('list_project')
 
+
 class ListUser(ListView):
     model = User
     context_object_name = 'users'
     template_name = 'superuser/list_users.html'
 
+
 class DeleteUser(DeleteView):
     model = User
     pk_ur_kwargs = 'user.id'
     template_name = 'superuser/delete_category.html'
-    success_url = reverse_lazy('list_users')        
+    success_url = reverse_lazy('list_users')
+
 
 class ListProjectsReport(ListView):
     model = ProjectReport
     context_object_name = 'reports'
     template_name = 'superuser/list_reports.html'
 
+
 class ListProjectsCommentReport(ListView):
-    model=CommentReport
+    model = CommentReport
     context_object_name = 'commentReports'
     template_name = 'superuser/list_comment_reports.html'
 
+
 class ListProjectsDonations(ListView):
-    model=Donation
+    model = Donation
     context_object_name = 'donations'
     template_name = 'superuser/list_donations.html'
-
-   

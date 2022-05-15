@@ -96,8 +96,14 @@ class DeleteProject(DeleteView):
 
 class ListUser(ListView):
     model = User
-    context_object_name = 'users'
+    # context_object_name = 'users'
     template_name = 'superuser/list_users.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ListUser, self).get_context_data(**kwargs)
+        users = User.objects.filter(is_superuser=0).all()
+        context['users'] = users
+        return context
 
 
 class DeleteUser(DeleteView):

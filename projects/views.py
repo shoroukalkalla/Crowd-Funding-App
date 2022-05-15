@@ -41,7 +41,10 @@ from users.models import User
 def get_project_data(project_id, are_projects = False):
     project = get_object_or_404(Project, id=project_id)
     user = User.objects.get(id=project.user.id)
-    images = ProjectImage.objects.filter(project_id=project.id)
+    if(are_projects):
+        images = ProjectImage.objects.filter(project_id=project.id)[0]
+    else:    
+        images = ProjectImage.objects.filter(project_id=project.id)
     num_of_Projects = user.project_set.count()
     amount = Donation.objects.filter(
         project_id=project.id).aggregate(Sum('donation_amount'))

@@ -80,8 +80,10 @@ def get_tags(request):
 # ----------------------------------------------------#
 
 
-def verify_tag(req, id):
-    Tag.objects.filter(id=id).update(is_verified=True)
+def verify_tag(req, pk):
+    tag = Tag.objects.get(pk=pk)
+    tag.is_verified = True
+    tag.save()
     return redirect(reverse('list_tags'))
 
 

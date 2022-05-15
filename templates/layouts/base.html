@@ -53,6 +53,7 @@
                 -moz-user-select: none;
                 user-select: none;
             }
+       
 
             @media (min-width: 768px) {
                 .bd-placeholder-img-lg {
@@ -72,7 +73,9 @@
         </script>
         {% endif %}
     </head>
-    <body>
+    <body class="h-100" style="background-image: url(/media/bgg.jpg);    background-size: cover;
+    
+    ">
         <!-- prettier-ignore -->
         {% include 'includes/navbar.html' %} {% if messages %} {% for message in messages %}
         <div

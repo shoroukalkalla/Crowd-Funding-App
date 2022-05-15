@@ -6,6 +6,8 @@
 <link rel="stylesheet" href="{% static 'users/css/styles.css' %}" />
 {% endblock %} {% block content %}
 <div class="profile d-flex justify-content-center mt-4">
+    <div class="card bg-glass">
+        <div class="card-body px-4 py-5 px-md-5">
     <div class="profile_box">
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
@@ -63,6 +65,9 @@
         </div>
     </div>
 </div>
+</div>
+</div>
+
 
 {% include 'users/user_confirm_delete.html' %}
 

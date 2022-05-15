@@ -12,10 +12,10 @@
     }
 </style>
 {% endblock %} {% block content%}
-
-<div class="card-body">
+<div class="card bg-glass w-50 offset-3">
+    <div class="card-body d-flex flex-column">
     <div class="row">
-        <div class="col-md-6 offset-3">
+        <div class="col-md-6 offset-2 ">
             <form
                 class="projects"
                 action=""
@@ -94,16 +94,18 @@
                     <div class="form-group">
                         <button
                             type="submit"
-                            class="btn btn-primary btn-block btn-sm"
+                            class="btn btn-primary offset-5"
                         >
-                            Create New Project
+                            Create
                         </button>
                     </div>
                 </div>
             </form>
         </div>
-    </div>
+
 </div>
+</div>
+
 
 {% endblock %} {% block script%}
 <script src="{% static 'projects/js/projectImages.js' %}"></script>

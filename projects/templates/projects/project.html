@@ -15,7 +15,9 @@
 {% endif %}
 <link rel="stylesheet" href="{% static 'projects/css/new.css' %}" />
 
-<div class="project_desc mt-5">
+<div class="card bg-dark">
+    <div class="card-body px-4  px-md-4">
+<div class="project_desc mt-5 text-light">
     <div class="row d-flex align-items-center">
         <div class="col-md-12 col-lg-6 mb-md-4 mb-lg-0">
             
@@ -50,7 +52,7 @@
         <div class="col-md-12 col-lg-6">
             <h4 class="text-muted fs-6 fw-normal">{{project.category}}</h4>
             <h3 class="title p-1">{{project.title}}</h3>
-            <div class="rating-star"> Average-Rating
+            <div class="rating-star">
                 <span>
                     <i class="fa fa-star{% if project.averageReview < 0.5 %}-o{% elif project.averageReview >= 0.5 and project.averageReview < 1 %}-half-o {% endif %}" aria-hidden="true"></i>
                     <i class="fa fa-star{% if project.averageReview < 1.5 %}-o{% elif project.averageReview >= 1.5 and project.averageReview < 2 %}-half-o {% endif %}" aria-hidden="true"></i>
@@ -63,11 +65,15 @@
 
  
 <!-------------------------------------------Report------------------------------------------------------->
-            {% if project.user.id != user.id %}
+{% if user.is_authenticated %}
+ 
+{% if project.user.id != user.id %}
             <a data-bs-toggle="modal" data-bs-target="#reportProject{{project.id}}" class="btn btn-danger rounded-pill p-2 my-3" href="{% url   'report_project'  project.id %}">Report</a>
             {% include 'projects/reportModal.html' with report_modal_id=project.id report_modal_title='reportProject' project_id=project.id%}
 
             {% endif %}
+            {% endif %}
+
 
 
             <div class="user d-flex align-items-center">
@@ -134,7 +140,7 @@
             </div>
 
             <div class="back_campaign mt-4">
-                <div class="generic_campaign">
+                <div class="generic_campaign ">
                     <button
                         class="donationBtn btn btn-secondary  text-ligth clicked rounded-pill px-3 py-2"
                     
@@ -142,19 +148,19 @@
                         $10
                     </button>
                     <button
-                        class="donationBtn btn btn-secondary text-dark bg-transparent rounded-pill px-3 py-2"
+                        class="donationBtn btn btn-secondary text-white  bg-transparent rounded-pill px-3 py-2"
                 
                     >
                         $30
                     </button>
                     <button
-                        class="donationBtn btn btn-secondary text-dark bg-transparent rounded-pill px-3 py-2"
+                        class="donationBtn btn btn-secondary text-white bg-transparent rounded-pill px-3 py-2"
                     
                     >
                         $50
                     </button>
                     <button
-                        class="donationBtn btn btn-secondary text-dark bg-transparent rounded-pill px-3 py-2"
+                        class="donationBtn btn btn-secondary text-white bg-transparent rounded-pill px-3 py-2"
                     
                     >
                         $100
@@ -192,7 +198,7 @@
         </p>
     </div>
         <div id="comments" class="comments my-4">
-            <h3>Comments</h3>
+            <h3>Add Comment</h3>
             {% if user.is_authenticated %}
             <div class="user d-flex mt-3">
                 <div class="user_avatar">
@@ -235,9 +241,9 @@
                     </span>
                 </div>
                 <div class="ms-2 w-100">
-                    <span class="fw-bold">{{comment.user.first_name}}</span>
+                    <span class="fw-bold text-dark">{{comment.user.first_name}}</span>
                     <div class="user_info w-100 d-flex justify-content-between">
-                        <div class="comment" data-comment_id = {{comment.id}} data-project_id = {{project.id}}>{{comment.comment}} </div>
+                        <div class="comment text-primary" data-comment_id = {{comment.id}} data-project_id = {{project.id}}>{{comment.comment}} </div>
                         <div>
                             {% if user.id == comment.user_id %}
                             <button class="text-warning border-0 edit_comment"><em class="fa-solid fa-pen-to-square"></em></button>
@@ -291,7 +297,7 @@
 
     </div>
     
-
+ {% if user.is_authenticated %}
     {% if project.user.id != user.id %}
 <div>
     <form class="my-5"  action="{% url 'submit_review' user.id  project.id %}" method="POST">
@@ -324,6 +330,7 @@
 					
 				</article>
                 {% endif %}
+
                 {% endfor %}
  
 <label>New Rating:</label>
@@ -344,12 +351,11 @@
             <input type="hidden" name="project" value="{{project.id}}"/>
             <input type="hidden" name="user"value="{{user.id}}"/>
         <br>
-        {% if user.is_authenticated %}
 
                     <input type="submit" value="Edit Rating" class="btn btn-warning my-3 mx-2">
                 
                {% endif %}
-    
+
 
         </div>
     </form>
@@ -360,6 +366,8 @@
  {% endif %}
  
 
+</div>
+</div>
 
 </div>
 

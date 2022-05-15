@@ -42,5 +42,5 @@ urlpatterns = [
         get_user_donations, name="donations"),
 
     path('comments/<pk>/comment_reply_create',
-        CreateCommentReply.as_view(), name="create_comment_reply"),
+        CreateCommentReply.as_view(), name="create_comment_reply"), 
 ]

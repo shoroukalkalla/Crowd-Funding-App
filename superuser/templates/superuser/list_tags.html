@@ -2,7 +2,6 @@
 {% block content %}
 <div>
   <h1>List Tags</h1>
-  {% for tag in tags %}
   <table class="table">
     <thead>
       <tr>
@@ -13,10 +12,11 @@
       </tr>
     </thead>
     <tbody>
+      {% for tag in tags %}
       <tr>
         <th scope="row">{{tag.id}}</th>
-        <td>{{tag.tag_name}}</td>
-        {% if tag.is_verified %}
+        <td>{{tag.name}}</td>
+         {% if tag.is_verified %}
         <td>
           <button class="btn btn-success rounded-pill">Verified</button>
         </td>
@@ -25,10 +25,23 @@
           <a class="btn btn-info" href={% url 'verify_tag' tag.id %}>Verify</a>
         </td>
         {% endif %}
-        <td>{{tag.project.title}}</td>
+        <td>
+          <ol>
+            {% for project in projects %}
+                {% for projectTag in project.tags.all %}
+                  {% if tag.name == projectTag.name%}
+                      <li>{{project.title}}</li>
+                      <!-- <td>{{projectTag.name}}</td> -->
+                  {% endif %} 
+                {% endfor %} 
+            {% endfor %} 
+          </ol>
+        </td>
       </tr>
+      {% empty %}
+        <h4 class="text-center w-100"> No Tags </h4>
+      {% endfor %}
     </tbody>
   </table>
-  {% endfor %}
-</div>
-{% endblock %}
+
+  {% endblock %} 

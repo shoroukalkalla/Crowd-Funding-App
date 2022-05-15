@@ -84,7 +84,7 @@ def get_projects(request):
     page_num=request.GET.get('page')
     page=project_paginator.get_page(page_num)
 
-    return render(request, 'projects/projects.html', {'page': page},{"projects_rate": projects_rate_array})
+    return render(request, 'projects/projects.html', {'page': page})
 
 
 def get_project(request, project_id):

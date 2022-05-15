@@ -1,4 +1,6 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav
+    class="navbar navbar-expand-lg navbar-light bg-light position-fixed top-0 w-100"
+>
     <div class="container">
         <a class="navbar-brand" href="#">CROWDFUNDING</a>
         <button
@@ -76,12 +78,16 @@
                                 >
                             </li>
                             <li>
-                                <a class="dropdown-item" href="{% url 'user_projects' %}"
+                                <a
+                                    class="dropdown-item"
+                                    href="{% url 'user_projects' %}"
                                     >My Projects</a
                                 >
                             </li>
                             <li>
-                                <a class="dropdown-item" href="/projects/donations"
+                                <a
+                                    class="dropdown-item"
+                                    href="/projects/donations"
                                     >My Donations</a
                                 >
                             </li>

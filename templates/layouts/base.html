@@ -96,11 +96,9 @@
         {% endfor %} {% endif %}
 
         <div class="main-wrapper">
-            <main>
-                {% if user.is_superuser %} {% include 'includes/sidebar.html' %}
-                {%endif %}
-                <div class="container">{% block content %} {% endblock %}</div>
-            </main>
+            {% if user.is_superuser %} {% include 'includes/sidebar.html' %}
+            {%endif %}
+            <div class="container pt-1">{% block content %} {% endblock %}</div>
         </div>
 
         <script

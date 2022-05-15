@@ -98,7 +98,7 @@
         <div class="main-wrapper">
             {% if user.is_superuser %} {% include 'includes/sidebar.html' %}
             {%endif %}
-            <div class="container pt-1">{% block content %} {% endblock %}</div>
+            <div class="container pt-4 offset-1 my-4">{% block content %} {% endblock %}</div>
         </div>
 
         <script

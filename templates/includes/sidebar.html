@@ -1,108 +1,110 @@
-<main class="position-fixed">
-    <div
-        class="d-flex flex-column flex-shrink-0 bg-light sidebar"
-        style="width: 4.5rem"
-    >
-        <ul class="nav nav-pills nav-flush flex-column mb-auto text-center ">
-            <li>
-                <a
-                    href="/"
-                    class="nav-link py-3 border-bottom"
-                    title="Home"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="right"
-                    data-url="/"
-                >
-                    <em class="fa-solid fa-handshake-angle"></em>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a
-                    href="{% url 'list_project' %}"
-                    class="nav-link py-3 border-bottom"
-                    aria-current="page"
-                    title="Projects"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="right"
-                    data-url="/superuser/project/"
-                >
-                    <em class="fa-solid fa-sheet-plastic"></em>
-                </a>
-            </li>
-            <li>
-                <a
-                    href="{% url 'list_users' %}"
-                    class="nav-link py-3 border-bottom"
-                    title="Users"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="right"
-                    data-url="/superuser/user/"
-                >
-                    <em class="fa-solid fa-users"></em>
-                </a>
-            </li>
-            <li>
-                <a
-                    href="{% url 'list_category' %}"
-                    class="nav-link py-3 border-bottom"
-                    title="Categories"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="right"
-                    data-url="/superuser/categories/"
-                >
-                    <em class="fa-solid fa-layer-group"></em>
-                </a>
-            </li>
-            <li>
-                <a
-                    href="{% url 'list_tags' %}"
-                    class="nav-link py-3 border-bottom"
-                    title="Tags"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="right"
-                    data-url="/superuser/tag/"
-                >
-                    <em class="fa-solid fa-tags"></em>
-                </a>
-            </li>
-            <li>
-                <a
-                    href="{% url 'projects_reports' %}"
-                    class="nav-link py-3 border-bottom"
-                    title="Project Reports"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="right"
-                    data-url="/superuser/projectsReports/"
-                >
-                    <em class="fa-solid fa-flag"></em>
-                </a>
-            </li>
-            <li>
-                <a
-                    href="{% url 'projects_comment_reports' %}"
-                    class="nav-link py-3 border-bottom"
-                    title="Project Comments Report"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="right"
-                    data-url="/superuser/projectsCommentes/"
-                >
-                    <em class="fa-solid fa-comment-slash"></em>
-                </a>
-            </li>
-            <li>
-                <a
-                    href="{% url 'projects_donations' %}"
-                    class="nav-link py-3 border-bottom"
-                    title="Project Donations"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="right"
-                    data-url="/superuser/projectsDonations/"
-                >
-                    <em class="fa-solid fa-hand-holding-dollar"></em>
-                </a>
-            </li>
-        </ul>
-    </div>
+<div class="sidebar_container">
+    <main class="position-fixed">
+        <div
+            class="d-flex flex-column flex-shrink-0 bg-light sidebar"
+            style="width: 4.5rem"
+        >
+            <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
+                <li>
+                    <a
+                        href="/"
+                        class="nav-link py-3 border-bottom"
+                        title="Home"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="right"
+                        data-url="/"
+                    >
+                        <em class="fa-solid fa-handshake-angle"></em>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a
+                        href="{% url 'list_project' %}"
+                        class="nav-link py-3 border-bottom"
+                        aria-current="page"
+                        title="Projects"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="right"
+                        data-url="/superuser/project/"
+                    >
+                        <em class="fa-solid fa-sheet-plastic"></em>
+                    </a>
+                </li>
+                <li>
+                    <a
+                        href="{% url 'list_users' %}"
+                        class="nav-link py-3 border-bottom"
+                        title="Users"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="right"
+                        data-url="/superuser/user/"
+                    >
+                        <em class="fa-solid fa-users"></em>
+                    </a>
+                </li>
+                <li>
+                    <a
+                        href="{% url 'list_category' %}"
+                        class="nav-link py-3 border-bottom"
+                        title="Categories"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="right"
+                        data-url="/superuser/categories/"
+                    >
+                        <em class="fa-solid fa-layer-group"></em>
+                    </a>
+                </li>
+                <li>
+                    <a
+                        href="{% url 'list_tags' %}"
+                        class="nav-link py-3 border-bottom"
+                        title="Tags"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="right"
+                        data-url="/superuser/tag/"
+                    >
+                        <em class="fa-solid fa-tags"></em>
+                    </a>
+                </li>
+                <li>
+                    <a
+                        href="{% url 'projects_reports' %}"
+                        class="nav-link py-3 border-bottom"
+                        title="Project Reports"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="right"
+                        data-url="/superuser/projectsReports/"
+                    >
+                        <em class="fa-solid fa-flag"></em>
+                    </a>
+                </li>
+                <li>
+                    <a
+                        href="{% url 'projects_comment_reports' %}"
+                        class="nav-link py-3 border-bottom"
+                        title="Project Comments Report"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="right"
+                        data-url="/superuser/projectsCommentes/"
+                    >
+                        <em class="fa-solid fa-comment-slash"></em>
+                    </a>
+                </li>
+                <li>
+                    <a
+                        href="{% url 'projects_donations' %}"
+                        class="nav-link py-3 border-bottom"
+                        title="Project Donations"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="right"
+                        data-url="/superuser/projectsDonations/"
+                    >
+                        <em class="fa-solid fa-hand-holding-dollar"></em>
+                    </a>
+                </li>
+            </ul>
+        </div>
 
-    <div class="b-example-divider"></div>
-</main>
+        <div class="b-example-divider"></div>
+    </main>
+</div>

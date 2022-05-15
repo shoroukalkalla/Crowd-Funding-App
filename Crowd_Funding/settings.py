@@ -43,7 +43,6 @@ INSTALLED_APPS = [
 
     'users',
     'projects',
-    'authentication',
     'superuser',
 
     "crispy_forms",
@@ -179,7 +178,6 @@ EMAIL_HOST_PASSWORD = "milhtvzeteapfgbv"
 DEFAULT_FROM_EMAIL = "shroukalkalla1997@gmail.com"
 
 
-
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
@@ -190,6 +188,6 @@ REST_FRAMEWORK = {
 
 DATE_FORMAT = 'YYYY-MM-DD'
 STAR_RATINGS_RERATE = False
-STAR_RATINGS_RERATE=True
+STAR_RATINGS_RERATE = True
 STAR_RATINGS_RERATE_SAME_DELETE = True
-STAR_RATINGS_RANGE=5
+STAR_RATINGS_RANGE = 5

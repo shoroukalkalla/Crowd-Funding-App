@@ -53,7 +53,6 @@
                 -moz-user-select: none;
                 user-select: none;
             }
-       
 
             @media (min-width: 768px) {
                 .bd-placeholder-img-lg {
@@ -71,11 +70,16 @@
                 myToast.show();
             });
         </script>
+        {% endif %} {% if user.is_superuser %}
+        <style>
+            .main_wrapper {
+                display: grid;
+                grid-template-columns: 100px 1fr;
+            }
+        </style>
         {% endif %}
     </head>
-    <body class="h-100" style="background-image: url(/media/bgg.jpg);    background-size: cover;
-    
-    ">
+    <body class="h-100">
         <!-- prettier-ignore -->
         {% include 'includes/navbar.html' %} {% if messages %} {% for message in messages %}
         <div
@@ -98,10 +102,14 @@
         </div>
         {% endfor %} {% endif %}
 
-        <div class="main-wrapper">
+        <div class="main_wrapper">
             {% if user.is_superuser %} {% include 'includes/sidebar.html' %}
             {%endif %}
-            <div class="container pt-4 offset-1 my-4">{% block content %} {% endblock %}</div>
+            <div
+                class="container-md overflow-hidden {% if user.is_superuser %} m-2 {% else %} offset-lg-1 {% endif %} pt-5"
+            >
+                {% block content %} {% endblock %}
+            </div>
         </div>
 
         <script

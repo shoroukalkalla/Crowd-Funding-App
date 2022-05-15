@@ -121,9 +121,3 @@ aside li {
 aside li a {
     text-decoration: none;
 }
-
-.main-wrapper .container {
-    position: relative;
-    /* left: 100px; */
-    margin-top: 50px;
-}

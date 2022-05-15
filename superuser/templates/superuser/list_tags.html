@@ -15,7 +15,7 @@
     <tbody>
       {% for tag in tags %}
       <tr>
-        <th scope="row">{{tag.id}}</th>
+        <th scope="row">{{forloop.counter}}</th>
         <td>{{tag.name}}</td>
          {% if tag.is_verified %}
         <td>
@@ -27,7 +27,7 @@
         </td>
         {% endif %}
         <td>
-          <ol>
+          <ul class="list-unstyled">
             {% for project in projects %}
                 {% for projectTag in project.tags.all %}
                   {% if tag.name == projectTag.name%}
@@ -36,7 +36,7 @@
                   {% endif %} 
                 {% endfor %} 
             {% endfor %} 
-          </ol>
+          </ul>
         </td>
       </tr>
       {% empty %}

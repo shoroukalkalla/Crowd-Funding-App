@@ -38,10 +38,13 @@ from users.models import User
 
 # Create your views here.
 
-def get_project_data(project_id):
-    project = Project.objects.get(id=project_id)
+def get_project_data(project_id, are_projects = False):
+    project = get_object_or_404(Project, id=project_id)
     user = User.objects.get(id=project.user.id)
-    images = ProjectImage.objects.filter(project_id=project.id)
+    if(are_projects):
+        images = ProjectImage.objects.filter(project_id=project.id).first()
+    else:    
+        images = ProjectImage.objects.filter(project_id=project.id)
     num_of_Projects = user.project_set.count()
     amount = Donation.objects.filter(
         project_id=project.id).aggregate(Sum('donation_amount'))
@@ -73,7 +76,7 @@ def get_projects(request):
 
     projects = Project.objects.all().values('id')
     for project in projects:
-        data = get_project_data(project['id'])
+        data = get_project_data(project['id'],True)
         project_array.append(data)
 
     return render(request, 'projects/projects.html', {'projects': project_array, "projects_rate": projects_rate_array})
@@ -90,7 +93,7 @@ def get_user_projects(request):
 
     projects = Project.objects.filter(user_id=request.user.id).values('id')
     for project in projects:
-        data = get_project_data(project['id'])
+        data = get_project_data(project['id'],True)
         project_array.append(data)
 
     return render(request, 'projects/user_projects.html', {'projects': project_array})
@@ -144,9 +147,10 @@ def edit_project(request, project_id):
         # images = request.FILES.getlist('images')
         images = request.POST['images'].split()
         deleted_images = request.POST['ids'].split(',')
-        for img in deleted_images:
-            print(img)
-            ProjectImage.objects.get(id=img).delete()
+        
+        if(deleted_images != ['']):
+            for img in deleted_images:
+                ProjectImage.objects.get(id=img).delete()
         # Adding New Tags
         retags = request.POST.getlist('tags[]')
         for tag in retags:
@@ -174,7 +178,7 @@ def edit_project(request, project_id):
         context = {'project_form': project_form, 'tags': verified_tags,
                    'project': project, 'project_tags': project_tags}
 
-        if request.user.id == project.user.id:
+        if request.user.id == project.user.id :
             return render(request, "projects/project_edit.html", context)
         else:
             raise PermissionDenied()
@@ -212,7 +216,7 @@ class EditComment(SuccessMessageMixin, UpdateView):
 
     def get_success_url(self):
         return f"/projects/{self.request.POST['project']}#comment{self.kwargs['pk']}"
-
+    
     def form_valid(self, form):
         form.instance.user_id = self.request.user.id
         return super(EditComment, self).form_valid(form)

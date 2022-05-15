@@ -37,7 +37,7 @@
             <img
                 class="mw-100"
                 {% if project.images %}
-                src="{{project.images.0.image.url}}"
+                src="{{project.images.image.url}}"
                 {% else %}
                 src="{{MEDIA_URL}}/projects/images/default.jpg"
                 {% endif %}

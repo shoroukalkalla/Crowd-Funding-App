@@ -11,6 +11,7 @@ from users.models import User
 
 # Create your views here.
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.messages import add_message, INFO, ERROR
 
 
 class CreateCategory(PermissionRequiredMixin, CreateView):
@@ -20,12 +21,22 @@ class CreateCategory(PermissionRequiredMixin, CreateView):
     success_url = reverse_lazy('list_category')
     permission_required = 'user.is_superuser'
 
+    def handle_no_permission(self):
+        add_message(self.request, ERROR,
+                    'You are not allowed to open this link')
+        return redirect("/")
+
 
 class ListCategory(PermissionRequiredMixin, ListView):
     model = Category
     context_object_name = 'Categories'
     template_name = 'superuser/list_category.html'
     permission_required = 'user.is_superuser'
+
+    def handle_no_permission(self):
+        add_message(self.request, ERROR,
+                    'You are not allowed to open this link')
+        return redirect("/")
 
 
 class EditCategory(PermissionRequiredMixin, UpdateView):
@@ -36,6 +47,11 @@ class EditCategory(PermissionRequiredMixin, UpdateView):
     success_url = reverse_lazy('list_category')
     permission_required = 'user.is_superuser'
 
+    def handle_no_permission(self):
+        add_message(self.request, ERROR,
+                    'You are not allowed to open this link')
+        return redirect("/")
+
 
 class DeleteCategory(PermissionRequiredMixin, DeleteView):
     model = Category
@@ -44,6 +60,11 @@ class DeleteCategory(PermissionRequiredMixin, DeleteView):
     success_url = reverse_lazy('list_category')
     permission_required = 'user.is_superuser'
 
+    def handle_no_permission(self):
+        add_message(self.request, ERROR,
+                    'You are not allowed to open this link')
+        return redirect("/")
+
 
 class ListProject(PermissionRequiredMixin, ListView):
     model = Project
@@ -51,6 +72,11 @@ class ListProject(PermissionRequiredMixin, ListView):
     queryset = Project.objects.select_related('category', 'user')
     template_name = 'superuser/list_projects.html'
     permission_required = 'user.is_superuser'
+
+    def handle_no_permission(self):
+        add_message(self.request, ERROR,
+                    'You are not allowed to open this link')
+        return redirect("/")
 
 
 def verify_project(req, project_id):
@@ -64,6 +90,11 @@ class ListTag(PermissionRequiredMixin, ListView):
     queryset = Tag.objects.select_related('project')
     template_name = 'superuser/list_tags.html'
     permission_required = 'user.is_superuser'
+
+    def handle_no_permission(self):
+        add_message(self.request, ERROR,
+                    'You are not allowed to open this link')
+        return redirect("/")
 # -------------------Tags---------------------------#
 
 
@@ -101,6 +132,11 @@ class DeleteProject(PermissionRequiredMixin, DeleteView):
     success_url = reverse_lazy('list_project')
     permission_required = 'user.is_superuser'
 
+    def handle_no_permission(self):
+        add_message(self.request, ERROR,
+                    'You are not allowed to open this link')
+        return redirect("/")
+
 
 class ListUser(PermissionRequiredMixin, ListView):
     model = User
@@ -114,6 +150,11 @@ class ListUser(PermissionRequiredMixin, ListView):
         context['users'] = users
         return context
 
+    def handle_no_permission(self):
+        add_message(self.request, ERROR,
+                    'You are not allowed to open this link')
+        return redirect("/")
+
 
 class DeleteUser(PermissionRequiredMixin, DeleteView):
     model = User
@@ -122,12 +163,22 @@ class DeleteUser(PermissionRequiredMixin, DeleteView):
     success_url = reverse_lazy('list_users')
     permission_required = 'user.is_superuser'
 
+    def handle_no_permission(self):
+        add_message(self.request, ERROR,
+                    'You are not allowed to open this link')
+        return redirect("/")
+
 
 class ListProjectsReport(PermissionRequiredMixin, ListView):
     model = ProjectReport
     context_object_name = 'reports'
     template_name = 'superuser/list_reports.html'
     permission_required = 'user.is_superuser'
+
+    def handle_no_permission(self):
+        add_message(self.request, ERROR,
+                    'You are not allowed to open this link')
+        return redirect("/")
 
 
 class ListProjectsCommentReport(PermissionRequiredMixin, ListView):
@@ -136,9 +187,19 @@ class ListProjectsCommentReport(PermissionRequiredMixin, ListView):
     template_name = 'superuser/list_comment_reports.html'
     permission_required = 'user.is_superuser'
 
+    def handle_no_permission(self):
+        add_message(self.request, ERROR,
+                    'You are not allowed to open this link')
+        return redirect("/")
+
 
 class ListProjectsDonations(PermissionRequiredMixin, ListView):
     model = Donation
     context_object_name = 'donations'
     template_name = 'superuser/list_donations.html'
     permission_required = 'user.is_superuser'
+
+    def handle_no_permission(self):
+        add_message(self.request, ERROR,
+                    'You are not allowed to open this link')
+        return redirect("/")

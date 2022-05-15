@@ -2,8 +2,35 @@
 {% load my_filters %}
 {% block content %} 
 {% load static %}
-<div class="projects mt-5">
-
+<div class="projects mt-5 ">
+    <div class="offset-5 mt-3">
+    <div id="SlideShow" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            {% for project_rate in projects_rate|slice:":6" %}
+            <button type="button" data-bs-target="#SlideShow" data-bs-slide-to="{{forloop.counter0}}" {% if forloop.counter0 == 0 %} class="active" aria-current="true" {% endif %} aria-label="Slide{{forloop.counter0}}"></button>
+            {% endfor %}
+        </div>
+        <div class="carousel-inner">
+            {% for project_rate in projects_rate|slice:":6" %}
+            <div class="carousel-item {% if forloop.counter0 == 0 %} active {% endif %}">
+                <img src="{{project_rate.image.image.url}}" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                  <a class="text-dark text-capitalize fs-2 fw-bolder ">{{project_rate.project.title}}</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#SlideShow" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#SlideShow" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    </div>
+    <br/>
     {% for project in projects %}
     <div class="project" data-id="{{project.project.id}}">
         <div class="img_box">
@@ -29,7 +56,7 @@
                     <div
                         class="progress-bar bg-info"
                         role="progressbar"
-                        style="width: {{ project.donation_amount |as_percentage_of:project.project.total_target }}%"
+                        style="width:'{{project.donation_amount |as_percentage_of:project.project.total_target}}%'"
                         aria-valuenow="{{ project.donation_amount |as_percentage_of:project.project.total_target }}"
                         aria-valuemin="0"
                         aria-valuemax="100"

@@ -11,7 +11,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import ProjectForm
-from .models import Comment, CommentReply, ProjectImage, Tag, Project, Donation,ProjectRate
+from .models import Comment, CommentReply, ProjectImage, Tag, Project, Donation, ProjectRate
 from users.models import User
 
 from django.http import JsonResponse
@@ -19,7 +19,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.core.files.storage import FileSystemStorage
 from django.contrib.messages.views import SuccessMessageMixin
-from django.views.generic import CreateView, UpdateView, DeleteView,ListView
+from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from rest_framework import viewsets, generics
 from rest_framework.views import APIView
 from django.http import Http404
@@ -31,8 +31,8 @@ from .serializers import ProjectSerializer, ProjectImagesSerializer
 from requests import request
 from django.contrib import messages
 
-from .forms import ProjectForm, ProjectReports ,CommentReport,ProjectRateForm
-from .models import Comment, ProjectImage, Tag, Project, Donation, ProjectReport, ProjectImage,ProjectRate
+from .forms import ProjectForm, ProjectReports, CommentReport, ProjectRateForm
+from .models import Comment, ProjectImage, Tag, Project, Donation, ProjectReport, ProjectImage, ProjectRate
 from users.models import User
 
 
@@ -48,28 +48,41 @@ def get_project_data(project_id):
     donators = Donation.objects.filter(
         project_id=project.id).values('donator').distinct().count()
     comments = Comment.objects.filter(project_id=project_id).order_by('-id')
-    commentReplies=CommentReply.objects.all().order_by('-id')
-    reviews = ProjectRate.objects.filter(project_id=project_id);
+    commentReplies = CommentReply.objects.all().order_by('-id')
+    reviews = ProjectRate.objects.filter(project_id=project_id)
 
     data = {'project': project, 'project_user': user, 'images': images, "num_of_Projects": num_of_Projects,
-            'donation_amount': amount['donation_amount__sum'], 'donators': donators, 'comments': comments,'commentReplies':commentReplies,'reviews':reviews}
+            'donation_amount': amount['donation_amount__sum'], 'donators': donators, 'comments': comments, 'commentReplies': commentReplies, 'reviews': reviews}
     return data
+
+
+def get_max_rate():
+    average_rate_array = []
+    projects = Project.objects.all()
+    for project in projects:
+        project_rate = project.averageReview()
+        project_image=ProjectImage.objects.filter(project_id=project.id).first()
+        data = {'project': project,'image':project_image,'average_rate': project_rate}
+        average_rate_array.append(data)
+    return sorted(average_rate_array, key=lambda k: k['average_rate'],reverse=True)
 
 
 def get_projects(request):
     project_array = []
+    projects_rate_array = get_max_rate()
 
     projects = Project.objects.all().values('id')
     for project in projects:
         data = get_project_data(project['id'])
         project_array.append(data)
 
-    return render(request, 'projects/projects.html', {'projects': project_array})
+    return render(request, 'projects/projects.html', {'projects': project_array, "projects_rate": projects_rate_array})
 
 
 def get_project(request, project_id):
     context = get_project_data(project_id)
     return render(request, 'projects/project.html', context)
+
 
 @login_required
 def get_user_projects(request):
@@ -81,6 +94,7 @@ def get_user_projects(request):
         project_array.append(data)
 
     return render(request, 'projects/user_projects.html', {'projects': project_array})
+
 
 @login_required
 def create_project(request):
@@ -153,7 +167,6 @@ def edit_project(request, project_id):
             for img in images:
                 ProjectImage.objects.create(
                     image=f"projects/images/{img}", project=project)
-            
 
         return redirect('project', project_id=project.id)
     else:
@@ -228,41 +241,40 @@ def ReportProject(request, project_id):
             messages.success(request, 'The report has sent successfully')
             return redirect('project', project_id=project_id)
 
-def ReportComment(request,comment_id):
-    comment=get_object_or_404(Comment,id=comment_id)
-    projectId=comment.project.id
+
+def ReportComment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+    projectId = comment.project.id
     if request.method == 'POST':
         commentReports = CommentReport(request.POST)
         if commentReports.is_valid():
             commentReports.save()
-            messages.success(request, 'The report has sent successfully')    
+            messages.success(request, 'The report has sent successfully')
             return redirect('project', project_id=projectId)
 
-#-----------------------------------------rating--------------------------------
-def submit_review(request, user_id,project_id):
-    rate=ProjectRate.objects.filter(user=user_id,project=project_id).first()
+# -----------------------------------------rating--------------------------------
+
+
+def submit_review(request, user_id, project_id):
+    rate = ProjectRate.objects.filter(user=user_id, project=project_id).first()
     if request.method == 'POST':
         if rate:
-                project_rate = ProjectRateForm(request.POST,instance=rate)
-                if project_rate.is_valid():
-                 project_rate.save()
-                 messages.success(request, 'the rate has updated successfully')
+            project_rate = ProjectRateForm(request.POST, instance=rate)
+            if project_rate.is_valid():
+                project_rate.save()
+                messages.success(request, 'the rate has updated successfully')
 
-        else:   
+        else:
             project_rate = ProjectRateForm(request.POST)
             project_rate.save()
             messages.success(request, 'the rate has sent successfully')
         return redirect('project', project_id=project_id)
 
 
-
-def delete_rate(request,rate_id):
-    rate=get_object_or_404(ProjectRate,id=rate_id)
+def delete_rate(request, rate_id):
+    rate = get_object_or_404(ProjectRate, id=rate_id)
     rate.delete()
     return redirect('project', project_id=rate.project.id)
-
-  
-
 
 
 @ csrf_exempt
@@ -293,8 +305,7 @@ class ProjectViewSet(viewsets.ModelViewSet, APIView):
     serializer_class = ProjectSerializer
 
 
-
-class ProjectImagesViewSet(viewsets.ModelViewSet,generics.ListAPIView):
+class ProjectImagesViewSet(viewsets.ModelViewSet, generics.ListAPIView):
     serializer_class = ProjectImagesSerializer
 
     def get_queryset(self):
@@ -337,6 +348,7 @@ def get_user_donations(request):
 
 # ----------------Comment Reply----------------------#
 
+
 class CreateCommentReply(SuccessMessageMixin, CreateView):
     model = CommentReply
     template_name = 'projects/project.html'
@@ -351,5 +363,3 @@ class CreateCommentReply(SuccessMessageMixin, CreateView):
 
     def get_success_message(self, cleaned_data):
         return "Comment Reply was Saved"
-
-

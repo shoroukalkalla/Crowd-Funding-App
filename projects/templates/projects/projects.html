@@ -1,13 +1,3 @@
-<<<<<<< HEAD
-{% extends 'layouts/base.html' %} {% load my_filters %} {% block content %} {%load static %} {% block data %}{% endblock %}
-
-<div class="projects my-3 pagpagi">
-      {% for project in page.object_list %}
-      <div class="article-loop">
-          <div class="project" data-id="{{project.project.id}}">
-            <div class="img_box">
-              <img
-=======
 {% extends 'layouts/base.html' %}
 {% load my_filters %}
 {% block content %} 
@@ -45,7 +35,6 @@
     <div class="project" data-id="{{project.project.id}}">
         <div class="img_box">
             <img
->>>>>>> refs/remotes/origin/main
                 class="mw-100"
                 {% if project.images %}
                 src="{{project.images.image.url}}"

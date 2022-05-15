@@ -19,7 +19,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.core.files.storage import FileSystemStorage
 from django.contrib.messages.views import SuccessMessageMixin
-from django.views.generic import CreateView, UpdateView, DeleteView
+from django.views.generic import CreateView, UpdateView, DeleteView,ListView
 from rest_framework import viewsets, generics
 from rest_framework.views import APIView
 from django.http import Http404
@@ -51,9 +51,11 @@ def get_project_data(project_id, are_projects = False):
     donators = Donation.objects.filter(
         project_id=project.id).values('donator').distinct().count()
     comments = Comment.objects.filter(project_id=project_id).order_by('-id')
-    commentReplies=CommentReply.objects.all().order_by('-id');
+    commentReplies=CommentReply.objects.all().order_by('-id')
+    reviews = ProjectRate.objects.filter(project_id=project_id);
+
     data = {'project': project, 'project_user': user, 'images': images, "num_of_Projects": num_of_Projects,
-            'donation_amount': amount['donation_amount__sum'], 'donators': donators, 'comments': comments,'commentReplies':commentReplies}
+            'donation_amount': amount['donation_amount__sum'], 'donators': donators, 'comments': comments,'commentReplies':commentReplies,'reviews':reviews}
     return data
 
 
@@ -242,11 +244,8 @@ def ReportComment(request,comment_id):
 #-----------------------------------------rating--------------------------------
 def submit_review(request, user_id,project_id):
     rate=ProjectRate.objects.filter(user=user_id,project=project_id).first()
-    # isSameProject=Q( rate.project.id==project_id)
     if request.method == 'POST':
         if rate:
-                # if isSameProject:
-                rate.value=request.POST["value"]
                 project_rate = ProjectRateForm(request.POST,instance=rate)
                 if project_rate.is_valid():
                  project_rate.save()
@@ -257,6 +256,15 @@ def submit_review(request, user_id,project_id):
             project_rate.save()
             messages.success(request, 'the rate has sent successfully')
         return redirect('project', project_id=project_id)
+
+
+
+def delete_rate(request,rate_id):
+    rate=get_object_or_404(ProjectRate,id=rate_id)
+    rate.delete()
+    return redirect('project', project_id=rate.project.id)
+
+  
 
 
 
@@ -348,5 +356,3 @@ class CreateCommentReply(SuccessMessageMixin, CreateView):
         return "Comment Reply was Saved"
 
 
-
-   

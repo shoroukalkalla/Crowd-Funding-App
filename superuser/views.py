@@ -1,9 +1,11 @@
+from asyncio.windows_events import NULL
 from pyexpat import model
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from projects.models import Category, CommentReport, Donation, Project, Tag, ProjectReport
 from re import template
+from django.db.models import Q
 
 from users.models import User
 
@@ -55,7 +57,17 @@ class ListTag(ListView):
     context_object_name = 'tags'
     queryset = Tag.objects.select_related('project')
     template_name = 'superuser/list_tags.html'
-
+# -------------------Tags---------------------------#
+def get_tags(request):
+    tags = Tag.objects.all()
+    projects=Project.objects.filter(~Q(tags__isnull =True))
+    context = {
+        'tags': tags,
+        'projects':projects
+    }
+    return render(request, 'superuser/list_tags.html', context)
+    
+# ----------------------------------------------------#
 
 def verify_tag(req, id):
     Tag.objects.filter(id=id).update(is_verified=True)

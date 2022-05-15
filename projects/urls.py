@@ -1,7 +1,7 @@
 from django.urls import path, include
 from .views import EditComment, get_projects, get_project, create_project, CreateComment, DeleteComment, get_user_donations, upload_project_images, get_user_projects, edit_project
 from django.urls import path
-from .views import CreateComment, DeleteComment, EditComment,ReportProject, get_projects, get_project, create_project, upload_project_images, CreateDonation,ReportComment,CreateCommentReply,submit_review
+from .views import CreateComment, DeleteComment, EditComment,ReportProject, get_projects, get_project, create_project, upload_project_images, CreateDonation,ReportComment,CreateCommentReply,submit_review,delete_rate
 
 from rest_framework import routers
 
@@ -28,6 +28,7 @@ urlpatterns = [
     path('projects/<int:project_id>/report', ReportProject, name='report_project'),
     path('comments/<int:comment_id>/report', ReportComment, name='report_comment'),
     path('project/<int:user_id>/<int:project_id>/rate', submit_review, name="submit_review"),
+    path('project/delete-rate/<int:rate_id>',delete_rate,name="delete_rate"),
 
 
 
@@ -41,5 +42,5 @@ urlpatterns = [
         get_user_donations, name="donations"),
 
     path('comments/<pk>/comment_reply_create',
-        CreateCommentReply.as_view(), name="create_comment_reply"),
+        CreateCommentReply.as_view(), name="create_comment_reply"), 
 ]

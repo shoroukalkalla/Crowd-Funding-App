@@ -112,7 +112,7 @@
                         <div
                             class="progress-bar bg-info"
                             role="progressbar"
-                            style="width:'{{ donation_amount |as_percentage_of:project.total_target }}%'"
+                            style="width:{{ donation_amount |as_percentage_of:project.total_target }}%"
                             aria-valuenow="{{ donation_amount |as_percentage_of:project.total_target }}"
                             aria-valuemin="0"
                             aria-valuemax="100"

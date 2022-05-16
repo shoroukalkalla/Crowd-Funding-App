@@ -80,7 +80,7 @@ def get_projects(request):
     for project in projects:
         data = get_project_data(project['id'],True)
         project_array.append(data)
-    project_paginator=Paginator(project_array,3)
+    project_paginator=Paginator(project_array,6)
     page_num=request.GET.get('page')
     page=project_paginator.get_page(page_num)
 
@@ -100,7 +100,7 @@ def get_user_projects(request):
     for project in projects:
         data = get_project_data(project['id'],True)
         project_array.append(data)
-    project_paginator=Paginator(project_array,3)
+    project_paginator=Paginator(project_array,6)
     page_num=request.GET.get('page')
     page=project_paginator.get_page(page_num)
 

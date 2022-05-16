@@ -228,12 +228,12 @@
                     </span>
                 </div>
                 <div class="ms-2 w-100">
-                    <span class="fw-bold text-dark">{{comment.user.first_name}}</span>
+                    <span class="fw-bold text-primary">{% firstof comment.user.first_name comment.user.username %}</span>
                     <div class="user_info w-100 d-flex justify-content-between">
                         <div class="comment text-white" data-comment_id = {{comment.id}} data-project_id = {{project.id}}>{{comment.comment}} </div>
                         <div>
                             {% if user.id == comment.user_id %}
-                            <button class="text-warning border-0 edit_comment"><em class="fa-solid fa-pen-to-square"></em></button>
+                            <button class="text-warning border-0 bg-dark edit_comment"><em class="fa-solid fa-pen-to-square"></em></button>
                             <a data-bs-toggle="modal" data-bs-target="#deleteComment{{comment.id}}" class="text-danger border-0 mx-2" href="{% url   'delete_comment'  comment.id %}"><em class="fa-solid fa-trash-can"></em></a>
                             {% else %}
                             <a data-bs-toggle="modal" data-bs-target="#reportComment{{comment.id}}" class="text-danger border-0 mx-2" href="{% url   'report_comment'  comment.id %}" ><em class="fa-solid  fa-ban"></em></a>

@@ -6,9 +6,10 @@
 {% if not project_user.email %}
 <meta http-equiv="REFRESH" content="0;url='/'" />
 {% endif %}
-<link rel="stylesheet" href="{% static 'projects/css/new.css' %}" />
 
-<div class="card bg-dark">
+<link rel="stylesheet" href="{% static 'projects/css/new.css' %}" />
+<div class="d-flex flex-column align-items-center justify-content-between">
+<div class="card d-inline-block w-75" style="background-color: black ;">
     <div class="card-body px-4  px-md-4">
 <div class="project_desc mt-5 text-light">
     <div class="row d-flex align-items-center">
@@ -22,7 +23,7 @@
                         <div class="carousel-inner img_box">
                             {% for img in images %}
                           <div class="carousel-item {% if forloop.counter0 == 0 %} active {% endif %}" data-interval="50">
-                            <img src="{{img.image.url}}" class="d-block mw-100" alt="...">
+                            <img src="{{img.image.url}}" class="d-block" alt="..." >
                           </div>
                           {% empty %}
                           <img src="{{MEDIA_URL}}/projects/images/default.jpg" class="d-block"/>
@@ -186,7 +187,7 @@
         <div id="comments" class="comments my-4">
             <h3>Add Comment</h3>
             {% if user.is_authenticated %}
-            <div class="user d-flex mt-3">
+            <div class="user  d-flex mt-3">
                 <div class="user_avatar">
                     <img
                         src="{{MEDIA_URL}}{{user.avatar}}"
@@ -215,7 +216,7 @@
         <!-- ------Comments -------- -->
         {% for comment in comments %}
         <div class="users_comments mt-4  d-flex flex-column " id="comment{{comment.id}}">
-            <div class="user  mt-3  bg-light rounded shadow-sm  py-2 px-3">
+            <div class="user  mt-3  bg-dark rounded shadow-sm  py-2 px-3" ">
                 <div class="d-flex ">
                 <div class="user_avatar">
                     <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title={{comment.user.username}}>
@@ -229,7 +230,7 @@
                 <div class="ms-2 w-100">
                     <span class="fw-bold text-dark">{{comment.user.first_name}}</span>
                     <div class="user_info w-100 d-flex justify-content-between">
-                        <div class="comment text-primary" data-comment_id = {{comment.id}} data-project_id = {{project.id}}>{{comment.comment}} </div>
+                        <div class="comment text-white" data-comment_id = {{comment.id}} data-project_id = {{project.id}}>{{comment.comment}} </div>
                         <div>
                             {% if user.id == comment.user_id %}
                             <button class="text-warning border-0 edit_comment"><em class="fa-solid fa-pen-to-square"></em></button>
@@ -324,15 +325,10 @@
             <br>
             <div class="rate">
                 <input type="radio" name="value" id="rating10" value="5" required /><label for="rating10" title="5"></label>
-                <input type="radio" name="value" id="rating9" value="4.5" required /><label for="rating9" title="4.5" class="half"></label>
                 <input type="radio" name="value" id="rating8" value="4" required /><label for="rating8" title="4"></label>
-                <input type="radio" name="value" id="rating7" value="3.5" required /><label for="rating7" title="3.5" class="half"></label>
                 <input type="radio" name="value" id="rating6" value="3" required /><label for="rating6" title="3"></label>
-                <input type="radio" name="value" id="rating5" value="2.5" required /><label for="rating5" title="2.5" class="half"></label>
                 <input type="radio" name="value" id="rating4" value="2" required /><label for="rating4" title="2"></label>
-                <input type="radio" name="value" id="rating3" value="1.5" required /><label for="rating3" title="1.5" class="half"></label>
                 <input type="radio" name="value" id="rating2" value="1" required /><label for="rating2" title="1"></label>
-                <input type="radio" name="value" id="rating1" value="0.5" required /><label for="rating1" title="0.5" class="half"></label>
             </div>
             <input type="hidden" name="project" value="{{project.id}}"/>
             <input type="hidden" name="user"value="{{user.id}}"/>
@@ -356,7 +352,7 @@
 </div>
 
 </div>
-
+</div>
 
 {% endblock %}
 

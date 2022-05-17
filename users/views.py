@@ -19,7 +19,6 @@ from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
 from .tokens import account_activation_token
-# from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
 from django.core.mail import EmailMultiAlternatives
 
@@ -37,11 +36,6 @@ from django.contrib.auth.views import PasswordChangeView, PasswordResetView, Pas
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.messages import add_message, INFO, ERROR
 
-
-# class SignUpView(CreateView):
-#     form_class = CustomRegistration
-#     success_url = reverse_lazy("login")
-#     template_name = "users/register.html"
 
 def signup(request):
     if request.method == 'POST':
@@ -68,43 +62,14 @@ def signup(request):
             message = EmailMultiAlternatives(
                 subject, html_content, from_email, [to])
             message.attach_alternative(html_content, "text/html")
-            # email = EmailMessage(
-            #     mail_subject, message, to=[to_email]
-            # )
             message.send()
-            add_message(request, INFO, 'Please confirm your email address to complete the registration')
-            return redirect('/');
+            add_message(
+                request, INFO, 'Please confirm your email address to complete the registration')
+            return redirect('/')
     else:
         form = CustomRegistration()
 
     return render(request, 'users/register.html', {'form': form})
-
-# def signup(request):
-#     if request.method == 'POST':
-#         form = CustomRegistration(request.POST)
-#         if form.is_valid():
-#             # save form in the memory not in database
-#             user = form.save(commit=False)
-#             user.is_active = False
-#             user.save()
-#             # to get the domain of the current site
-#             current_site = get_current_site(request)
-#             mail_subject = 'Activation link has been sent to your email id'
-#             message = render_to_string('users/acc_active_email.html', {
-#                 'user': user,
-#                 'domain': current_site.domain,
-#                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-#                 'token': account_activation_token.make_token(user),
-#             })
-#             to_email = form.cleaned_data.get('email')
-#             email = EmailMessage(
-#                 mail_subject, message, to=[to_email]
-#             )
-#             email.send()
-#             return HttpResponse('Please confirm your email address to complete the registration')
-#     else:
-#         form = CustomRegistration()
-#     return render(request, 'users/register.html', {'form': form})
 
 
 class SignIn(auth_views.LoginView):
@@ -114,11 +79,6 @@ class SignIn(auth_views.LoginView):
 
 @login_required
 def home(request):
-
-    print("##############################")
-    print(request.user)
-    print("##############################")
-
     return render(request, 'users/home.html')
 
 
@@ -132,21 +92,28 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
-        add_message(request, INFO, 'Thank you for your email confirmation. Now you can login your account')
-        return redirect('/login');
+        add_message(
+            request, INFO, 'Thank you for your email confirmation. Now you can login your account')
+        return redirect('/login')
     else:
         add_message(request, ERROR, 'Activation link is invalid!')
-        return redirect('/login');
+        return redirect('/login')
 
 
 def profile(request):
     return render(request, 'users/profile.html')
+
 
 class EditProfile(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     form_class = Profile
     template_name = "users/profile.html"
 
     queryset = User.objects.all()
+
+    def handle_no_permission(self):
+        add_message(self.request, ERROR,
+                    'You are not allowed to open this link')
+        return redirect("/")
 
     def get_queryset(self):
         print(self.request.user.id)
@@ -160,12 +127,11 @@ class EditProfile(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
 class DeleteUser(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     model = User
-    # pk_ur_kwarg = "student_id"
-    # template_name = "users/profile.html"
     success_url = reverse_lazy("login")
 
     def get_success_message(self, cleaned_data):
         return "Account was deleted"
+
 
 class PasswordChange(SuccessMessageMixin, PasswordChangeView):
     template_name = 'users/change_password.html'
@@ -173,6 +139,7 @@ class PasswordChange(SuccessMessageMixin, PasswordChangeView):
 
     def get_success_message(self, cleaned_data):
         return "Your password was changed"
+
 
 class PasswordReset(SuccessMessageMixin, PasswordResetView):
     template_name = 'users/reset_password.html'

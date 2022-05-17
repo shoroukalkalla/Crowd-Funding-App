@@ -59,27 +59,16 @@ def get_project_data(project_id, are_projects = False):
     return data
 
 
-def get_max_rate():
-    average_rate_array = []
-    projects = Project.objects.all()
-    for project in projects:
-        project_rate = project.averageReview()
-        project_image=ProjectImage.objects.filter(project_id=project.id).first()
-        data = {'project': project,'image':project_image,'average_rate': project_rate}
-        average_rate_array.append(data)
-    return sorted(average_rate_array, key=lambda k: k['average_rate'],reverse=True)
-
 
 def get_projects(request):
     project_array = []
-    projects_rate_array = get_max_rate()
 
     projects = Project.objects.all().values('id')
     for project in projects:
         data = get_project_data(project['id'],True)
         project_array.append(data)
 
-    return render(request, 'projects/projects.html', {'projects': project_array, "projects_rate": projects_rate_array})
+    return render(request, 'projects/projects.html', {'projects': project_array})
 
 
 def get_project(request, project_id):

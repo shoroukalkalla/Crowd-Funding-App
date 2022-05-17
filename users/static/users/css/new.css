@@ -1,0 +1,13 @@
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  height: 50px;
+  background-image: none;
+}
+#icon{
+    font-size:40px;
+    color:rgb(255, 255, 64);
+}
+h3{
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-weight: bolder;
+}

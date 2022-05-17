@@ -17,8 +17,8 @@ main {
     overflow-y: hidden;
 }
 
-main:first-child {
-    margin-top: 35px;
+.sidebar_container {
+    margin-top: 57px;
 }
 
 .b-example-divider {

@@ -9,7 +9,8 @@
 </style>
 {% endblock %} {% block content %}
 <div class="register m-auto d-flex flex-column align-items-center mt-5">
-    <h2>Sign Up</h2>
+    <div class="card bg-glass">
+        <div class="card-body px-4  px-md-5">
     <form method="post">
         {% csrf_token %}
 
@@ -35,4 +36,7 @@
         <button type="submit " class="btn btn-primary">Sign Up</button>
     </form>
 </div>
+</div>
+</div>
+
 {% endblock %}

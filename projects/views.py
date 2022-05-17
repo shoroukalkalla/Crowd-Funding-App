@@ -1,5 +1,6 @@
 from django.http import JsonResponse
 from django.db.models import Q
+from django.core.paginator import Paginator
 
 from pyexpat import model
 from django.forms import ValidationError
@@ -64,11 +65,15 @@ def get_projects(request):
     project_array = []
 
     projects = Project.objects.all().values('id')
+  
     for project in projects:
         data = get_project_data(project['id'],True)
         project_array.append(data)
+    project_paginator=Paginator(project_array,3)
+    page_num=request.GET.get('page')
+    page=project_paginator.get_page(page_num)
 
-    return render(request, 'projects/projects.html', {'projects': project_array})
+    return render(request, 'projects/projects.html', {'page': page})
 
 
 def get_project(request, project_id):
@@ -84,8 +89,11 @@ def get_user_projects(request):
     for project in projects:
         data = get_project_data(project['id'],True)
         project_array.append(data)
+    project_paginator=Paginator(project_array,3)
+    page_num=request.GET.get('page')
+    page=project_paginator.get_page(page_num)
 
-    return render(request, 'projects/user_projects.html', {'projects': project_array})
+    return render(request, 'projects/user_projects.html', {'page': page})
 
 
 @login_required

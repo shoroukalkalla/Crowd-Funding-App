@@ -1,5 +1,12 @@
 {% extends 'projects/projects.html' %} {% load my_filters %} {% load static %}
-{% block user_projects%}
+
+{% block data %}
+<a class="btn btn-success btn-lg my-4 offset-5" href="/projects/create">Create New Project</a>
+{% endblock %}
+
+{% block user_projects %}
+
+
 <hr class="opacity-25" />
 <div class="info">
   <div class="row">
@@ -17,3 +24,4 @@
   </div>
 </div>
 {% endblock %}
+

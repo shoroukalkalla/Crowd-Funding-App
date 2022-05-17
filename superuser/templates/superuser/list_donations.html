@@ -1,28 +1,31 @@
 {% extends 'layouts/base.html' %} {% load static %} {% load crispy_forms_tags %}
 {% block content %}
 <div class="d-flex flex-column justify-content-start align-items-center my-5">
-  <h3 class="my-3">List Projects Donations</h3>
-  <table class="table table-responsive-md  cell-border compact stripe table-dark my-4 text-center">
-    <thead>
-      <tr>
-        <th scope="col">ID</th>
-        <th scope="col">Donation Amount </th>
-        <th scope="col">Project Name </th>
-        <th scope="col">Donator Name</th>
- 
-      </tr>
-    </thead>
-    <tbody>
-{% for donation in donations %}
-      <tr>
-        <th scope="row">{{donation.id}}</th>
-        <td>{{donation.donation_amount}}</td>
-        <td>{{donation.project.title}}</td>
-        <td>{{donation.donator.username}}</td>
-
-      </tr>
-{% endfor %}
-    </tbody>
-  </table>
+    <div class="table-responsive w-100">
+        <h3 class="text-dark my-3">List Projects Donations</h3>
+        <table
+            class="table table-responsive-md cell-border compact stripe table-dark text-center"
+        >
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Donation Amount</th>
+                    <th scope="col">Project Name</th>
+                    <th scope="col">Donator Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for donation in donations %}
+                <tr>
+                    <th scope="row">{{donation.id}}</th>
+                    <td>{{donation.donation_amount}}</td>
+                    <td>{{donation.project.title}}</td>
+                    <td>{{donation.donator.username}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </div>
+    {% endblock %}
 </div>
-{% endblock %}

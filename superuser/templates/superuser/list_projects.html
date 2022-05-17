@@ -1,51 +1,53 @@
 {% extends 'layouts/base.html' %} {% load static %} {% load crispy_forms_tags %}
 {% block content %}
 <div class="d-flex flex-column justify-content-start align-items-center my-5">
-  <h3 class="my-4">List Projects</h3>
+  <h3 class="my-4 text-dark">List Projects</h3>
 
-  <table class="table table-responsive-md  cell-border compact stripe table-dark my-4 text-center">
-    <thead>
-      <tr>
-        <th scope="col">ID</th>
-        <th scope="col">Title</th>
-        <th scope="col">Category Name</th>
-        <th scope="col">User Name</th>
-        <th scope="col">Total Target</th>
-        <th scope="col">Start Time</th>
-        <th scope="col">End Time</th>
-        <th scope="col">Is Opened</th>
-        <th scope="col">Is Verified</th>
-        <th scope="col"></th>
-      </tr>
-    </thead>
-    <tbody>
-{% for project in projects %}
+  <div class="table-responsive w-100">
+    <table class="table table-responsive-md  cell-border compact stripe table-dark my-4 text-center">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Title</th>
+          <th scope="col">Category Name</th>
+          <th scope="col">User Name</th>
+          <th scope="col">Total Target</th>
+          <th scope="col">Start Time</th>
+          <th scope="col">End Time</th>
+          <th scope="col">Is Opened</th>
+          <th scope="col">Is Verified</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+  {% for project in projects %}
 
-      <tr>
-        <th scope="row">{{project.id}}</th>
-        <td>{{project.title}}</td>
-        <td>{{project.category.name}}</td>
-        <td>{{project.user.first_name}}</td>
-        <td>{{project.total_target}}</td>
-        <td>{{project.start_time}}</td>
-        <td>{{project.end_time}}</td>
-        <td>{{project.is_opened}}</td>
-        {% if project.is_verified %}
-        <td>
-          <button class="btn btn-success rounded-pill">Verified</button>
-        </td>
-        {% else %}
-        <td>
-          <a class="btn btn-info" href={% url 'verify_project' project.id %}>Verify</a>
-        </td>
-        {% endif %}
-        <td>
-          <a class="btn btn-danger" href={% url 'delete_project' project.id %}>Delete</a>
-        </td>
-      </tr>
-{% endfor %}
+        <tr>
+          <th scope="row">{{project.id}}</th>
+          <td>{{project.title}}</td>
+          <td>{{project.category.name}}</td>
+          <td>{{project.user.first_name}}</td>
+          <td>{{project.total_target}}</td>
+          <td>{{project.start_time}}</td>
+          <td>{{project.end_time}}</td>
+          <td>{{project.is_opened}}</td>
+          {% if project.is_verified %}
+          <td>
+            <button class="btn btn-success rounded-pill">Verified</button>
+          </td>
+          {% else %}
+          <td>
+            <a class="btn btn-info" href={% url 'verify_project' project.id %}>Verify</a>
+          </td>
+          {% endif %}
+          <td>
+            <a class="btn btn-danger" href={% url 'delete_project' project.id %}>Delete</a>
+          </td>
+        </tr>
+  {% endfor %}
 
-    </tbody>
-  </table>
+      </tbody>
+    </table>
+  </div>
 </div>
 {% endblock %}

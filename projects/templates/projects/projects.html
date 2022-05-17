@@ -1,12 +1,15 @@
 {% extends 'layouts/base.html' %}
 {% load my_filters %}
 {% block content %} 
-{% load static %}
-<div class="projects mt-5 ">
-    {% for project in projects %}
-    <div class="project" data-id="{{project.project.id}}">
-        <div class="img_box">
-            <img
+{%load static %}
+{% block data %}{% endblock %}
+
+<div class="projects my-3 pagpagi">
+      {% for project in page.object_list %}
+      <div class="article-loop">
+          <div class="project" data-id="{{project.project.id}}">
+            <div class="img_box">
+              <img
                 class="mw-100"
                 {% if project.images %}
                 src="{{project.images.image.url}}"
@@ -14,59 +17,81 @@
                 src="{{MEDIA_URL}}/projects/images/default.jpg"
                 {% endif %}
                 alt=""
-            />
-        </div>
-        <div class="content bg-light p-3">
-            <h4 class="text-muted fs-6 fw-normal">{{project.project.category}}</h4>
-            <h3 class="title p-1 text-nowrap overflow-hidden text-truncate">{{project.project.title}}</h3>
-            <div class="project_details">
+              />
+            </div>
+            <div class="content bg-light p-3">
+              <h4 class="text-muted fs-6 fw-normal">
+                {{project.project.category}}
+              </h4>
+              <h3 class="title p-1 text-nowrap overflow-hidden text-truncate">
+                {{project.project.title}}
+              </h3>
+              <div class="project_details">
                 <p class="raised_info">
-                    <span class="fw-bold">{{project.donation_amount|currency}} Raised</span> from
-                    <span class="fw-bold">{{project.project.total_target |currency}} Goal</span>
+                  <span class="fw-bold"
+                    >{{project.donation_amount|currency}} Raised</span
+                  >
+                  from
+                  <span class="fw-bold"
+                    >{{project.project.total_target |currency}} Goal</span
+                  >
                 </p>
                 <div class="progress">
-                    <div
-                        class="progress-bar bg-info"
-                        role="progressbar"
-                        style="width:'{{project.donation_amount |as_percentage_of:project.project.total_target}}%'"
-                        aria-valuenow="{{ project.donation_amount |as_percentage_of:project.project.total_target }}"
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                    ></div>
+                  <div
+                    class="progress-bar bg-info"
+                    role="progressbar"
+                    style="width:{{ project.donation_amount |as_percentage_of:project.project.total_target }}%"
+                    aria-valuenow="{{ project.donation_amount |as_percentage_of:project.project.total_target }}"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  ></div>
                 </div>
 
                 <hr class="opacity-25" />
-
                 <div class="info">
-                    <div class="row">
-                        <div class="col-4">
-                            <p class="mb-0 text-center">
-                                <span class="fw-bold">{{project.project.end_time|remaining_days}}</span>
-                                <span class="d-block">Days Remain</span>
-                            </p>
-                        </div>
-                        <div class="col-4">
-                            <p class="mb-0 text-center">
-                                <span class="fw-bold">{{project.donators}}</span>
-                                <span class="d-block">Backers</span>
-                            </p>
-                        </div>
-                        <div class="col-4">
-                            <p class="mb-0 text-center">
-                                <span class="fw-bold">{{ project.donation_amount |as_percentage_of:project.project.total_target }}%</span>
-                                <span class="d-block">Funded</span>
-                            </p>
-                        </div>
+                  <div class="row">
+                    <div class="col-4">
+                      <p class="mb-0 text-center">
+                        <span class="fw-bold">{{project.project.end_time|remaining_days}}</span>
+                        <span class="d-block">Days Remain</span>
+                      </p>
                     </div>
+                    <div class="col-4">
+                      <p class="mb-0 text-center">
+                        <span class="fw-bold">{{project.donators}}</span>
+                        <span class="d-block">Backers</span>
+                      </p>
+                    </div>
+                    <div class="col-4">
+                      <p class="mb-0 text-center">
+                        <span class="fw-bold">{{ project.donation_amount|as_percentage_of:project.project.total_target}}%</span>
+                        <span class="d-block">Funded</span>
+                      </p>
+                    </div>
+                  </div>
                 </div>
-                
-                {% block user_projects%} {% endblock %}
+
+                {% block user_projects %} {% endblock %}
+              </div>
             </div>
-            
+          </div>
         </div>
-    </div>
-    {% endfor %}
+
+      {% endfor %}
+
 </div>
+<div class="d-flex   justify-content-center align-items-center ">
+  {% if page.has_previous %}
+  <a class="text-decoration-none text-dark mx-4 my-4" href="{% url 'projects' %}?page={{page.previous_page_number}}">  <i class="fa-solid fa-angles-left fa-lg"></i>Previous</a>
+  {% endif %}
+  {% if page.has_next %}
+  
+  <a class="text-decoration-none text-dark mx-4 my-4" href="{% url 'projects' %}?page={{page.next_page_number}}"> Next <i  class="fa-solid fa-angles-right fa-lg "></i></a>
+  {% endif %}
+
+
+</div>
+
 
 {% endblock %} {% block script %}
 <script src="{% static 'projects/js/script.js' %}"></script>

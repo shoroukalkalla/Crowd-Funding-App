@@ -1,7 +1,7 @@
 <nav
     class="navbar navbar-expand-lg navbar-light bg-light position-fixed top-0 w-100"
 >
-    <div class="container">
+    <div class="container-md">
         <a class="navbar-brand" href="#">CROWDFUNDING</a>
         <button
             class="navbar-toggler"
@@ -57,7 +57,8 @@
                                 />
                             </div>
                             <div class="user_info ms-1">
-                                <span class="fs-4">{{user.first_name}}</span>
+                                <!-- prettier-ignore -->
+                                <span class="fs-4">{% firstof user.first_name user.username%}</span>
                             </div>
                         </div>
 

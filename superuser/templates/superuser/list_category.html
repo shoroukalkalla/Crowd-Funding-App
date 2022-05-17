@@ -1,26 +1,41 @@
 {% extends 'layouts/base.html' %} {% load static %} {% load crispy_forms_tags %}
 {% block content %}
 <div class="d-flex flex-column justify-content-start align-items-center my-5">
-  <h3 class="my-4">Categories</h3>
-<a class="btn btn-success" href="/superuser/category/">Create Category</a>
-  <table class="table table-responsive-md  cell-border compact stripe table-dark my-4 text-center">
-    <thead>
-      <tr>
-        <th scope="col">Category Name</th>
-        <th scope="col" colspan="2"></th>
-      </tr>
-    </thead>
-    <tbody>
-  {% for category in Categories%}
-  <tr>
-    <td>{{category.name}}</td>
-    <td><a class="btn btn-info" href="/categories/{{category.id}}">Edit</a></td>
-    <td> <a class="btn btn-danger" href="/categories/delete/{{category.id}}">Delete</a></td>
-  </tr>
-  
-  {% endfor %}
-  
-</tbody>
-</table>
+    <h3 class="my-4 text-dark">Categories</h3>
+    <a class="btn btn-success" href="/superuser/category/">Create Category</a>
+    <div class="table-responsive w-100">
+        <table
+            class="table table-responsive cell-border compact stripe table-dark my-4 text-center"
+        >
+            <thead>
+                <tr>
+                    <th scope="col">Category Name</th>
+                    <th scope="col" colspan="2"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for category in Categories%}
+                <tr>
+                    <td>{{category.name}}</td>
+                    <td>
+                        <a
+                            class="btn btn-info"
+                            href="/categories/{{category.id}}"
+                            >Edit</a
+                        >
+                    </td>
+                    <td>
+                        <a
+                            class="btn btn-danger"
+                            href="/categories/delete/{{category.id}}"
+                            >Delete</a
+                        >
+                    </td>
+                </tr>
+
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 {% endblock %}

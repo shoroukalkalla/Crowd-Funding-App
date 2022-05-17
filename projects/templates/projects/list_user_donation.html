@@ -1,7 +1,9 @@
 {% extends 'layouts/base.html' %}
 {% block content %}
-<h1> My Donations </h1>
-<table class="table table-hover table-striped text-center">
+<div class="d-flex flex-column justify-content-start align-items-center my-5">
+    <h3 class="my-4 text-light">My Donations</h3>
+  
+    <table class="table table-responsive-md  cell-border compact stripe table-dark my-4 text-center">
     <thead>
         <th>Project</th>
         <th>Donation Mount</th>
@@ -23,5 +25,6 @@
         {% endfor %}  
     </tbody>
 </table>
+</div>
 
 {% endblock %}

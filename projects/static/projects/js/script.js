@@ -2,6 +2,7 @@ console.log("Hello, from project folder");
 
 
 
+  
 const projects = document.querySelectorAll(".projects .project");
 projects.forEach((project) =>
     project.addEventListener(

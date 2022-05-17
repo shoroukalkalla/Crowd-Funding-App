@@ -1,1 +1,78 @@
-<h1>Home</h1>
+{% extends 'layouts/base.html' %}
+{% load my_filters %}
+{% block content %} 
+{% load static %}
+<link rel="stylesheet" href="{% static 'users/css/new.css' %}" />
+<div class=" d-flex flex-column">
+    <h3 class="text-center mt-4 text-light">Top Five Projects</h3>
+    <div class=" mt-3 ">
+        <div id="SlideShow" class="carousel slide" data-bs-ride="carousel" style="width:100%">
+          <div class="carousel-indicators my-1">
+              {% for top_project in top_projects|slice:":5" %}
+              <button type="button" data-bs-target="#SlideShow" data-bs-slide-to="{{forloop.counter0}}" {% if forloop.counter0 == 0 %} class="active" aria-current="true" {% endif %} aria-label="Slide{{forloop.counter0}}"></button>
+              {% endfor %}
+          </div>
+          <div class="carousel-inner ">
+              {% for top_project in top_projects|slice:":5" %}
+              <div class="carousel-item {% if forloop.counter0 == 0 %} active {% endif %}">
+                  <img class=" d-block w-100 " {% if top_project.image %}
+                  src="{{top_project.image.image.url}}"
+                  {% else %}
+                  src="{{MEDIA_URL}}/projects/images/default.jpg"
+                  {% endif %}
+                  alt="" style="height:510px; max-width:100%;">
+                  <div class="carousel-caption d-block right-0 bg-dark  bottom-0 bg-opacity-75 " style="max-width:100% ; width:100% ; left:0;">
+                    <h5 class="text-capitalize text-light ">{{top_project.project.title}} </h5>
+                    <a href="{% url   'project' top_project.project.id  %}" class="text-decoration-none text-warning text-capitalize fw-bolder"> More Details ...</a>
+                  </div>
+              </div>
+
+              {% endfor %}
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#SlideShow" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon " aria-hidden="true" ><em id="icon" class="fa-solid fa-circle-arrow-left"></em></span>
+            <span class="sr-only">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#SlideShow" data-bs-slide="next">
+            <span class="carousel-control-next-icon " aria-hidden="true"><em id="icon" class="fa-solid fa-circle-arrow-right"></em></span>
+            <span class="sr-only">Next</span>
+          </button>
+         </div>
+         <h3 class="text-center mt-4 text-light">Latest Five Projects</h3>
+         <div class=" mt-3 ">
+              <div id="carouselExample" class="carousel slide" data-bs-ride="carousel" style="width:100%">
+                  <div class="carousel-indicators my-1">
+                    {% for last_project in latest_projects|slice:":5" %}
+                    <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="{{forloop.counter0}}" {% if forloop.counter0 == 0 %} class="active" aria-current="true" {% endif %} aria-label="Slide{{forloop.counter0}}"></button>
+                    {% endfor %}
+                  </div>
+                  <div class="carousel-inner ">
+                      {% for last_project in latest_projects|slice:":5" %}
+                      <div class="carousel-item {% if forloop.counter0 == 0 %} active {% endif %}">
+                        <img class=" d-block w-100 " {% if last_project.image %}
+                          src="{{last_project.image.image.url}}"
+                          {% else %}
+                          src="{{MEDIA_URL}}/projects/images/default.jpg"
+                          {% endif %}
+                          alt="..." style="height:510px; max-width:100%;"/>
+                          <div class="carousel-caption d-block right-0 bg-dark  bottom-0 bg-opacity-75 " style="max-width:100% ; width:100% ; left:0;">
+                          <h5 class="text-capitalize text-light ">{{last_project.project.title}} </h5>
+                          <a href="#" class="text-decoration-none text-warning text-capitalize fw-bolder"> More Details ...</a>
+                          </div>
+                      </div>
+                      {% endfor %}
+                  </div>
+                  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                      <span class="carousel-control-prev-icon " aria-hidden="true" ><em id="icon" class="fa-solid fa-circle-arrow-left"></em></span>
+                      <span class="sr-only">Previous</span>
+                  </button>
+                  <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                      <span class="carousel-control-next-icon " aria-hidden="true"><em id="icon" class="fa-solid fa-circle-arrow-right"></em></span>
+                      <span class="sr-only">Next</span>
+                  </button>
+              </div>
+         </div>
+</div>
+{% endblock %}{% block script %}
+<script src="{% static 'projects/js/script.js' %}"></script>
+{% endblock %}

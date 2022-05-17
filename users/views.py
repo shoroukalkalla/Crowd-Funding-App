@@ -29,6 +29,7 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import User
+from projects.models import Project, ProjectImage
 
 from django.core.exceptions import PermissionDenied
 
@@ -155,3 +156,29 @@ class PasswordResetSet(SuccessMessageMixin, PasswordResetConfirmView):
 
     def get_success_message(self, cleaned_data):
         return "Your password has been set. You may go ahead and log in now."
+
+def get_latest_projects():
+    latest_projects_array = []
+    latest_projects=Project.objects.order_by('-id')[:5]
+    for project in latest_projects :
+        project_image=ProjectImage.objects.filter(project_id=project.id).first()
+        data = {'project':project,'image':project_image}
+        latest_projects_array.append(data)
+    return latest_projects_array
+
+
+def get_top_latest_projects(request):
+    top_projects_array = []
+    projects = Project.objects.all()
+    for project in projects:
+        project_rate = project.averageReview()
+        project_image = ProjectImage.objects.filter(
+            project_id=project.id).first()
+        data = {'project': project, 'image': project_image,
+                'average_rate': project_rate}
+        top_projects_array.append(data)
+    top_projects_array = sorted(
+        top_projects_array, key=lambda k: k['average_rate'], reverse=True)
+
+    return render(request, 'users/home.html', {'top_projects': top_projects_array,
+                                               'latest_projects': get_latest_projects()})

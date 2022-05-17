@@ -12,10 +12,10 @@
     }
 </style>
 {% endblock %} {% block content%}
-<div class="card bg-glass w-50 offset-3">
+<div class="card bg-glass w-50 offset-3 my-2">
     <div class="card-body d-flex flex-column">
     <div class="row">
-        <div class="col-md-6 offset-2 ">
+        <div class="col-md-6 offset-2">
             <form
                 class="projects"
                 action=""
@@ -63,7 +63,7 @@
                         {% endfor %}
                     </select>
                     <div class="selected_tags my-3 d-flex flex-wrap"></div>
-                    <input type="text" id="add_tag" />
+                    <input type="text" id="add_tag" placeholder="If You need to add a new tag put it here" />
                     <div id="errDiv" class="text-danger d-none">
                         Tag already exists
                     </div>
@@ -88,7 +88,7 @@
                     </div>
                 </div>
 
-                <div class="images_container d-flex flex-wrap"></div>
+                <div class="images_container d-flex flex-row flex-wrap"></div>
 
                 <div class="row mt-4 justify-content-center">
                     <div class="form-group">
@@ -102,6 +102,7 @@
                 </div>
             </form>
         </div>
+    </div>
 
 </div>
 </div>

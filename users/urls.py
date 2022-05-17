@@ -1,10 +1,10 @@
 from django.urls import path, re_path
 
-from .views import SignIn, signup, home, activate, profile, EditProfile, DeleteUser, PasswordChange, PasswordReset, PasswordResetSet , get_max_rate
+from .views import SignIn, signup, home, activate, profile, EditProfile, DeleteUser, PasswordChange, PasswordReset, PasswordResetSet ,get_top_latest_projects
 
 urlpatterns = [
     # path("signup/", SignUpView.as_view(), name="signup"),
-    path('', get_max_rate,name="home"),
+    path('', get_top_latest_projects,name="home"),
     path("register/", signup, name="signup"),
     path('login/', SignIn.as_view(), name='login'),
     path('password_change/', PasswordChange.as_view(), name="password_change"),

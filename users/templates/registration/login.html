@@ -7,22 +7,22 @@
     <div class="card bg-glass">
         <div class="card-body px-4 py-5 px-md-5">
             <h3>Log In..</h3>
-    <form method="POST">
-        {% csrf_token %}
-        <div class="row">
-            <div class="col-12">{{form.username|as_crispy_field}}</div>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-12">{{form.username|as_crispy_field}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-12">{{form.password|as_crispy_field}}</div>
+                </div>
+                <button type="submit" class="btn btn-info">Log In</button>
+            </form>
+            <div class="mt-4">
+                <a class="text-decoration-none" href="/password_reset"
+                    >Forget Password ?</a
+                >
+            </div>
         </div>
-        <div class="row">
-            <div class="col-12">{{form.password|as_crispy_field}}</div>
-        </div>
-        <button type="submit" class="btn btn-info">Log In</button>
-    </form>
-    <div class="mt-4">
-        <a class="text-decoration-none" href="/password_reset"
-            >Forget Password ?</a
-        >
     </div>
-</div>
-</div>
 </div>
 {% endblock %}

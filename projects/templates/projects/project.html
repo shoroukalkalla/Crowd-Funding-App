@@ -9,7 +9,7 @@
 
 <link rel="stylesheet" href="{% static 'projects/css/new.css' %}" />
 <div class="d-flex flex-column align-items-center justify-content-between">
-<div class="card d-inline-block w-75" style="background-color: black ;">
+<div class="card d-inline-block w-75 my-4" style="background-color: #242526 ;">
     <div class="card-body px-4  px-md-4">
 <div class="project_desc mt-5 text-light">
     <div class="row d-flex align-items-center">
@@ -216,7 +216,7 @@
         <!-- ------Comments -------- -->
         {% for comment in comments %}
         <div class="users_comments mt-4  d-flex flex-column " id="comment{{comment.id}}">
-            <div class="user  mt-3  bg-dark rounded shadow-sm  py-2 px-3" ">
+            <div class="user  mt-3 rounded shadow-sm  py-2 px-3" ">
                 <div class="d-flex ">
                 <div class="user_avatar">
                     <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title={{comment.user.username}}>
@@ -227,13 +227,13 @@
                         />
                     </span>
                 </div>
-                <div class="ms-2 w-100">
+                <div class="ms-2 w-100 user_comment p-2">
                     <span class="fw-bold text-primary">{% firstof comment.user.first_name comment.user.username %}</span>
                     <div class="user_info w-100 d-flex justify-content-between">
-                        <div class="comment text-white" data-comment_id = {{comment.id}} data-project_id = {{project.id}}>{{comment.comment}} </div>
+                        <div class="comment text-white ms-2" data-comment_id = {{comment.id}} data-project_id = {{project.id}}>{{comment.comment}} </div>
                         <div>
                             {% if user.id == comment.user_id %}
-                            <button class="text-warning border-0 bg-dark edit_comment"><em class="fa-solid fa-pen-to-square"></em></button>
+                            <button class="text-warning border-0 edit_comment" style="background-color: #3a3b3c"><em class="fa-solid fa-pen-to-square"></em></button>
                             <a data-bs-toggle="modal" data-bs-target="#deleteComment{{comment.id}}" class="text-danger border-0 mx-2" href="{% url   'delete_comment'  comment.id %}"><em class="fa-solid fa-trash-can"></em></a>
                             {% else %}
                             <a data-bs-toggle="modal" data-bs-target="#reportComment{{comment.id}}" class="text-danger border-0 mx-2" href="{% url   'report_comment'  comment.id %}" ><em class="fa-solid  fa-ban"></em></a>
@@ -263,10 +263,10 @@
                             />
                         </span>
                     </div>
-                    <div class="ms-2 w-100">
-                        <span class="fw-bold">{{comment.user.first_name}}</span>
+                    <div class="ms-2 w-100 user_comment p-2">
+                        <span class="fw-bold text-primary">{% firstof comment.user.first_name comment.user.username %}</span>
                         <div class="user_info w-100 d-flex justify-content-between">
-                            <div class="comment" data-comment_id = {{comment.id}} data-project_id = {{project.id}}>{{commentReply.reply}} </div>
+                            <div class="comment ms-2" data-comment_id = {{comment.id}} data-project_id = {{project.id}}>{{commentReply.reply}}</div>
                         </div>
                     </div>
                 </div>

@@ -5,9 +5,16 @@
 }
 
 body {
-    background: #f2f2f2;
+    background: #18191a;
     font-family: "Montserrat", sans-serif;
     height: 1000vh;
+}
+
+nav .search,
+nav .search:focus {
+    background: #242526;
+    border-color: #747474;
+    color: #fff;
 }
 
 .user_avatar_nav {
@@ -20,6 +27,23 @@ body {
 .user_avatar_nav:hover {
     background: rgb(234, 234, 234);
 }
+
+/* Login & Register */
+
+.card {
+    background-color: #242526 !important;
+    color: #fff !important;
+}
+input,
+input:focus,
+textarea,
+select {
+    background: #242526 !important;
+    border-color: #747474 !important;
+    color: #fff !important;
+}
+
+/* ----------------------- */
 
 .projects {
     display: grid;
@@ -36,7 +60,7 @@ body {
 }
 
 .project:hover {
-    box-shadow: 0 0 5px rgba(3, 6, 160, 0.5), 0 0 15px rgba(3, 6, 160, 0.5);
+    box-shadow: 0 0 5px rgba(132, 132, 132, 0.5), 0 0 15px rgba(95, 95, 95, 0.5);
 }
 
 .projects .project .img_box {
@@ -47,6 +71,9 @@ body {
 .projects .project .img_box img {
     width: 100%;
     height: 100%;
+}
+.projects .content {
+    background-color: #242526;
 }
 
 .projects .content p {
@@ -128,3 +155,25 @@ aside li a {
     margin-top: 50px;
 }
 
+/* User Comments  */
+
+.users_comments .user .user_comment {
+    background: #3a3b3c !important;
+    border-radius: 18px !important;
+}
+
+/* -------------------------- */
+
+/* Override Bootstrap Styles */
+
+.table-light {
+    --bs-table-bg: #242526 !important;
+    --bs-table-striped-bg: #242526 !important;
+    --bs-table-striped-color: #242526 !important;
+    --bs-table-active-bg: #242526 !important;
+    --bs-table-active-color: #242526 !important;
+    --bs-table-hover-bg: #242526 !important;
+    --bs-table-hover-color: #242526 !important;
+    color: #fff !important;
+    border-color: #242526 !important;
+}

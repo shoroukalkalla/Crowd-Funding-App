@@ -21,6 +21,10 @@ main {
     margin-top: 57px;
 }
 
+.sidebar_container ul li a {
+    border-bottom-color: #515151 !important;
+}
+
 .b-example-divider {
     flex-shrink: 0;
     width: 1.5rem;

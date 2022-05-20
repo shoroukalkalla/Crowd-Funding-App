@@ -173,9 +173,9 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 # coming from the secrets file
 
-EMAIL_HOST_USER = "shroukalkalla1997@gmail.com"
-EMAIL_HOST_PASSWORD = "milhtvzeteapfgbv"
-DEFAULT_FROM_EMAIL = "shroukalkalla1997@gmail.com"
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
 
 
 REST_FRAMEWORK = {
